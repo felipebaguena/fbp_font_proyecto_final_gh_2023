@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
@@ -6,8 +6,14 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import Offcanvas from "react-bootstrap/Offcanvas";
+import { useDispatch, useSelector } from "react-redux";
+import { saveToken } from "../../authSlice";
+import { logMe, registerUser } from "../../services/apiCalls";
 
 function NavbarTop() {
+
+const dispatch = useDispatch();
+const token = useSelector((state) => state.auth.token);
   const expand = "md";
   const [showLoginOffcanvas, setShowLoginOffcanvas] = useState(false);
   const [showRegisterOffcanvas, setShowRegisterOffcanvas] = useState(false);
@@ -21,6 +27,46 @@ function NavbarTop() {
     setShowRegisterOffcanvas(false);
   };
   const handleRegisterOffcanvasShow = () => setShowRegisterOffcanvas(true);
+
+  // Manejador para el registro de usuarios
+  const handleRegisterSubmit = async (event) => {
+    event.preventDefault();
+
+    const name = event.target.formBasicName.value;
+    const email = event.target.formBasicEmail.value;
+    const password = event.target.formBasicPassword.value;
+
+    try {
+      const response = await registerUser({ name, email, password });
+      console.log(response.data);
+
+      handleRegisterOffcanvasClose();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  // Manejador para el inicio de sesión
+  const handleLoginSubmit = async (event) => {
+    event.preventDefault();
+
+    const email = event.target.formBasicEmail.value;
+    const password = event.target.formBasicPassword.value;
+
+    try {
+      const response = await logMe({ email, password });
+      console.log(response.data);
+      dispatch(saveToken(response.data.token));
+
+      handleLoginOffcanvasClose();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    console.log("Token:", token);
+  }, [token]);
 
   return (
     <Navbar bg="light" expand={expand} className="mb-3">
@@ -47,7 +93,7 @@ function NavbarTop() {
       </Container>
 
       {/* Login Offcanvas */}
-      
+
       <Offcanvas
         show={showLoginOffcanvas}
         onHide={handleLoginOffcanvasClose}
@@ -57,7 +103,7 @@ function NavbarTop() {
           <Offcanvas.Title>Login</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
-          <Form>
+          <Form onSubmit={handleLoginSubmit}>
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>Email address</Form.Label>
               <Form.Control type="email" placeholder="Enter email" />
@@ -74,7 +120,7 @@ function NavbarTop() {
       </Offcanvas>
 
       {/* Register Offcanvas */}
-      
+
       <Offcanvas
         show={showRegisterOffcanvas}
         onHide={handleRegisterOffcanvasClose}
@@ -84,7 +130,7 @@ function NavbarTop() {
           <Offcanvas.Title>Register</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
-          <Form>
+          <Form onSubmit={handleRegisterSubmit}>
             <Form.Group className="mb-3" controlId="formBasicName">
               <Form.Label>Name</Form.Label>
               <Form.Control type="text" placeholder="Enter name" />
@@ -103,7 +149,6 @@ function NavbarTop() {
           </Form>
         </Offcanvas.Body>
       </Offcanvas>
-
     </Navbar>
   );
 }

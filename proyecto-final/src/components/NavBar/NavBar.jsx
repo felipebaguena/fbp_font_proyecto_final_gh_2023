@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import './NavBar.css'
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
@@ -11,9 +12,8 @@ import { saveToken } from "../../authSlice";
 import { logMe, registerUser } from "../../services/apiCalls";
 
 function NavbarTop() {
-
-const dispatch = useDispatch();
-const token = useSelector((state) => state.auth.token);
+  const dispatch = useDispatch();
+  const token = useSelector((state) => state.auth.token);
   const expand = "md";
   const [showLoginOffcanvas, setShowLoginOffcanvas] = useState(false);
   const [showRegisterOffcanvas, setShowRegisterOffcanvas] = useState(false);
@@ -69,7 +69,7 @@ const token = useSelector((state) => state.auth.token);
   }, [token]);
 
   return (
-    <Navbar bg="light" expand={expand} className="mb-3">
+    <Navbar bg="dark" variant="dark" expand={expand} className="mb-3">
       <Container fluid>
         <Navbar.Brand href="#">Navbar Offcanvas</Navbar.Brand>
         <Navbar.Toggle aria-controls="navbar-nav" />
@@ -98,18 +98,19 @@ const token = useSelector((state) => state.auth.token);
         show={showLoginOffcanvas}
         onHide={handleLoginOffcanvasClose}
         placement="end"
+        className="bg-dark text-white"
       >
-        <Offcanvas.Header closeButton>
-          <Offcanvas.Title>Login</Offcanvas.Title>
+        <Offcanvas.Header closeButton className="white-close-button">
+          <Offcanvas.Title className="text-dark">Login</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
           <Form onSubmit={handleLoginSubmit}>
             <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Email address</Form.Label>
+              <Form.Label className="text-white">Email address</Form.Label>
               <Form.Control type="email" placeholder="Enter email" />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicPassword">
-              <Form.Label>Password</Form.Label>
+              <Form.Label className="text-white">Password</Form.Label>
               <Form.Control type="password" placeholder="Password" />
             </Form.Group>
             <Button variant="primary" type="submit">
@@ -125,22 +126,23 @@ const token = useSelector((state) => state.auth.token);
         show={showRegisterOffcanvas}
         onHide={handleRegisterOffcanvasClose}
         placement="end"
+        className="bg-dark text-white"
       >
-        <Offcanvas.Header closeButton>
-          <Offcanvas.Title>Register</Offcanvas.Title>
+        <Offcanvas.Header closeButton className="white-close-button">
+          <Offcanvas.Title className="text-dark">Register</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
           <Form onSubmit={handleRegisterSubmit}>
             <Form.Group className="mb-3" controlId="formBasicName">
-              <Form.Label>Name</Form.Label>
+              <Form.Label className="text-white">Name</Form.Label>
               <Form.Control type="text" placeholder="Enter name" />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Email address</Form.Label>
+              <Form.Label className="text-white">Email address</Form.Label>
               <Form.Control type="email" placeholder="Enter email" />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicPassword">
-              <Form.Label>Password</Form.Label>
+              <Form.Label className="text-white">Password</Form.Label>
               <Form.Control type="password" placeholder="Password" />
             </Form.Group>
             <Button variant="primary" type="submit">

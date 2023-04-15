@@ -1,5 +1,6 @@
 import React from 'react';
-import NavbarTop from '../components/NavBar/NavBar';
+import { NavbarTop } from '../components/NavBar/NavBar';
+
 
 import { Body } from './Body/Body';
 

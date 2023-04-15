@@ -8,15 +8,16 @@ import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import { useDispatch, useSelector } from "react-redux";
-import { saveToken } from "../../authSlice";
-import { logMe, registerUser } from "../../services/apiCalls";
+import { getUserData, logMe, registerUser } from "../../services/apiCalls";
+import { Link } from "react-router-dom";
 
-function NavbarTop() {
+export function NavbarTop() {
   const dispatch = useDispatch();
   const token = useSelector((state) => state.auth.token);
   const expand = "md";
   const [showLoginOffcanvas, setShowLoginOffcanvas] = useState(false);
   const [showRegisterOffcanvas, setShowRegisterOffcanvas] = useState(false);
+  const [userRole, setUserRole] = useState(null);
 
   const handleLoginOffcanvasClose = () => {
     setShowLoginOffcanvas(false);
@@ -54,9 +55,8 @@ function NavbarTop() {
     const password = event.target.formBasicPassword.value;
 
     try {
-      const response = await logMe({ email, password });
+      const response = await logMe({ email, password }, dispatch);
       console.log(response.data);
-      dispatch(saveToken(response.data.token));
 
       handleLoginOffcanvasClose();
     } catch (error) {
@@ -65,7 +65,20 @@ function NavbarTop() {
   };
 
   useEffect(() => {
-    console.log("Token:", token);
+    const fetchUserRole = async () => {
+      if (!token) {
+        return;
+      }
+      try {
+        const response = await getUserData(token);
+        const fetchedUserData = response.data;
+        setUserRole(fetchedUserData.role_id);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchUserRole();
   }, [token]);
 
   return (
@@ -76,18 +89,20 @@ function NavbarTop() {
         <Navbar.Collapse id="navbar-nav">
           <Nav className="ms-auto">
             <Nav.Link href="#action1">Home</Nav.Link>
+            {userRole === 2 && (
+              <NavDropdown title="Admin" id="navbar-dropdown">
+                <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
+                <NavDropdown.Item href="#action4">
+                  Another action
+                </NavDropdown.Item>
+                <NavDropdown.Divider />
+                <NavDropdown.Item as={Link} to="/users">
+                  Ver usuarios
+                </NavDropdown.Item>{" "}
+              </NavDropdown>
+            )}
             <Nav.Link onClick={handleLoginOffcanvasShow}>Login</Nav.Link>
             <Nav.Link onClick={handleRegisterOffcanvasShow}>Register</Nav.Link>
-            <NavDropdown title="Dropdown" id="navbar-dropdown">
-              <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
-              <NavDropdown.Item href="#action4">
-                Another action
-              </NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="#action5">
-                Something else here
-              </NavDropdown.Item>
-            </NavDropdown>
           </Nav>
         </Navbar.Collapse>
       </Container>
@@ -153,6 +168,4 @@ function NavbarTop() {
       </Offcanvas>
     </Navbar>
   );
-}
-
-export default NavbarTop;
+};

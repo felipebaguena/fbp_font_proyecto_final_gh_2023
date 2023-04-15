@@ -13,8 +13,11 @@ const authSlice = createSlice({
     saveUser: (state, action) => {
       state.user = action.payload;
     },
+    clearToken: (state) => {
+      state.token = null;
+    },
   },
 });
 
-export const { saveToken, saveUser } = authSlice.actions;
+export const { saveToken, saveUser, clearToken } = authSlice.actions;
 export default authSlice.reducer;

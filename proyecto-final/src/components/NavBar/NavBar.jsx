@@ -9,7 +9,8 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import Offcanvas from "react-bootstrap/Offcanvas";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserData, logMe, registerUser } from "../../services/apiCalls";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { clearToken } from "../../authSlice";
 
 export function NavbarTop() {
   const dispatch = useDispatch();
@@ -18,6 +19,7 @@ export function NavbarTop() {
   const [showLoginOffcanvas, setShowLoginOffcanvas] = useState(false);
   const [showRegisterOffcanvas, setShowRegisterOffcanvas] = useState(false);
   const [userRole, setUserRole] = useState(null);
+  const navigate = useNavigate();
 
   const handleLoginOffcanvasClose = () => {
     setShowLoginOffcanvas(false);
@@ -64,9 +66,16 @@ export function NavbarTop() {
     }
   };
 
+  // Manejador para el cierre de sesión
+  const handleLogout = () => {
+    dispatch(clearToken());
+    navigate("/");
+  };
+
   useEffect(() => {
     const fetchUserRole = async () => {
       if (!token) {
+        setUserRole(null);
         return;
       }
       try {
@@ -77,7 +86,6 @@ export function NavbarTop() {
         console.error("Error fetching user data:", error);
       }
     };
-
     fetchUserRole();
   }, [token]);
 
@@ -101,8 +109,23 @@ export function NavbarTop() {
                 </NavDropdown.Item>{" "}
               </NavDropdown>
             )}
-            <Nav.Link onClick={handleLoginOffcanvasShow}>Login</Nav.Link>
-            <Nav.Link onClick={handleRegisterOffcanvasShow}>Register</Nav.Link>
+            {token ? (
+              <NavDropdown title="Perfil" id="navbar-dropdown">
+                <NavDropdown.Item href="#">Mi perfil</NavDropdown.Item>
+                <NavDropdown.Item href="#">Configuración</NavDropdown.Item>
+                <NavDropdown.Divider />
+                <NavDropdown.Item onClick={handleLogout}>
+                  Logout
+                </NavDropdown.Item>
+              </NavDropdown>
+            ) : (
+              <>
+                <Nav.Link onClick={handleLoginOffcanvasShow}>Login</Nav.Link>
+                <Nav.Link onClick={handleRegisterOffcanvasShow}>
+                  Register
+                </Nav.Link>
+              </>
+            )}
           </Nav>
         </Navbar.Collapse>
       </Container>
@@ -168,4 +191,4 @@ export function NavbarTop() {
       </Offcanvas>
     </Navbar>
   );
-};
+}

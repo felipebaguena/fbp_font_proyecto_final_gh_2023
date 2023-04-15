@@ -25,6 +25,15 @@ export const bringUsers = async (token) => {
   return await axios.get(`${root}users`, config);
 };
 
+export const getUser = async (id, token) => {
+  const response = await axios.get(`${root}users/${id}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
+};
+
 export const getUserData = async (token) => {
   const response = await axios.get(`${root}profile`, {
     headers: {

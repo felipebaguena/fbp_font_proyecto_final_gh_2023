@@ -98,7 +98,7 @@ export function NavbarTop() {
           <Nav className="ms-auto">
             <Nav.Link href="#action1">Home</Nav.Link>
             {userRole === 2 && (
-              <NavDropdown title="Admin" id="navbar-dropdown">
+              <NavDropdown title="Admin" id="navbar-dropdown" align="end">
                 <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
                 <NavDropdown.Item href="#action4">
                   Another action
@@ -110,7 +110,7 @@ export function NavbarTop() {
               </NavDropdown>
             )}
             {token ? (
-              <NavDropdown title="Perfil" id="navbar-dropdown">
+              <NavDropdown title="Perfil" id="navbar-dropdown" align="end">
                 <NavDropdown.Item href="#">Mi perfil</NavDropdown.Item>
                 <NavDropdown.Item href="#">Configuración</NavDropdown.Item>
                 <NavDropdown.Divider />

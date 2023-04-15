@@ -42,3 +42,31 @@ export const getUserData = async (token) => {
   });
   return response.data;
 };
+
+export const bringRoles = async (token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  return await axios.get(`${root}roles`, config);
+};
+
+export const changeUserRole = async (id, roleId, token) => {
+  try {
+    const response = await axios.put(
+      `${root}user/${id}/change-role/${roleId}`,
+      null,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error changing user role:", error);
+    throw error;
+  }
+};

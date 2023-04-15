@@ -1,12 +1,24 @@
-import React, { useState } from "react";
-import { Modal, Button, Card } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import { Modal, Button, Card, Form } from "react-bootstrap";
 import dayjs from "dayjs";
 
-const UserDetailsModal = ({ show, handleClose, user }) => {
+export const UserDetailsModal = ({
+  show,
+  handleClose,
+  user,
+  roles,
+  handleRoleChange,
+}) => {
   const [activeHeroIndex, setActiveHeroIndex] = useState(null);
+  const [selectedRole, setSelectedRole] = useState(null);
 
   const toggleHeroDetails = (index) => {
     setActiveHeroIndex(index === activeHeroIndex ? null : index);
+  };
+
+  const handleSelectRole = (e) => {
+    const newSelectedRoleId = e.target.value;
+    setSelectedRole(newSelectedRoleId);
   };
 
   return (
@@ -42,6 +54,23 @@ const UserDetailsModal = ({ show, handleClose, user }) => {
             <p>
               ID de héroe seleccionado: {user.selected_hero_id || "Ninguno"}
             </p>
+            <Form>
+              <Form.Group controlId="formRoleSelect">
+                <Form.Label>Cambiar Rol</Form.Label>
+                <Form.Control as="select" onChange={handleSelectRole}>
+                  <option value="">Selecciona un rol...</option>
+                  {Array.isArray(roles.data) &&
+                    roles.data.length > 0 &&
+                    roles.data
+                      .filter((role) => role.id !== user.role_id)
+                      .map((role) => (
+                        <option key={role.id} value={role.id}>
+                          {role.name}
+                        </option>
+                      ))}
+                </Form.Control>
+              </Form.Group>
+            </Form>
             <h5>Héroes:</h5>
             {user.heroes && user.heroes.length > 0 ? (
               user.heroes.map((hero, index) => (
@@ -78,9 +107,14 @@ const UserDetailsModal = ({ show, handleClose, user }) => {
         <Button variant="secondary" onClick={handleClose}>
           Cerrar
         </Button>
+        <Button
+          variant="primary"
+          onClick={() => handleRoleChange(selectedRole)}
+          disabled={!selectedRole}
+        >
+          Guardar cambios
+        </Button>
       </Modal.Footer>
     </Modal>
   );
 };
-
-export default UserDetailsModal;

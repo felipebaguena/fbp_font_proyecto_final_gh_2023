@@ -1,7 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row, Col, Table } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Table,
+  Modal,
+  Button,
+  Form,
+} from "react-bootstrap";
 import { useSelector } from "react-redux";
-import { bringUsers, getUser } from "../../services/apiCalls";
+import {
+  bringUsers,
+  getUser,
+  changeUserRole,
+  bringRoles,
+} from "../../services/apiCalls";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import UserDetailsModal from "../../components/UserModal/UserDetailsModal";
@@ -12,6 +25,8 @@ export const UserList = () => {
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [roles, setRoles] = useState([]);
+  const [selectedRole, setSelectedRole] = useState(null);
 
   const handleShowModal = async (user) => {
     setLoading(true);
@@ -29,6 +44,25 @@ export const UserList = () => {
   const handleCloseModal = () => {
     setSelectedUser(null);
     setShowModal(false);
+  };
+
+  const handleRoleChange = async (roleId) => {
+    if (selectedUser && selectedUser.id) {
+      setLoading(true);
+      try {
+        await changeUserRole(selectedUser.id, roleId, token);
+        const updatedUser = await getUser(selectedUser.id, token);
+        setSelectedUser(updatedUser);
+        setShowModal(false);
+        setSelectedRole(null);
+      } catch (error) {
+        console.error("Error changing user role:", error);
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      console.error("Error: selected user is null or does not have an id.");
+    }
   };
 
   useEffect(() => {
@@ -52,7 +86,18 @@ export const UserList = () => {
       }
     };
 
+    const fetchRoles = async () => {
+      try {
+        const response = await bringRoles(token);
+        setRoles(response.data);
+        console.log(response.data);
+      } catch (error) {
+        console.error("Error fetching roles:", error);
+      }
+    };
+
     fetchUsers();
+    fetchRoles();
   }, []);
 
   return (
@@ -76,7 +121,10 @@ export const UserList = () => {
                 {users.map((user) => (
                   <tr key={user.id}>
                     <td>{user.id}</td>
-                    <td onClick={() => handleShowModal(user)} style={{ cursor: "pointer" }}>
+                    <td
+                      onClick={() => handleShowModal(user)}
+                      style={{ cursor: "pointer" }}
+                    >
                       {user.name}
                     </td>
                     <td>{user.email}</td>
@@ -95,6 +143,9 @@ export const UserList = () => {
         show={showModal}
         handleClose={handleCloseModal}
         user={selectedUser}
+        roles={roles}
+        handleRoleChange={handleRoleChange}
+        loading={loading}
       />
     </Container>
   );

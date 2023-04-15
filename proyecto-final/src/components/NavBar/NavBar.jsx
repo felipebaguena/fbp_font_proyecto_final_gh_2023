@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import './NavBar.css'
+import "./NavBar.css";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";

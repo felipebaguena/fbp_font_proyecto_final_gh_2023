@@ -9,3 +9,13 @@ export const registerUser = async (body) => {
 export const logMe = async (body) => {
   return await axios.post(`${root}login`, body);
 };
+
+export const bringUsers = async (token) => {
+    let config = {
+      headers: { 
+        'Authorization': 'Bearer '+ token,  
+      }
+    };
+
+    return await axios.get(`${root}users`, config);
+}

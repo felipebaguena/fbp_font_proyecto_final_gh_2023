@@ -17,7 +17,7 @@ import {
 } from "../../services/apiCalls";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
-import UserDetailsModal from "../../components/UserModal/UserDetailsModal";
+import { UserDetailsModal } from "../../components/UserModal/UserDetailsModal";
 
 export const UserList = () => {
   const token = useSelector((state) => state.auth.token);

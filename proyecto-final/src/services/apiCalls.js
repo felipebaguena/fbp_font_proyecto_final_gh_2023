@@ -43,6 +43,15 @@ export const getUserData = async (token) => {
   return response.data;
 };
 
+export const updateUserData = async (token, updatedData) => {
+  const response = await axios.put(`${root}profile`, updatedData, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  return response.data;
+};
+
 export const bringRoles = async (token) => {
   const config = {
     headers: {

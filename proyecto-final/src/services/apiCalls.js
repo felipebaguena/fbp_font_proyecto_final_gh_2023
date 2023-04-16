@@ -108,6 +108,22 @@ export const selectHero = async (token, heroId) => {
   }
 };
 
+export const getHeroItems = async (token, heroId) => {
+  try {
+    const response = await axios.get(`${root}hero/${heroId}/items`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching hero items:', error);
+    return null;
+  }
+};
+
+
 export const createBattle = async (token) => {
   try {
     const response = await axios.post(`${root}battles`, {}, {

@@ -92,11 +92,11 @@ export function NavbarTop() {
   return (
     <Navbar bg="dark" variant="dark" expand={expand} className="mb-3">
       <Container fluid>
-        <Navbar.Brand href="#">Navbar Offcanvas</Navbar.Brand>
+        <Navbar.Brand as={Link} to="/">Navbar Offcanvas</Navbar.Brand>
         <Navbar.Toggle aria-controls="navbar-nav" />
         <Navbar.Collapse id="navbar-nav">
           <Nav className="ms-auto">
-            <Nav.Link href="#action1">Home</Nav.Link>
+            <Nav.Link as={Link} to="/">Home</Nav.Link>
             {userRole === 2 && (
               <NavDropdown title="Admin" id="navbar-dropdown" align="end">
                 <NavDropdown.Item href="#action3">Action</NavDropdown.Item>

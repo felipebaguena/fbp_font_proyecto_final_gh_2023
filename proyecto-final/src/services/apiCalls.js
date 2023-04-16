@@ -76,6 +76,20 @@ export const getHeroesAndItems = async (token) => {
   }
 };
 
+export const selectHero = async (token, heroId) => {
+  try {
+    const response = await axios.post(`${root}heroes/${heroId}/select`, {}, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error selecting hero:', error);
+    return null;
+  }
+};
+
 export const changeUserRole = async (id, roleId, token) => {
   try {
     const response = await axios.put(

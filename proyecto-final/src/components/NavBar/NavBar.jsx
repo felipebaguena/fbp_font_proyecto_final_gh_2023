@@ -112,6 +112,7 @@ export function NavbarTop() {
             {token ? (
               <NavDropdown title="Perfil" id="navbar-dropdown" align="end">
                 <NavDropdown.Item as={Link} to="/profile">Mi perfil</NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="/myheroes">Mis héroes</NavDropdown.Item>
                 <NavDropdown.Item href="#">Configuración</NavDropdown.Item>
                 <NavDropdown.Divider />
                 <NavDropdown.Item onClick={handleLogout}>

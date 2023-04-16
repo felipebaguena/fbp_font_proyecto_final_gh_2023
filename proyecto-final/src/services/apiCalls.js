@@ -62,6 +62,20 @@ export const bringRoles = async (token) => {
   return await axios.get(`${root}roles`, config);
 };
 
+export const getHeroesAndItems = async (token) => {
+  try {
+    const response = await axios.get(`${root}profile/heroes`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching heroes and items:', error);
+    return [];
+  }
+};
+
 export const changeUserRole = async (id, roleId, token) => {
   try {
     const response = await axios.put(

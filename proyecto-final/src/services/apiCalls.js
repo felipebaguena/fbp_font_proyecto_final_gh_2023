@@ -62,6 +62,24 @@ export const bringRoles = async (token) => {
   return await axios.get(`${root}roles`, config);
 };
 
+export const changeUserRole = async (id, roleId, token) => {
+  try {
+    const response = await axios.put(
+      `${root}user/${id}/change-role/${roleId}`,
+      null,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error changing user role:", error);
+    throw error;
+  }
+};
+
 export const getHeroesAndItems = async (token) => {
   try {
     const response = await axios.get(`${root}profile/heroes`, {
@@ -90,20 +108,16 @@ export const selectHero = async (token, heroId) => {
   }
 };
 
-export const changeUserRole = async (id, roleId, token) => {
+export const createBattle = async (token) => {
   try {
-    const response = await axios.put(
-      `${root}user/${id}/change-role/${roleId}`,
-      null,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const response = await axios.post(`${root}battles`, {}, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return response.data;
   } catch (error) {
-    console.error("Error changing user role:", error);
-    throw error;
+    console.error('Error creating battle:', error);
+    return null;
   }
 };

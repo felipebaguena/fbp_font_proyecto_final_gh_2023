@@ -6,7 +6,7 @@ import { getHeroesAndItems, selectHero } from '../../services/apiCalls';
 
 export const HomePage = () => {
   const [heroes, setHeroes] = useState([]);
-  const [selectedHero, setSelectedHero] = useState(null);
+  const [selectedHero, setSelectedHero] = useState("");
   const navigate = useNavigate();
   const token = useSelector((state) => state.auth.token);
 

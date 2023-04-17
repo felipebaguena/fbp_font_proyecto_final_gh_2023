@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { createBattle, getHeroItems } from "../../services/apiCalls";
 
 export const BattlePage = () => {
@@ -7,18 +8,25 @@ export const BattlePage = () => {
   const [isPlayerTurn, setIsPlayerTurn] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
-  const token = useSelector((state) => state.auth.token);
-  const hasFetchedBattle = useRef(false);
   const [selectedItem, setSelectedItem] = useState("");
   const [heroItems, setHeroItems] = useState([]);
+  const [createNewBattle, setCreateNewBattle] = useState(false);
+
+  const token = useSelector((state) => state.auth.token);
+  const navigate = useNavigate();
 
   useEffect(() => {
+    setCreateNewBattle(true);
+  }, []);
 
-    console.log("Battle data:", battle);
-    
+  useEffect(() => {
+    if (battle) {
+      console.log("Battle data:", battle);
+    }
+
     const fetchData = async () => {
-      if (!hasFetchedBattle.current) {
-        hasFetchedBattle.current = true;
+      if (createNewBattle) {
+        setCreateNewBattle(false);
         const data = await createBattle(token);
         if (data && data.status === "success") {
           setBattle(data.data);
@@ -28,7 +36,7 @@ export const BattlePage = () => {
       }
     };
     fetchData();
-  }, [token, battle]);
+  }, [token, createNewBattle, battle]);
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -60,6 +68,31 @@ export const BattlePage = () => {
     return selectedItemObj ? selectedItemObj.defense_modifier : 0;
   };
 
+  const goToHome = () => {
+    navigate("/");
+  };
+
+  const Modal = ({
+    showModal,
+    closeModal,
+    onNextBattle,
+    message,
+    showNextBattle,
+    goToHome,
+  }) => {
+    return (
+      <div style={{ display: showModal ? "block" : "none" }}>
+        <div>
+          {message}
+          {showNextBattle && (
+            <button onClick={onNextBattle}>Siguiente Batalla</button>
+          )}
+          <button onClick={goToHome}>Salir al Home</button>
+        </div>
+      </div>
+    );
+  };
+
   const handleAttack = async () => {
     if (
       isPlayerTurn &&
@@ -68,7 +101,9 @@ export const BattlePage = () => {
       battle.monster &&
       battle.stage
     ) {
+
       //ATAQUE DEL HÉROE//
+
       const heroDamage =
         (battle.hero.attack +
           getSelectedItemAttackModifier() +
@@ -102,6 +137,7 @@ export const BattlePage = () => {
       }
 
       //ATAQUE DEL MONSTRUO//
+      
       setTimeout(() => {
         const monsterDamage = battle.monster.attack * 2;
         const heroDefense =
@@ -140,6 +176,16 @@ export const BattlePage = () => {
     return <div>Loading...</div>;
   }
 
+  const closeModal = () => {
+    setShowModal(false);
+  };
+
+  const onNextBattle = async () => {
+    closeModal();
+    setIsPlayerTurn(true);
+    setCreateNewBattle(true);
+  };
+
   return (
     <div>
       <h1>Batalla</h1>
@@ -166,9 +212,14 @@ export const BattlePage = () => {
       )}
 
       {showModal && (
-        <div>
-          <div>{modalMessage}</div>
-        </div>
+        <Modal
+          showModal={showModal}
+          closeModal={closeModal}
+          onNextBattle={onNextBattle}
+          message={modalMessage}
+          showNextBattle={battle && battle.monster.health <= 0}
+          goToHome={goToHome}
+        />
       )}
     </div>
   );

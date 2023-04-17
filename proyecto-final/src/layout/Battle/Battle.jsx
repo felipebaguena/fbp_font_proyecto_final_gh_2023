@@ -74,8 +74,8 @@ export const BattlePage = () => {
         .then((response) => {
           if (response.status === "success") {
             console.log("Hero leveled up!");
-            setLevelUpValues(response.addedValues); // Guarda los valores añadidos
-            setShowModal(true); // Muestra el modal
+            setLevelUpValues(response.addedValues);
+            setShowModal(true);
           } else {
             console.error("Error leveling up hero:", response.message);
           }
@@ -240,7 +240,7 @@ export const BattlePage = () => {
 
   return (
     <div>
-      <h1>Batalla</h1>
+      <h1>Batalla en {battle.stage.name}</h1>
       <h2>
         {battle.hero.name} vs {battle.monster.name}
       </h2>

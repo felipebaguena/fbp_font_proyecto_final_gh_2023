@@ -3,6 +3,7 @@ import React from 'react';
 import { Routes, Route, Navigate } from "react-router-dom";
 import { UserList } from '../AdminUsers/AdminUsers';
 import { BattlePage } from '../Battle/Battle';
+import { HeroPage } from '../Heroes/HeroPage';
 import { HomePage } from '../Home/HomePage';
 import { HeroesAndItems } from '../Profile/MyHeroes';
 import { UserProfile } from '../Profile/Profile';
@@ -14,6 +15,7 @@ export const Body = () => {
           <Routes>
           <Route path = '/' element = {<HomePage/>}/>
           <Route path = '/users' element = {<UserList/>}/>
+          <Route path = '/heroes' element = {<HeroPage/>}/>
           <Route path="/profile" element={<UserProfile />} />
           <Route path="/myheroes" element={<HeroesAndItems />} />
           <Route path="/battle" element={<BattlePage />} />

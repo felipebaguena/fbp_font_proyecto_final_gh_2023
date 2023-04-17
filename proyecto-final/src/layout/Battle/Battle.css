@@ -1,0 +1,25 @@
+.health-bar {
+    background-color: #eee;
+    border: 1px solid #222;
+    height: 30px;
+    width: 60%;
+    position: relative;
+  }
+  
+  .health-bar-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    background-color: green;
+    transition: width 0.5s;
+  }
+
+  .health-bar-text {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    color: #ffffff;
+    font-weight: bold;
+  }

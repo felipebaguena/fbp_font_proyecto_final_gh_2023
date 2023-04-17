@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
+import "./Battle.css";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
@@ -17,8 +18,15 @@ export const BattlePage = () => {
   const [createNewBattle, setCreateNewBattle] = useState(false);
   const [consecutiveWins, setConsecutiveWins] = useState(0);
 
+  const [initialHeroHealth, setInitialHeroHealth] = useState(null);
+  const [initialMonsterHealth, setInitialMonsterHealth] = useState(null);
+
   const token = useSelector((state) => state.auth.token);
   const navigate = useNavigate();
+
+  const getHealthPercentage = (currentHealth, initialHealth) => {
+    return (currentHealth / initialHealth) * 100;
+  };
 
   useEffect(() => {
     setCreateNewBattle(true);
@@ -35,11 +43,14 @@ export const BattlePage = () => {
         const data = await createBattle(token);
         if (data && data.status === "success") {
           setBattle(data.data);
+          setInitialHeroHealth(data.data.hero.health);
+          setInitialMonsterHealth(data.data.monster.health);
         } else {
           console.error("Error fetching battle data:", data);
         }
       }
     };
+
     fetchData();
   }, [token, createNewBattle, battle]);
 
@@ -58,7 +69,7 @@ export const BattlePage = () => {
   }, [battle, token]);
 
   useEffect(() => {
-    if (consecutiveWins === 2 && battle && battle.hero) {
+    if (consecutiveWins === 4 && battle && battle.hero) {
       levelUpHero(token, battle.hero.id)
         .then((response) => {
           if (response.status === "success") {
@@ -97,7 +108,6 @@ export const BattlePage = () => {
 
   const Modal = ({
     showModal,
-    closeModal,
     onNextBattle,
     message,
     showNextBattle,
@@ -220,7 +230,20 @@ export const BattlePage = () => {
       <h2>
         {battle.hero.name} vs {battle.monster.name}
       </h2>
-      <p>Vida del héroe: {battle.hero.health}</p>
+      <p>Vida del héroe:</p>
+      <div className="health-bar">
+        <div
+          className="health-bar-fill"
+          style={{
+            width: `${getHealthPercentage(
+              battle.hero.health,
+              initialHeroHealth
+            )}%`,
+          }}
+        >
+          <span className="health-bar-text">{battle.hero.health}</span>
+        </div>
+      </div>
       <select
         value={selectedItem}
         onChange={(e) => setSelectedItem(e.target.value)}
@@ -232,7 +255,20 @@ export const BattlePage = () => {
           </option>
         ))}
       </select>
-      <p>Vida del monstruo: {battle.monster.health}</p>
+      <p>Vida del monstruo:</p>
+      <div className="health-bar">
+        <div
+          className="health-bar-fill"
+          style={{
+            width: `${getHealthPercentage(
+              battle.monster.health,
+              initialMonsterHealth
+            )}%`,
+          }}
+        >
+          <span className="health-bar-text">{battle.monster.health}</span>
+        </div>
+      </div>
       {isPlayerTurn ? (
         <button onClick={handleAttack}>Atacar</button>
       ) : (

@@ -11,7 +11,6 @@
     top: 0;
     left: 0;
     bottom: 0;
-    background-color: green;
     transition: width 0.5s;
   }
 
@@ -22,4 +21,16 @@
     transform: translate(-50%, -50%);
     color: #ffffff;
     font-weight: bold;
+  }
+
+  .health-bar-fill-green {
+    background-color: green;
+  }
+  
+  .health-bar-fill-orange {
+    background-color: orange;
+  }
+  
+  .health-bar-fill-red {
+    background-color: red;
   }

@@ -108,6 +108,16 @@ export const BattlePage = () => {
     navigate("/");
   };
 
+  const getHealthBarColorClass = (percentage) => {
+    if (percentage >= 70) {
+      return "health-bar-fill-green";
+    } else if (percentage >= 30) {
+      return "health-bar-fill-orange";
+    } else {
+      return "health-bar-fill-red";
+    }
+  };
+
   const Modal = ({
     showModal,
     onNextBattle,
@@ -245,9 +255,12 @@ export const BattlePage = () => {
         {battle.hero.name} vs {battle.monster.name}
       </h2>
       <p>Vida del héroe:</p>
+
       <div className="health-bar">
         <div
-          className="health-bar-fill"
+          className={`health-bar-fill ${getHealthBarColorClass(
+            getHealthPercentage(battle.hero.health, initialHeroHealth)
+          )}`}
           style={{
             width: `${getHealthPercentage(
               battle.hero.health,
@@ -258,6 +271,7 @@ export const BattlePage = () => {
           <span className="health-bar-text">{battle.hero.health}</span>
         </div>
       </div>
+
       <select
         value={selectedItem}
         onChange={(e) => setSelectedItem(e.target.value)}
@@ -272,7 +286,9 @@ export const BattlePage = () => {
       <p>Vida del monstruo:</p>
       <div className="health-bar">
         <div
-          className="health-bar-fill"
+          className={`health-bar-fill ${getHealthBarColorClass(
+            getHealthPercentage(battle.monster.health, initialMonsterHealth)
+          )}`}
           style={{
             width: `${getHealthPercentage(
               battle.monster.health,
@@ -283,6 +299,7 @@ export const BattlePage = () => {
           <span className="health-bar-text">{battle.monster.health}</span>
         </div>
       </div>
+
       {isPlayerTurn ? (
         <button onClick={handleAttack}>Atacar</button>
       ) : (

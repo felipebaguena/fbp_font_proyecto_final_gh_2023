@@ -17,9 +17,9 @@ export const BattlePage = () => {
   const [heroItems, setHeroItems] = useState([]);
   const [createNewBattle, setCreateNewBattle] = useState(false);
   const [consecutiveWins, setConsecutiveWins] = useState(0);
-
   const [initialHeroHealth, setInitialHeroHealth] = useState(null);
   const [initialMonsterHealth, setInitialMonsterHealth] = useState(null);
+  const [levelUpValues, setLevelUpValues] = useState(null);
 
   const token = useSelector((state) => state.auth.token);
   const navigate = useNavigate();
@@ -74,6 +74,8 @@ export const BattlePage = () => {
         .then((response) => {
           if (response.status === "success") {
             console.log("Hero leveled up!");
+            setLevelUpValues(response.addedValues); // Guarda los valores añadidos
+            setShowModal(true); // Muestra el modal
           } else {
             console.error("Error leveling up hero:", response.message);
           }
@@ -112,11 +114,23 @@ export const BattlePage = () => {
     message,
     showNextBattle,
     goToHome,
+    levelUpValues,
   }) => {
     return (
       <div style={{ display: showModal ? "block" : "none" }}>
         <div>
           {message}
+          {levelUpValues && (
+            <p>
+              ¡Tu héroe ha subido de nivel! Valores añadidos:
+              <br />
+              Ataque: {levelUpValues.attack}
+              <br />
+              Defensa: {levelUpValues.defense}
+              <br />
+              Salud: {levelUpValues.health}
+            </p>
+          )}
           {showNextBattle && (
             <button onClick={onNextBattle}>Siguiente Batalla</button>
           )}
@@ -283,6 +297,7 @@ export const BattlePage = () => {
           message={modalMessage}
           showNextBattle={battle && battle.monster.health <= 0}
           goToHome={goToHome}
+          levelUpValues={levelUpValues}
         />
       )}
     </div>

@@ -134,6 +134,7 @@ export const levelUpHero = async (token, heroId) => {
     return {
       status: "success",
       data: response.data.data,
+      addedValues: response.data.addedValues,
     };
   } catch (error) {
     console.error('Error leveling up hero:', error);

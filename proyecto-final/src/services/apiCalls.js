@@ -123,6 +123,27 @@ export const getHeroItems = async (token, heroId) => {
   }
 };
 
+export const levelUpHero = async (token, heroId) => {
+  try {
+    const response = await axios.put(`${root}heroes/${heroId}/level-up`, {}, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+    return {
+      status: "success",
+      data: response.data.data,
+    };
+  } catch (error) {
+    console.error('Error leveling up hero:', error);
+    return {
+      status: "error",
+      message: error.message,
+    };
+  }
+};
+
 
 export const createBattle = async (token) => {
   try {

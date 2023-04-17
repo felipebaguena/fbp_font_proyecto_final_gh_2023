@@ -1,7 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { createBattle, getHeroItems } from "../../services/apiCalls";
+import {
+  createBattle,
+  getHeroItems,
+  levelUpHero,
+} from "../../services/apiCalls";
 
 export const BattlePage = () => {
   const [battle, setBattle] = useState(null);
@@ -11,6 +15,7 @@ export const BattlePage = () => {
   const [selectedItem, setSelectedItem] = useState("");
   const [heroItems, setHeroItems] = useState([]);
   const [createNewBattle, setCreateNewBattle] = useState(false);
+  const [consecutiveWins, setConsecutiveWins] = useState(0);
 
   const token = useSelector((state) => state.auth.token);
   const navigate = useNavigate();
@@ -51,6 +56,24 @@ export const BattlePage = () => {
     };
     fetchItems();
   }, [battle, token]);
+
+  useEffect(() => {
+    if (consecutiveWins === 2 && battle && battle.hero) {
+      levelUpHero(token, battle.hero.id)
+        .then((response) => {
+          if (response.status === "success") {
+            console.log("Hero leveled up!");
+          } else {
+            console.error("Error leveling up hero:", response.message);
+          }
+        })
+        .catch((error) => {
+          console.error("Error leveling up hero:", error);
+        });
+
+      setConsecutiveWins(0);
+    }
+  }, [consecutiveWins, token, battle]);
 
   const getSelectedItemAttackModifier = () => {
     const selectedItemInt = parseInt(selectedItem);
@@ -101,7 +124,6 @@ export const BattlePage = () => {
       battle.monster &&
       battle.stage
     ) {
-
       //ATAQUE DEL HÉROE//
 
       const heroDamage =
@@ -133,11 +155,17 @@ export const BattlePage = () => {
       if (newMonsterHp <= 0) {
         setShowModal(true);
         setModalMessage("¡Has vencido al monstruo!");
+
+        setConsecutiveWins((prevWins) => {
+          const newWins = prevWins + 1;
+
+          return newWins;
+        });
         return;
       }
 
       //ATAQUE DEL MONSTRUO//
-      
+
       setTimeout(() => {
         const monsterDamage = battle.monster.attack * 2;
         const heroDefense =

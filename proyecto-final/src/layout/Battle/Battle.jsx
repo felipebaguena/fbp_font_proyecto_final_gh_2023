@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import {
   assignRandomItemToSelectedHero,
   createBattle,
+  getHeroImage,
   getHeroItems,
   getItemById,
   levelUpHero,
@@ -24,6 +25,8 @@ export const BattlePage = () => {
   const [initialMonsterHealth, setInitialMonsterHealth] = useState(null);
   const [levelUpValues, setLevelUpValues] = useState(null);
   const [randomItemReceived, setRandomItemReceived] = useState(null);
+  const [heroImage, setHeroImage] = useState(null);
+
 
   const token = useSelector((state) => state.auth.token);
   const navigate = useNavigate();
@@ -37,10 +40,6 @@ export const BattlePage = () => {
   }, []);
 
   useEffect(() => {
-    if (battle) {
-      console.log("Battle data:", battle);
-    }
-
     const fetchData = async () => {
       if (createNewBattle) {
         setCreateNewBattle(false);
@@ -49,17 +48,27 @@ export const BattlePage = () => {
           setBattle(data.data);
           setInitialHeroHealth(data.data.hero.health);
           setInitialMonsterHealth(data.data.monster.health);
+          if (data.data.hero && data.data.hero.hero_image_id) {
+            const heroImage = await getHeroImage(data.data.hero.hero_image_id, token);
+            if (heroImage && heroImage.status === "success") {
+              setHeroImage(heroImage.data.image_url);
+            } else {
+              console.error("Error fetching hero image:", heroImage);
+            }
+          }
         } else {
           console.error("Error fetching battle data:", data);
         }
-      }
+      }      
     };
-
     fetchData();
-  }, [token, createNewBattle, battle]);
+  }, [token, createNewBattle]);
+  
+  
 
   useEffect(() => {
     const fetchItems = async () => {
+      console.log(battle);
       if (battle && battle.hero) {
         const items = await getHeroItems(token, battle.hero.id);
         if (items && items.status === "success") {
@@ -91,6 +100,20 @@ export const BattlePage = () => {
       setConsecutiveWins(0);
     }
   }, [consecutiveWins, token, battle]);
+
+  useEffect(() => {
+    const fetchHeroImage = async () => {
+      if (battle && battle.hero) {
+        const heroImage = await getHeroImage(battle.hero.hero_image_id, token);
+        if (heroImage && heroImage.status === "success") {
+          setHeroImage(heroImage.data.image_url);
+        } else {
+          console.error("Error fetching hero image:", heroImage);
+        }
+      }
+    };
+    fetchHeroImage();
+  }, [battle, token]);
 
   const getSelectedItemAttackModifier = () => {
     const selectedItemInt = parseInt(selectedItem);
@@ -254,8 +277,10 @@ export const BattlePage = () => {
     <div>
       <h1>Batalla en {battle.stage.name}</h1>
       <h2>
-        {battle.hero.name} vs {battle.monster.name}
-      </h2>
+      <img src={heroImage} alt={battle.hero.name} />
+  {battle.hero.name} vs {battle.monster.name}
+</h2>
+
       <p>Vida del héroe:</p>
 
       <div className="health-bar">

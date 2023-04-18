@@ -43,6 +43,30 @@ export const getUserData = async (token) => {
   return response.data;
 };
 
+export const getHeroImage = async (imageId, token) => {
+  try {
+    const response = await axios.get(`${root}hero/image/${imageId}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (response.data && response.data.image_url) {
+      return {
+        status: "success",
+        data: { image_url: response.data.image_url },
+      };
+    } else {
+      console.error("Error fetching hero image:", response.data);
+      return { status: "error", error: "Failed to fetch hero image" };
+    }
+  } catch (error) {
+    console.error("Error fetching hero image:", error);
+    return { status: "error", error: error };
+  }
+};
+
 export const updateUserData = async (token, updatedData) => {
   const response = await axios.put(`${root}profile`, updatedData, {
     headers: {

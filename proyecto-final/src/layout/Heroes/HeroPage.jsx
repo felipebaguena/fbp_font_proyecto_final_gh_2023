@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getHeroesAndItems, selectHero } from "../../services/apiCalls";
+import {
+  createHero,
+  getHeroesAndItems,
+  selectHero,
+} from "../../services/apiCalls";
 import { Card, Button, Modal } from "react-bootstrap";
 
 export const HeroPage = () => {
@@ -9,6 +13,14 @@ export const HeroPage = () => {
   const [showInventoryModal, setShowInventoryModal] = useState(false);
   const [selectedHero, setSelectedHero] = useState(null);
   const [selectedItemIndex, setSelectedItemIndex] = useState(null);
+  const [newHeroName, setNewHeroName] = useState("");
+  const [newHeroStory, setNewHeroStory] = useState("");
+  const [showModal, setShowModal] = useState(false);
+  const [creationMessage, setCreationMessage] = useState(null);
+  const [refreshHeroes, setRefreshHeroes] = useState(false);
+
+  const handleShowModal = () => setShowModal(true);
+
   const token = useSelector((state) => state.auth.token);
   const navigate = useNavigate();
 
@@ -18,7 +30,7 @@ export const HeroPage = () => {
       setHeroes(data);
     };
     fetchData();
-  }, [token]);
+  }, [token, refreshHeroes]);
 
   const handleSelectHero = async (heroId) => {
     const result = await selectHero(token, heroId);
@@ -38,6 +50,31 @@ export const HeroPage = () => {
     setSelectedHero(null);
     setShowInventoryModal(false);
     setSelectedItemIndex(null);
+  };
+
+  const handleCreateHero = async () => {
+    const response = await createHero(token, {
+      name: newHeroName,
+      story: newHeroStory,
+    });
+    if (response && response.data && response.data.id) {
+      setCreationMessage("Héroe creado con éxito!");
+      setTimeout(() => {
+        handleCloseModal();
+        setShowModal(false);
+        setCreationMessage(null);
+      }, 1500);
+    } else {
+      setCreationMessage("Error al crear héroe.");
+    }
+  };
+
+  const handleCloseModal = () => {
+    setNewHeroName("");
+    setNewHeroStory("");
+    setShowModal(false);
+    setCreationMessage(null);
+    setRefreshHeroes(true);
   };
 
   const renderInventoryModal = () => {
@@ -132,6 +169,58 @@ export const HeroPage = () => {
         ))}
       </div>
       {renderInventoryModal()}
+      <Button variant="primary" onClick={handleShowModal}>
+        Nuevo héroe
+      </Button>
+      <Modal show={showModal} onHide={handleCloseModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Crea un nuevo héroe</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <form>
+            <div className="form-group">
+              <label htmlFor="name">Nombre</label>
+              <input
+                type="text"
+                className="form-control"
+                id="name"
+                placeholder="Ingresa el nombre del héroe"
+                value={newHeroName}
+                onChange={(e) => setNewHeroName(e.target.value)}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="story">Historia</label>
+              <textarea
+                className="form-control"
+                id="story"
+                rows="3"
+                placeholder="Ingresa la historia del héroe"
+                value={newHeroStory}
+                onChange={(e) => setNewHeroStory(e.target.value)}
+              ></textarea>
+            </div>
+          </form>
+          {creationMessage && (
+            <div className="my-3">
+              <Modal.Title>{creationMessage}</Modal.Title>
+              <h2>{`${newHeroName}`}</h2>
+            </div>
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          {creationMessage === null && (
+            <>
+              <Button variant="secondary" onClick={handleCloseModal}>
+                Cerrar
+              </Button>
+              <Button variant="primary" onClick={handleCreateHero}>
+                Crear héroe
+              </Button>
+            </>
+          )}
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };

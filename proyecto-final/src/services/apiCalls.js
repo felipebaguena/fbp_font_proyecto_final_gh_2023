@@ -89,21 +89,39 @@ export const getHeroesAndItems = async (token) => {
     });
     return response.data;
   } catch (error) {
-    console.error('Error fetching heroes and items:', error);
+    console.error("Error fetching heroes and items:", error);
     return [];
   }
 };
 
 export const selectHero = async (token, heroId) => {
   try {
-    const response = await axios.post(`${root}heroes/${heroId}/select`, {}, {
+    const response = await axios.post(
+      `${root}heroes/${heroId}/select`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error selecting hero:", error);
+    return null;
+  }
+};
+
+export const createHero = async (token, body) => {
+  try {
+    const response = await axios.post(`${root}heroes`, body, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
     return response.data;
   } catch (error) {
-    console.error('Error selecting hero:', error);
+    console.error("Error creating hero:", error);
     return null;
   }
 };
@@ -112,13 +130,13 @@ export const getHeroItems = async (token, heroId) => {
   try {
     const response = await axios.get(`${root}hero/${heroId}/items`, {
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
     });
     return response.data;
   } catch (error) {
-    console.error('Error fetching hero items:', error);
+    console.error("Error fetching hero items:", error);
     return null;
   }
 };
@@ -127,48 +145,54 @@ export const getItemById = async (token, itemId) => {
   try {
     const response = await axios.get(`${root}items/${itemId}`, {
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
     });
     return response.data;
   } catch (error) {
-    console.error('Error fetching item by ID:', error);
+    console.error("Error fetching item by ID:", error);
     return null;
   }
 };
 
 export const assignRandomItemToSelectedHero = async (token) => {
   try {
-    const response = await axios.post(`${root}add-item-to-hero`, {}, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await axios.post(
+      `${root}add-item-to-hero`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     return response.data;
   } catch (error) {
-    console.error('Error assigning random item to selected hero:', error);
+    console.error("Error assigning random item to selected hero:", error);
     return null;
   }
 };
 
-
-
 export const levelUpHero = async (token, heroId) => {
   try {
-    const response = await axios.put(`${root}heroes/${heroId}/level-up`, {}, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
-      },
-    });
+    const response = await axios.put(
+      `${root}heroes/${heroId}/level-up`,
+      {},
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     return {
       status: "success",
       data: response.data.data,
       addedValues: response.data.addedValues,
     };
   } catch (error) {
-    console.error('Error leveling up hero:', error);
+    console.error("Error leveling up hero:", error);
     return {
       status: "error",
       message: error.message,
@@ -176,17 +200,20 @@ export const levelUpHero = async (token, heroId) => {
   }
 };
 
-
 export const createBattle = async (token) => {
   try {
-    const response = await axios.post(`${root}battles`, {}, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await axios.post(
+      `${root}battles`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     return response.data;
   } catch (error) {
-    console.error('Error creating battle:', error);
+    console.error("Error creating battle:", error);
     return null;
   }
 };

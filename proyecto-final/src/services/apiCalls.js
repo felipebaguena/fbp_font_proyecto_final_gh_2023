@@ -174,6 +174,24 @@ export const assignRandomItemToSelectedHero = async (token) => {
   }
 };
 
+export const assignRandomItemToHeroById = async (token, heroId) => {
+  try {
+    const response = await axios.post(
+      `${root}add-item-to-hero/${heroId}`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error assigning random item to selected hero:", error);
+    return null;
+  }
+};
+
 export const levelUpHero = async (token, heroId) => {
   try {
     const response = await axios.put(

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
+  assignRandomItemToHeroById,
   createHero,
   getHeroesAndItems,
   selectHero,
@@ -28,6 +29,7 @@ export const HeroPage = () => {
     const fetchData = async () => {
       const data = await getHeroesAndItems(token);
       setHeroes(data);
+      setRefreshHeroes(false);
     };
     fetchData();
   }, [token, refreshHeroes]);
@@ -58,12 +60,14 @@ export const HeroPage = () => {
       story: newHeroStory,
     });
     if (response && response.data && response.data.id) {
-      setCreationMessage("Héroe creado con éxito!");
+      await assignRandomItemToHeroById(token, response.data.id);
+      console.log(response.data);
+      setCreationMessage(`Héroe ${newHeroName} creado con éxito!`);
       setTimeout(() => {
         handleCloseModal();
         setShowModal(false);
         setCreationMessage(null);
-      }, 1500);
+      }, 2000);
     } else {
       setCreationMessage("Error al crear héroe.");
     }

@@ -87,10 +87,10 @@ export const BattlePage = () => {
         .catch((error) => {
           console.error("Error leveling up hero:", error);
         });
-  
+
       setConsecutiveWins(0);
     }
-  }, [consecutiveWins, token, battle]);  
+  }, [consecutiveWins, token, battle]);
 
   const getSelectedItemAttackModifier = () => {
     const selectedItemInt = parseInt(selectedItem);
@@ -164,22 +164,28 @@ export const BattlePage = () => {
 
         if (Math.random() > 0.7) {
           assignRandomItemToSelectedHero(token, battle.hero.id)
-          .then(async (response) => {
-            if (response.status === "success") {
-              const itemData = await getItemById(token, response.data.item_id);
-              if (itemData) {
-                setRandomItemReceived(itemData);
-                setShowModal(true);
+            .then(async (response) => {
+              if (response.status === "success") {
+                const itemData = await getItemById(
+                  token,
+                  response.data.item_id
+                );
+                if (itemData) {
+                  setRandomItemReceived(itemData);
+                  setShowModal(true);
+                } else {
+                  console.error("Error obteniendo información del objeto");
+                }
               } else {
-                console.error("Error obteniendo información del objeto");
+                console.error(
+                  "Error asignando objeto aleatorio:",
+                  response.message
+                );
               }
-            } else {
-              console.error("Error asignando objeto aleatorio:", response.message);
-            }
-          })
-          .catch((error) => {
-            console.error("Error asignando objeto aleatorio:", error);
-          });
+            })
+            .catch((error) => {
+              console.error("Error asignando objeto aleatorio:", error);
+            });
         } else {
           setRandomItemReceived(null);
         }

@@ -1,50 +1,137 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { getHeroesAndItems, selectHero } from '../../services/apiCalls';
-
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { getHeroesAndItems, selectHero } from "../../services/apiCalls";
+import { Card, Button, Modal } from "react-bootstrap";
 
 export const HeroPage = () => {
   const [heroes, setHeroes] = useState([]);
-  const [selectedHero, setSelectedHero] = useState("");
-  const navigate = useNavigate();
+  const [showInventoryModal, setShowInventoryModal] = useState(false);
+  const [selectedHero, setSelectedHero] = useState(null);
+  const [selectedItemIndex, setSelectedItemIndex] = useState(null);
   const token = useSelector((state) => state.auth.token);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
       const data = await getHeroesAndItems(token);
       setHeroes(data);
-      if (data.length > 0) {
-        setSelectedHero(data[0].id);
-      }
     };
     fetchData();
   }, [token]);
 
-  const startBattle = async () => {
-    if (selectedHero) {
-      const result = await selectHero(token, selectedHero);
-      if (result && result.status === 'success') {
-        navigate('/battle');
-      } else {
-        console.error('Error selecting hero:', result);
-      }
+  const handleSelectHero = async (heroId) => {
+    const result = await selectHero(token, heroId);
+    if (result && result.status === "success") {
+      navigate("/battle");
     } else {
-      console.error('No hero selected');
+      console.error("Error selecting hero:", result);
     }
+  };
+
+  const handleShowInventoryModal = (hero) => {
+    setSelectedHero(hero);
+    setShowInventoryModal(true);
+  };
+
+  const handleCloseInventoryModal = () => {
+    setSelectedHero(null);
+    setShowInventoryModal(false);
+    setSelectedItemIndex(null);
+  };
+
+  const renderInventoryModal = () => {
+    if (!selectedHero) return null;
+    return (
+      <Modal show={showInventoryModal} onHide={handleCloseInventoryModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Inventario de {selectedHero.name}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div className="list-group">
+            {selectedHero.items.map((item, index) => (
+              <React.Fragment key={index}>
+                <div
+                  className="list-group-item"
+                  style={{
+                    cursor: "pointer",
+                    backgroundColor:
+                      selectedItemIndex === index ? "#f8f9fa" : "",
+                  }}
+                  onClick={() =>
+                    selectedItemIndex === index
+                      ? setSelectedItemIndex(null)
+                      : setSelectedItemIndex(index)
+                  }
+                >
+                  {item.name}
+                </div>
+                {selectedItemIndex === index && (
+                  <div>
+                    <p>{selectedHero.items[selectedItemIndex].description}</p>
+                    <p>
+                      Attack Modifier:{" "}
+                      {selectedHero.items[selectedItemIndex].attack_modifier}
+                    </p>
+                    <p>
+                      Defense Modifier:{" "}
+                      {selectedHero.items[selectedItemIndex].defense_modifier}
+                    </p>
+                    <p>
+                      Health Modifier:{" "}
+                      {selectedHero.items[selectedItemIndex].health_modifier}
+                    </p>
+                    <p>Rarity: {selectedHero.items[selectedItemIndex].rare}</p>
+                  </div>
+                )}
+              </React.Fragment>
+            ))}
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseInventoryModal}>
+            Cerrar
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    );
+  };
+
+  const renderHeroCard = (hero, index) => {
+    return (
+      <Card key={index} style={{ width: "18rem" }}>
+        <Card.Body>
+          <Card.Title>{hero.name}</Card.Title>
+          <Card.Subtitle className="mb-2 text-muted">
+            Level {hero.level}
+          </Card.Subtitle>
+          <Card.Text>{hero.story}</Card.Text>
+          <Button
+            variant="primary"
+            className="mr-2"
+            onClick={() => handleShowInventoryModal(hero)}
+          >
+            Inventario
+          </Button>
+          <Button variant="success" onClick={() => handleSelectHero(hero.id)}>
+            Seleccionar
+          </Button>
+        </Card.Body>
+      </Card>
+    );
   };
 
   return (
     <div>
       <h2>Selecciona un héroe</h2>
-      <select value={selectedHero} onChange={(e) => setSelectedHero(e.target.value)}>
-        {heroes.map((hero) => (
-          <option key={hero.id} value={hero.id}>
-            {hero.name}
-          </option>
+      <div className="d-flex flex-wrap justify-content-center">
+        {heroes.map((hero, index) => (
+          <div key={index} className="m-2">
+            {renderHeroCard(hero, index)}
+          </div>
         ))}
-      </select>
-      <button onClick={startBattle}>Comenzar batalla</button>
+      </div>
+      {renderInventoryModal()}
     </div>
   );
 };

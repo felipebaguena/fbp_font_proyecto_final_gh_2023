@@ -123,6 +123,37 @@ export const getHeroItems = async (token, heroId) => {
   }
 };
 
+export const getItemById = async (token, itemId) => {
+  try {
+    const response = await axios.get(`${root}items/${itemId}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching item by ID:', error);
+    return null;
+  }
+};
+
+export const assignRandomItemToSelectedHero = async (token) => {
+  try {
+    const response = await axios.post(`${root}add-item-to-hero`, {}, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error assigning random item to selected hero:', error);
+    return null;
+  }
+};
+
+
+
 export const levelUpHero = async (token, heroId) => {
   try {
     const response = await axios.put(`${root}heroes/${heroId}/level-up`, {}, {

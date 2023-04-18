@@ -3,8 +3,10 @@ import "./Battle.css";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
+  assignRandomItemToSelectedHero,
   createBattle,
   getHeroItems,
+  getItemById,
   levelUpHero,
 } from "../../services/apiCalls";
 import { BattleModal } from "./BattleModal";
@@ -21,6 +23,7 @@ export const BattlePage = () => {
   const [initialHeroHealth, setInitialHeroHealth] = useState(null);
   const [initialMonsterHealth, setInitialMonsterHealth] = useState(null);
   const [levelUpValues, setLevelUpValues] = useState(null);
+  const [randomItemReceived, setRandomItemReceived] = useState(null);
 
   const token = useSelector((state) => state.auth.token);
   const navigate = useNavigate();
@@ -84,10 +87,10 @@ export const BattlePage = () => {
         .catch((error) => {
           console.error("Error leveling up hero:", error);
         });
-
+  
       setConsecutiveWins(0);
     }
-  }, [consecutiveWins, token, battle]);
+  }, [consecutiveWins, token, battle]);  
 
   const getSelectedItemAttackModifier = () => {
     const selectedItemInt = parseInt(selectedItem);
@@ -159,6 +162,28 @@ export const BattlePage = () => {
         setShowModal(true);
         setModalMessage("¡Has vencido al monstruo!");
 
+        if (Math.random() > 0.7) {
+          assignRandomItemToSelectedHero(token, battle.hero.id)
+          .then(async (response) => {
+            if (response.status === "success") {
+              const itemData = await getItemById(token, response.data.item_id);
+              if (itemData) {
+                setRandomItemReceived(itemData);
+                setShowModal(true);
+              } else {
+                console.error("Error obteniendo información del objeto");
+              }
+            } else {
+              console.error("Error asignando objeto aleatorio:", response.message);
+            }
+          })
+          .catch((error) => {
+            console.error("Error asignando objeto aleatorio:", error);
+          });
+        } else {
+          setRandomItemReceived(null);
+        }
+
         setConsecutiveWins((prevWins) => {
           const newWins = prevWins + 1;
 
@@ -214,7 +239,9 @@ export const BattlePage = () => {
   const onNextBattle = async () => {
     closeModal();
     setIsPlayerTurn(true);
+    setRandomItemReceived(null);
     setCreateNewBattle(true);
+    setLevelUpValues(null);
   };
 
   return (
@@ -284,6 +311,7 @@ export const BattlePage = () => {
           showNextBattle={battle && battle.monster.health <= 0}
           goToHome={goToHome}
           levelUpValues={levelUpValues}
+          randomItemReceived={randomItemReceived}
         />
       )}
     </div>

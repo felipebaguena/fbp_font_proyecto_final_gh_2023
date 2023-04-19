@@ -5,6 +5,7 @@ import {
   assignRandomItemToHeroById,
   createHero,
   getHeroesAndItems,
+  getAllHeroImages,
   selectHero,
 } from "../../services/apiCalls";
 import { Card, Button, Modal } from "react-bootstrap";
@@ -19,6 +20,25 @@ export const HeroPage = () => {
   const [showModal, setShowModal] = useState(false);
   const [creationMessage, setCreationMessage] = useState(null);
   const [refreshHeroes, setRefreshHeroes] = useState(false);
+
+  const [selectedHeroImageId, setSelectedHeroImageId] = useState(null);
+  const [showImageSelectionModal, setShowImageSelectionModal] = useState(false);
+  const [heroImages, setHeroImages] = useState([]);
+
+  const handleShowImageSelectionModal = (imageId) => {
+    setSelectedHeroImageId(imageId);
+    setShowImageSelectionModal(true);
+  };
+
+  const handleCloseImageSelectionModal = () => {
+    setShowImageSelectionModal(false);
+  };
+
+  const handleSelectHeroImage = (imageId) => {
+    setSelectedHeroImageId(imageId);
+    handleCloseImageSelectionModal();
+    console.log("Selected image ID:", imageId);
+  };
 
   const handleShowModal = () => setShowModal(true);
 
@@ -43,6 +63,19 @@ export const HeroPage = () => {
     }
   };
 
+  useEffect(() => {
+    const fetchHeroImages = async () => {
+      const response = await getAllHeroImages(token);
+      console.log("Respuesta de getAllHeroImages:", response);
+      if (Array.isArray(response.data)) {
+        setHeroImages(response.data);
+      } else {
+        console.error("Error fetching hero images:", response);
+      }
+    };
+    fetchHeroImages();
+  }, [token]);
+
   const handleShowInventoryModal = (hero) => {
     setSelectedHero(hero);
     setShowInventoryModal(true);
@@ -55,9 +88,16 @@ export const HeroPage = () => {
   };
 
   const handleCreateHero = async () => {
+    console.log("selectedHeroImageId:", selectedHeroImageId);
+    console.log("Body enviado:", {
+      name: newHeroName,
+      story: newHeroStory,
+      image_id: selectedHeroImageId,
+    });
     const response = await createHero(token, {
       name: newHeroName,
       story: newHeroStory,
+      image_id: selectedHeroImageId,
     });
     if (response && response.data && response.data.id) {
       await assignRandomItemToHeroById(token, response.data.id);
@@ -79,6 +119,47 @@ export const HeroPage = () => {
     setShowModal(false);
     setCreationMessage(null);
     setRefreshHeroes(true);
+  };
+
+  const renderImageSelectionModal = () => {
+    console.log("heroImages:", heroImages);
+    return (
+      <Modal
+        show={showImageSelectionModal}
+        onHide={handleCloseImageSelectionModal}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Selecciona la imagen del héroe</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <div className="d-flex flex-wrap justify-content-center">
+            {heroImages.map((image, index) => (
+              <div
+                key={index}
+                className={`m-2 ${
+                  selectedHeroImageId === image.id
+                    ? "border border-primary"
+                    : ""
+                }`}
+                style={{ cursor: "pointer" }}
+                onClick={() => handleSelectHeroImage(image.id)}
+              >
+                <img
+                  src={image.imageUrl}
+                  alt={`Hero image ${index}`}
+                  width="100"
+                />
+              </div>
+            ))}
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseImageSelectionModal}>
+            Cerrar
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    );
   };
 
   const renderInventoryModal = () => {
@@ -173,6 +254,7 @@ export const HeroPage = () => {
         ))}
       </div>
       {renderInventoryModal()}
+      {renderImageSelectionModal()}
       <Button variant="primary" onClick={handleShowModal}>
         Nuevo héroe
       </Button>
@@ -211,6 +293,9 @@ export const HeroPage = () => {
               <h2>{`${newHeroName}`}</h2>
             </div>
           )}
+          <Button variant="info" onClick={handleShowImageSelectionModal}>
+            Seleccionar imagen
+          </Button>
         </Modal.Body>
         <Modal.Footer>
           {creationMessage === null && (

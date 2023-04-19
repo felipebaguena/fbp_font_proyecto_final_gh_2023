@@ -67,6 +67,42 @@ export const getHeroImage = async (imageId, token) => {
   }
 };
 
+export const getAllHeroImages = async (token) => {
+  try {
+    const response = await axios.get(`${root}hero-images`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (response.data && response.data.data) {
+      const imageData = response.data.data.map((image) => {
+        const { id, name, image_url, created_at, updated_at } = image;
+        return {
+          id,
+          name,
+          imageUrl: image_url,
+          createdAt: created_at,
+          updatedAt: updated_at,
+        };
+      });
+
+      return {
+        status: "success",
+        data: imageData,
+      };
+    } else {
+      console.error("Error fetching hero images:", response.data);
+      return { status: "error", error: "Failed to fetch hero images" };
+    }
+  } catch (error) {
+    console.error("Error fetching hero images:", error);
+    return { status: "error", error: error };
+  }
+};
+
+
 export const getMonsterImage = async (imageId) => {
   try {
     const response = await axios.get(`${root}monster/image/${imageId}`, {
@@ -166,6 +202,7 @@ export const createHero = async (token, body) => {
         Authorization: `Bearer ${token}`,
       },
     });
+    console.log('Server response:', response.data);
     return response.data;
   } catch (error) {
     console.error("Error creating hero:", error);

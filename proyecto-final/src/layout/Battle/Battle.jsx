@@ -275,7 +275,7 @@ export const BattlePage = () => {
   return (
     <Container>
       <div>
-        <h2 class="battle-title">Batalla en {battle.stage.name}</h2>
+        <h2 className="battle-title">Batalla en {battle.stage.name}</h2>
       </div>
       <Row>
         <Col xs={12}>

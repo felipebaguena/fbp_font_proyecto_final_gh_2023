@@ -7,6 +7,7 @@ import {
   getHeroesAndItems,
   getAllHeroImages,
   selectHero,
+  getHeroImage,
 } from "../../services/apiCalls";
 import { Card, Button, Modal } from "react-bootstrap";
 
@@ -24,6 +25,7 @@ export const HeroPage = () => {
   const [selectedHeroImageId, setSelectedHeroImageId] = useState(null);
   const [showImageSelectionModal, setShowImageSelectionModal] = useState(false);
   const [heroImages, setHeroImages] = useState([]);
+  const [heroImagesById, setHeroImagesById] = useState({});
 
   const handleShowImageSelectionModal = (imageId) => {
     setSelectedHeroImageId(imageId);
@@ -48,11 +50,32 @@ export const HeroPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       const data = await getHeroesAndItems(token);
+      const fetchedImages = {};
+  
+      for (const hero of data) {
+        if (hero.hero_image_id) {
+          const imageResponse = await getHeroImage(hero.hero_image_id, token);
+          if (imageResponse.status === "success") {
+            fetchedImages[hero.id] = imageResponse.data.image_url;
+          }
+        }
+      }
+  
+      console.log("fetchedImages:", fetchedImages);
+  
+      setHeroImagesById(fetchedImages);
       setHeroes(data);
       setRefreshHeroes(false);
     };
     fetchData();
   }, [token, refreshHeroes]);
+  
+  useEffect(() => {
+    console.log("Current selectedHeroImageId:", selectedHeroImageId);
+  }, [selectedHeroImageId]);
+  
+  
+  
 
   const handleSelectHero = async (heroId) => {
     const result = await selectHero(token, heroId);
@@ -92,7 +115,7 @@ export const HeroPage = () => {
     console.log("Body enviado:", {
       name: newHeroName,
       story: newHeroStory,
-      image_id: selectedHeroImageId,
+      hero_image_id: selectedHeroImageId,
     });
     const response = await createHero(token, {
       name: newHeroName,
@@ -220,10 +243,19 @@ export const HeroPage = () => {
   };
 
   const renderHeroCard = (hero, index) => {
+    console.log("Rendering hero", hero.id, "image URL:", heroImagesById[hero.id]);
     return (
       <Card key={index} style={{ width: "18rem" }}>
+
         <Card.Body>
-          <Card.Title>{hero.name}</Card.Title>
+          <Card.Title>{hero.name}
+          {hero.hero_image_id && heroImagesById[hero.id] && (
+          <img
+            src={heroImagesById[hero.id]}
+            alt={hero.name}
+            style={{ width: "64px"}}
+          />
+        )}</Card.Title>
           <Card.Subtitle className="mb-2 text-muted">
             Level {hero.level}
           </Card.Subtitle>
@@ -242,6 +274,7 @@ export const HeroPage = () => {
       </Card>
     );
   };
+  
 
   return (
     <div>

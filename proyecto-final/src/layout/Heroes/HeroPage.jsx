@@ -51,7 +51,7 @@ export const HeroPage = () => {
     const fetchData = async () => {
       const data = await getHeroesAndItems(token);
       const fetchedImages = {};
-  
+
       for (const hero of data) {
         if (hero.hero_image_id) {
           const imageResponse = await getHeroImage(hero.hero_image_id, token);
@@ -60,22 +60,19 @@ export const HeroPage = () => {
           }
         }
       }
-  
+
       console.log("fetchedImages:", fetchedImages);
-  
+
       setHeroImagesById(fetchedImages);
       setHeroes(data);
       setRefreshHeroes(false);
     };
     fetchData();
   }, [token, refreshHeroes]);
-  
+
   useEffect(() => {
     console.log("Current selectedHeroImageId:", selectedHeroImageId);
   }, [selectedHeroImageId]);
-  
-  
-  
 
   const handleSelectHero = async (heroId) => {
     const result = await selectHero(token, heroId);
@@ -243,19 +240,25 @@ export const HeroPage = () => {
   };
 
   const renderHeroCard = (hero, index) => {
-    console.log("Rendering hero", hero.id, "image URL:", heroImagesById[hero.id]);
+    console.log(
+      "Rendering hero",
+      hero.id,
+      "image URL:",
+      heroImagesById[hero.id]
+    );
     return (
       <Card key={index} style={{ width: "18rem" }}>
-
         <Card.Body>
-          <Card.Title>{hero.name}
-          {hero.hero_image_id && heroImagesById[hero.id] && (
-          <img
-            src={heroImagesById[hero.id]}
-            alt={hero.name}
-            style={{ width: "64px"}}
-          />
-        )}</Card.Title>
+          <Card.Title>
+            {hero.name}
+            {hero.hero_image_id && heroImagesById[hero.id] && (
+              <img
+                src={heroImagesById[hero.id]}
+                alt={hero.name}
+                style={{ width: "64px" }}
+              />
+            )}
+          </Card.Title>
           <Card.Subtitle className="mb-2 text-muted">
             Level {hero.level}
           </Card.Subtitle>
@@ -274,7 +277,6 @@ export const HeroPage = () => {
       </Card>
     );
   };
-  
 
   return (
     <div>
@@ -326,9 +328,13 @@ export const HeroPage = () => {
               <h2>{`${newHeroName}`}</h2>
             </div>
           )}
-          <Button variant="info" onClick={handleShowImageSelectionModal}>
-            Seleccionar imagen
-          </Button>
+          {creationMessage === null && (
+            <>
+              <Button variant="info" onClick={handleShowImageSelectionModal}>
+                Seleccionar imagen
+              </Button>
+            </>
+          )}
         </Modal.Body>
         <Modal.Footer>
           {creationMessage === null && (

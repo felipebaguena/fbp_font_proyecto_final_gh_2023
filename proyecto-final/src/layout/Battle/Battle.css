@@ -1,36 +1,110 @@
 .health-bar {
-    background-color: #eee;
-    border: 1px solid #222;
-    height: 30px;
-    width: 60%;
-    position: relative;
-  }
-  
-  .health-bar-fill {
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    transition: width 0.5s;
-  }
+  background-color: #eee;
+  border: 1px solid #222;
+  height: 30px;
+  position: relative;
+}
 
-  .health-bar-text {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    color: #ffffff;
-    font-weight: bold;
-  }
+.health-bar-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  transition: width 0.5s;
+}
 
-  .health-bar-fill-green {
-    background-color: green;
-  }
-  
-  .health-bar-fill-orange {
-    background-color: orange;
-  }
-  
-  .health-bar-fill-red {
-    background-color: red;
-  }
+.health-bar-text-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.health-bar-text {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  color: #ffffff;
+  font-weight: bold;
+  text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+
+.health-bar-fill-green {
+  background-color: green;
+}
+
+.health-bar-fill-orange {
+  background-color: orange;
+}
+
+.health-bar-fill-red {
+  background-color: red;
+}
+
+.tv-outer-frame {
+  background-color: #4a4a4a;
+  border-radius: 10px;
+  padding: 1.5rem 0.8rem 1.5rem 0.8rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.tv-inner-frame {
+  background-color: #333;
+  border-radius: 0.3rem;
+  border-top: 0.5rem inset #555;
+  border-bottom: 0.5rem inset rgb(0, 0, 0);
+  border-left: 1rem inset #555;
+  border-right: 1rem inset #111;
+}
+
+.tv-box {
+  position: relative;
+  background-color: #222;
+  border-radius: 5px;
+  height: 15rem;
+  width: 20rem;
+  align-items: center;
+  justify-content: space-around;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5), 0 0 10px rgba(0, 0, 0, 0.5);
+  background-image: radial-gradient(
+    circle at center,
+    rgba(255, 255, 255, 0.1),
+    rgba(0, 0, 0, 0) 70%
+  );
+}
+
+.tv-controls {
+  background-color: #222;
+  border-radius: 5px;
+  border: 0.1rem inset black;
+  height: 2.5rem;
+  width: 21rem;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  padding-right: 2rem;
+  gap: 0.4rem;
+}
+
+.tv-control-knob {
+  background-color: rgb(59, 59, 59);
+  border-radius: 50%;
+  border: 0.1rem outset black;
+  height: 0.6rem;
+  width: 0.6rem;
+}
+
+.tv-logo {
+  color: #999;
+  font-weight: bold;
+  padding: 0.3rem;
+  font-size: 0.8rem;
+}
+
+.tv-box-hero,
+.tv-box-monster {
+  position: relative;
+  z-index: 1;
+}

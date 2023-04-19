@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Container, Row, Col, Button, Form } from "react-bootstrap";
 import "./Battle.css";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -29,7 +30,6 @@ export const BattlePage = () => {
   const [heroImage, setHeroImage] = useState(null);
   const [monsterImage, setMonsterImage] = useState(null);
 
-
   const token = useSelector((state) => state.auth.token);
   const navigate = useNavigate();
 
@@ -43,7 +43,7 @@ export const BattlePage = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (createNewBattle) {
+      if (!battle || createNewBattle) {
         setCreateNewBattle(false);
         const data = await createBattle(token);
         if (data && data.status === "success") {
@@ -51,22 +51,33 @@ export const BattlePage = () => {
           setInitialHeroHealth(data.data.hero.health);
           setInitialMonsterHealth(data.data.monster.health);
           if (data.data.hero && data.data.hero.hero_image_id) {
-            const heroImage = await getHeroImage(data.data.hero.hero_image_id, token);
+            const heroImage = await getHeroImage(
+              data.data.hero.hero_image_id,
+              token
+            );
             if (heroImage && heroImage.status === "success") {
               setHeroImage(heroImage.data.image_url);
             } else {
               console.error("Error fetching hero image:", heroImage);
             }
           }
+          if (data.data.monster && data.data.monster.monster_image_id) {
+            const monsterImage = await getMonsterImage(
+              data.data.monster.monster_image_id
+            );
+            if (monsterImage && monsterImage.status === "success") {
+              setMonsterImage(monsterImage.data.image_url);
+            } else {
+              console.error("Error fetching monster image:", monsterImage);
+            }
+          }
         } else {
           console.error("Error fetching battle data:", data);
         }
-      }      
+      }
     };
     fetchData();
   }, [token, createNewBattle]);
-  
-  
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -102,34 +113,6 @@ export const BattlePage = () => {
       setConsecutiveWins(0);
     }
   }, [consecutiveWins, token, battle]);
-
-  useEffect(() => {
-    const fetchHeroImage = async () => {
-      if (battle && battle.hero) {
-        const heroImage = await getHeroImage(battle.hero.hero_image_id, token);
-        if (heroImage && heroImage.status === "success") {
-          setHeroImage(heroImage.data.image_url);
-        } else {
-          console.error("Error fetching hero image:", heroImage);
-        }
-      }
-    };
-    fetchHeroImage();
-  }, [battle, token]);
-
-  useEffect(() => {
-    const fetchMonsterImage = async () => {
-      if (battle && battle.monster) {
-        const monsterImage = await getMonsterImage(battle.monster.monster_image_id);
-        if (monsterImage && monsterImage.status === "success") {
-          setMonsterImage(monsterImage.data.image_url);
-        } else {
-          console.error("Error fetching monster image:", monsterImage);
-        }
-      }
-    };
-    fetchMonsterImage();
-  }, [battle]);  
 
   const getSelectedItemAttackModifier = () => {
     const selectedItemInt = parseInt(selectedItem);
@@ -290,65 +273,110 @@ export const BattlePage = () => {
   };
 
   return (
-    <div>
+    <Container>
       <h1>Batalla en {battle.stage.name}</h1>
-      <h2>
-    <img src={heroImage} alt={battle.hero.name} />
-    {battle.hero.name} vs {battle.monster.name}
-    <img src={monsterImage} alt={battle.monster.name} />
-  </h2>
+      <Row>
+        <Col xs={12}>
+          {/* <h2>
+            <img src={heroImage} alt={battle.hero.name} />
+            {battle.hero.name} vs {battle.monster.name}
+            <img src={monsterImage} alt={battle.monster.name} />
+          </h2> */}
 
-      <p>Vida del héroe:</p>
+          <p>Vida del Monstruo:</p>
+          <div className="health-bar">
+            <div
+              className={`health-bar-fill ${getHealthBarColorClass(
+                getHealthPercentage(battle.monster.health, initialMonsterHealth)
+              )}`}
+              style={{
+                width: `${getHealthPercentage(
+                  battle.monster.health,
+                  initialMonsterHealth
+                )}%`,
+              }}
+            ></div>
+            <div className="health-bar-text-container">
+              <span className="health-bar-text">{battle.monster.name}</span>
+            </div>
+          </div>
 
-      <div className="health-bar">
-        <div
-          className={`health-bar-fill ${getHealthBarColorClass(
-            getHealthPercentage(battle.hero.health, initialHeroHealth)
-          )}`}
-          style={{
-            width: `${getHealthPercentage(
-              battle.hero.health,
-              initialHeroHealth
-            )}%`,
-          }}
-        >
-          <span className="health-bar-text">{battle.hero.health}</span>
-        </div>
-      </div>
+          <Col xs={12} className="d-flex justify-content-center">
+            <div className="tv-outer-frame d-flex flex-column">
+              <div className="tv-inner-frame">
+                <div className="tv-box d-flex">
+                  <div className="tv-box-hero">
+                    <img src={heroImage} alt={battle.hero.name} />
+                  </div>
+                  <div className="tv-box-monster">
+                    <img src={monsterImage} alt={battle.monster.name} />
+                  </div>
+                </div>
+              </div>
+              <div className="d-flex flex-column align-items-center">
+                <div className="tv-logo">SONY</div>
+                <div className="tv-controls">
+                  <div className="tv-control-knob"></div>
+                  <div className="tv-control-knob"></div>
+                  <div className="tv-control-knob"></div>
+                  <div className="tv-control-knob"></div>
+                  <div className="tv-control-knob"></div>
+                </div>
+              </div>
+            </div>
+          </Col>
 
-      <select
-        value={selectedItem}
-        onChange={(e) => setSelectedItem(e.target.value)}
-      >
-        <option value="">Selecciona un objeto</option>
-        {heroItems.map((item) => (
-          <option key={item.id} value={item.id}>
-            {item.name}
-          </option>
-        ))}
-      </select>
-      <p>Vida del monstruo:</p>
-      <div className="health-bar">
-        <div
-          className={`health-bar-fill ${getHealthBarColorClass(
-            getHealthPercentage(battle.monster.health, initialMonsterHealth)
-          )}`}
-          style={{
-            width: `${getHealthPercentage(
-              battle.monster.health,
-              initialMonsterHealth
-            )}%`,
-          }}
-        >
-          <span className="health-bar-text">{battle.monster.health}</span>
-        </div>
-      </div>
+          <p>Vida del Héroe:</p>
+          <div className="health-bar">
+            <div
+              className={`health-bar-fill ${getHealthBarColorClass(
+                getHealthPercentage(battle.hero.health, initialHeroHealth)
+              )}`}
+              style={{
+                width: `${getHealthPercentage(
+                  battle.hero.health,
+                  initialHeroHealth
+                )}%`,
+              }}
+            ></div>
+            <div className="health-bar-text-container">
+              <span className="health-bar-text">{battle.hero.name}</span>
+            </div>
+          </div>
+        </Col>
 
-      {isPlayerTurn ? (
-        <button onClick={handleAttack}>Atacar</button>
-      ) : (
-        <p>Espera tu turno...</p>
-      )}
+        <Col className="mt-3">
+          {isPlayerTurn && (
+            <div className="d-flex justify-content-center">
+              <Col xs={4}>
+                <Form.Select
+                  value={selectedItem}
+                  onChange={(e) => setSelectedItem(e.target.value)}
+                >
+                  <option value="">Selecciona un objeto</option>
+                  {heroItems.map((item) => (
+                    <option key={item.id} value={item.id}>
+                      {item.name}
+                    </option>
+                  ))}
+                </Form.Select>
+              </Col>
+
+              <Col xs={8}>
+                <Button
+                  variant="primary"
+                  onClick={handleAttack}
+                  className="ms-3"
+                >
+                  Atacar
+                </Button>
+              </Col>
+            </div>
+          )}
+
+          {!isPlayerTurn && <p>Espera tu turno...</p>}
+        </Col>
+      </Row>
 
       {showModal && (
         <BattleModal
@@ -362,6 +390,6 @@ export const BattlePage = () => {
           randomItemReceived={randomItemReceived}
         />
       )}
-    </div>
+    </Container>
   );
 };

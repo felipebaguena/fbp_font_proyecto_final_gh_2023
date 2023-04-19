@@ -274,7 +274,9 @@ export const BattlePage = () => {
 
   return (
     <Container>
-      <h1>Batalla en {battle.stage.name}</h1>
+      <div>
+        <h2 class="battle-title">Batalla en {battle.stage.name}</h2>
+      </div>
       <Row>
         <Col xs={12}>
           {/* <h2>
@@ -283,8 +285,8 @@ export const BattlePage = () => {
             <img src={monsterImage} alt={battle.monster.name} />
           </h2> */}
 
-          <p>Vida del Monstruo:</p>
-          <div className="health-bar">
+          {/* <p>Vida del Monstruo:</p> */}
+          {/* <div className="health-bar">
             <div
               className={`health-bar-fill ${getHealthBarColorClass(
                 getHealthPercentage(battle.monster.health, initialMonsterHealth)
@@ -299,17 +301,65 @@ export const BattlePage = () => {
             <div className="health-bar-text-container">
               <span className="health-bar-text">{battle.monster.name}</span>
             </div>
-          </div>
+          </div> */}
 
           <Col xs={12} className="d-flex justify-content-center">
             <div className="tv-outer-frame d-flex flex-column">
               <div className="tv-inner-frame">
-                <div className="tv-box d-flex">
-                  <div className="tv-box-hero">
-                    <img src={heroImage} alt={battle.hero.name} />
+                <div>
+                  <div className="health-bar">
+                    <div
+                      className={`health-bar-fill (
+                        getHealthPercentage(
+                          battle.monster.health,
+                          initialMonsterHealth
+                        )
+                      )`}
+                      style={{
+                        width: `${getHealthPercentage(
+                          battle.monster.health,
+                          initialMonsterHealth
+                        )}%`,
+                      }}
+                    ></div>
+                    <div className="health-bar-text-container">
+                      <span className="health-bar-text">
+                        {battle.monster.name}
+                      </span>
+                    </div>
                   </div>
-                  <div className="tv-box-monster">
-                    <img src={monsterImage} alt={battle.monster.name} />
+                  <div className="tv-box d-flex">
+                    <div className="tv-box-hero">
+                      <img
+                        className="tv-box-hero"
+                        src={heroImage}
+                        alt={battle.hero.name}
+                      />
+                    </div>
+                    <div className="tv-box-monster">
+                      <img src={monsterImage} alt={battle.monster.name} />
+                    </div>
+                  </div>
+                  <div className="health-bar">
+                    <div
+                      className={`health-bar-fill ${getHealthBarColorClass(
+                        getHealthPercentage(
+                          battle.hero.health,
+                          initialHeroHealth
+                        )
+                      )}`}
+                      style={{
+                        width: `${getHealthPercentage(
+                          battle.hero.health,
+                          initialHeroHealth
+                        )}%`,
+                      }}
+                    ></div>
+                    <div className="health-bar-text-container">
+                      <span className="health-bar-text">
+                        {battle.hero.name}
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -326,8 +376,8 @@ export const BattlePage = () => {
             </div>
           </Col>
 
-          <p>Vida del Héroe:</p>
-          <div className="health-bar">
+          {/* <p>Vida del Héroe:</p> */}
+          {/* <div className="health-bar">
             <div
               className={`health-bar-fill ${getHealthBarColorClass(
                 getHealthPercentage(battle.hero.health, initialHeroHealth)
@@ -342,13 +392,23 @@ export const BattlePage = () => {
             <div className="health-bar-text-container">
               <span className="health-bar-text">{battle.hero.name}</span>
             </div>
-          </div>
+          </div> */}
         </Col>
 
         <Col className="mt-3">
           {isPlayerTurn && (
-            <div className="d-flex justify-content-center">
-              <Col xs={4}>
+            <div
+              className="d-flex justify-content-center mt-3"
+              style={{ marginTop: "1rem" }}
+            >
+              <div className="action-buttons-container">
+                <Button
+                  variant="dark"
+                  onClick={handleAttack}
+                  className="attack-button me-3"
+                >
+                  Atacar
+                </Button>
                 <Form.Select
                   value={selectedItem}
                   onChange={(e) => setSelectedItem(e.target.value)}
@@ -360,36 +420,26 @@ export const BattlePage = () => {
                     </option>
                   ))}
                 </Form.Select>
-              </Col>
-
-              <Col xs={8}>
-                <Button
-                  variant="primary"
-                  onClick={handleAttack}
-                  className="ms-3"
-                >
-                  Atacar
-                </Button>
-              </Col>
+              </div>
             </div>
           )}
-
-          {!isPlayerTurn && <p>Espera tu turno...</p>}
+          <div className="modal-monster-turn">
+            {!isPlayerTurn && !showModal && <p>Es el turno del enemigo...</p>}
+            {showModal && (
+              <BattleModal
+                showModal={showModal}
+                closeModal={closeModal}
+                onNextBattle={onNextBattle}
+                message={modalMessage}
+                showNextBattle={battle && battle.monster.health <= 0}
+                goToHome={goToHome}
+                levelUpValues={levelUpValues}
+                randomItemReceived={randomItemReceived}
+              />
+            )}
+          </div>
         </Col>
       </Row>
-
-      {showModal && (
-        <BattleModal
-          showModal={showModal}
-          closeModal={closeModal}
-          onNextBattle={onNextBattle}
-          message={modalMessage}
-          showNextBattle={battle && battle.monster.health <= 0}
-          goToHome={goToHome}
-          levelUpValues={levelUpValues}
-          randomItemReceived={randomItemReceived}
-        />
-      )}
     </Container>
   );
 };

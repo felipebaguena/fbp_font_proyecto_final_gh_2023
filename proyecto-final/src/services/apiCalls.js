@@ -67,6 +67,29 @@ export const getHeroImage = async (imageId, token) => {
   }
 };
 
+export const getMonsterImage = async (imageId) => {
+  try {
+    const response = await axios.get(`${root}monster/image/${imageId}`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (response.data && response.data.image_url) {
+      return {
+        status: "success",
+        data: { image_url: response.data.image_url },
+      };
+    } else {
+      console.error("Error fetching monster image:", response.data);
+      return { status: "error", error: "Failed to fetch monster image" };
+    }
+  } catch (error) {
+    console.error("Error fetching monster image:", error);
+    return { status: "error", error: error };
+  }
+};
+
 export const updateUserData = async (token, updatedData) => {
   const response = await axios.put(`${root}profile`, updatedData, {
     headers: {

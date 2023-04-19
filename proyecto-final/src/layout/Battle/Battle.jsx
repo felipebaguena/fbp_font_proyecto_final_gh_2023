@@ -8,6 +8,7 @@ import {
   getHeroImage,
   getHeroItems,
   getItemById,
+  getMonsterImage,
   levelUpHero,
 } from "../../services/apiCalls";
 import { BattleModal } from "./BattleModal";
@@ -26,6 +27,7 @@ export const BattlePage = () => {
   const [levelUpValues, setLevelUpValues] = useState(null);
   const [randomItemReceived, setRandomItemReceived] = useState(null);
   const [heroImage, setHeroImage] = useState(null);
+  const [monsterImage, setMonsterImage] = useState(null);
 
 
   const token = useSelector((state) => state.auth.token);
@@ -114,6 +116,20 @@ export const BattlePage = () => {
     };
     fetchHeroImage();
   }, [battle, token]);
+
+  useEffect(() => {
+    const fetchMonsterImage = async () => {
+      if (battle && battle.monster) {
+        const monsterImage = await getMonsterImage(battle.monster.monster_image_id);
+        if (monsterImage && monsterImage.status === "success") {
+          setMonsterImage(monsterImage.data.image_url);
+        } else {
+          console.error("Error fetching monster image:", monsterImage);
+        }
+      }
+    };
+    fetchMonsterImage();
+  }, [battle]);  
 
   const getSelectedItemAttackModifier = () => {
     const selectedItemInt = parseInt(selectedItem);
@@ -277,9 +293,10 @@ export const BattlePage = () => {
     <div>
       <h1>Batalla en {battle.stage.name}</h1>
       <h2>
-      <img src={heroImage} alt={battle.hero.name} />
-  {battle.hero.name} vs {battle.monster.name}
-</h2>
+    <img src={heroImage} alt={battle.hero.name} />
+    {battle.hero.name} vs {battle.monster.name}
+    <img src={monsterImage} alt={battle.monster.name} />
+  </h2>
 
       <p>Vida del héroe:</p>
 

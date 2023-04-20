@@ -306,7 +306,8 @@ export const BattlePage = () => {
           <Col xs={12} className="d-flex justify-content-center">
             <div className="tv-outer-frame d-flex flex-column">
               <div className="tv-inner-frame">
-                <div>
+                <div className="tv-screen-box">
+                <div className="overlay"></div>
                   <div className="health-bar">
                     <div
                       className={`health-bar-fill (

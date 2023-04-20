@@ -210,6 +210,27 @@ export const createHero = async (token, body) => {
   }
 };
 
+export const deleteHero = async (token, heroId) => {
+  try {
+    const response = await axios.delete(`${root}heroes/${heroId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return {
+      status: "success",
+      message: "Hero deleted successfully",
+      data: response.data,
+    };
+  } catch (error) {
+    console.error("Error deleting hero:", error);
+    return {
+      status: "error",
+      message: error.response ? error.response.data.message : "Error deleting hero",
+    };
+  }
+};
+
 export const getHeroItems = async (token, heroId) => {
   try {
     const response = await axios.get(`${root}hero/${heroId}/items`, {

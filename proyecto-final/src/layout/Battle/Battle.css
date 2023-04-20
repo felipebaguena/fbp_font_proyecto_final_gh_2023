@@ -28,8 +28,8 @@
   top: 50%;
   transform: translate(-50%, -50%);
   color: #d7d7d7;
-  font-family: 'VT323', monospace;
-  font-size:large;
+  font-family: "VT323", monospace;
+  font-size: large;
   text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }
 
@@ -56,13 +56,17 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 50%, rgba(255, 255, 255, 0.03) 50%);
+  background-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.05) 50%,
+    rgba(255, 255, 255, 0.03) 50%
+  );
   background-size: 100% 4px;
   opacity: 0.8;
 }
 
 .tv-outer-frame {
-  background: linear-gradient(to top,rgb(50, 50, 50), #4a4a4a);
+  background: linear-gradient(to top, rgb(50, 50, 50), #4a4a4a);
   border-radius: 10px;
   padding: 1.5rem 0.8rem 1.5rem 0.8rem;
   box-shadow: 1.7rem -0.6rem 5rem 1rem rgba(0, 0, 0, 0.5);
@@ -123,12 +127,15 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 50%, rgba(255, 255, 255, 0.03) 50%);
+  background-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.05) 50%,
+    rgba(255, 255, 255, 0.03) 50%
+  );
   background-size: 100% 4px;
   z-index: 10;
   pointer-events: none;
 }
-
 
 .controls-container:before {
   content: "";
@@ -165,14 +172,13 @@
   z-index: 1;
 }
 
-.tv-box-hero{
+.tv-box-hero {
   transform: scale(1.1);
 }
 
-.tv-box-monster{
+.tv-box-monster {
   transform: scale(1.2);
 }
-
 
 .action-buttons-container {
   width: 21rem;
@@ -181,33 +187,46 @@
 .attack-button {
   width: 100%;
   margin-bottom: 0.5rem;
-  font-family: 'VT323', monospace;
+  font-family: "VT323", monospace;
   font-size: x-large;
   background-image: linear-gradient(to top, #4b3800 30%, #906801 60%, #e7cc62);
-transition: 0.3s;
+  transition: 0.3s;
   border: solid 3px #828282;
 }
 
 .attack-button:hover {
-  background-image: linear-gradient(to top, #4b3800  30%, #d6bd56 70%, #906801 );
+  background-image: linear-gradient(to top, #4b3800 30%, #d6bd56 70%, #906801);
   transition: 0.3s;
 }
 
-.modal-monster-turn{
+.inventory-button {
+  background-image: linear-gradient(to top, #222222 30%, #4a4a4a 60%, #d1d1d1);
+}
+
+.inventory-button:hover {
+  background-image: linear-gradient(to top, #222222 30%, #b5b5b5 70%, #4a4a4a);
+}
+
+.potion-button {
+  margin-bottom: 0.5rem;
+  background-image: linear-gradient(to top, #222222 30%, #4a4a4a 60%, #d1d1d1);
+  border: solid 3px #828282;
+}
+
+
+.modal-monster-turn {
   width: 100%;
   display: flex;
   justify-content: center;
 }
 
 .battle-title {
-  font-family: 'VT323', monospace;
+  font-family: "VT323", monospace;
   font-size: 2rem;
   text-align: center;
 }
 
-
 /* ANIMATIONS */
-
 
 @keyframes hero-attack {
   0% {
@@ -258,7 +277,6 @@ transition: 0.3s;
   animation: flash 0.3s linear;
 }
 
-
 @keyframes flash {
   50% {
     opacity: 1;
@@ -267,7 +285,6 @@ transition: 0.3s;
     opacity: 0;
   }
 }
-
 
 .potion {
   display: flex;
@@ -286,6 +303,14 @@ transition: 0.3s;
 
 .potion.active {
   background-image: url("/images/potion.png");
+}
+
+.potion.active:hover {
+  filter: brightness(130%);
+}
+
+.potion:not(.clickable) {
+  cursor:default;
 }
 
 .potion:last-child {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row, Col, Button, Form } from "react-bootstrap";
+import { Container, Row, Col, Button, Form, Modal } from "react-bootstrap";
 import "./Battle.css";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -23,8 +23,6 @@ export const BattlePage = () => {
   const [heroItems, setHeroItems] = useState([]);
   const [createNewBattle, setCreateNewBattle] = useState(false);
   const [consecutiveWins, setConsecutiveWins] = useState(0);
-  const [initialHeroHealth, setInitialHeroHealth] = useState(null);
-  const [initialMonsterHealth, setInitialMonsterHealth] = useState(null);
   const [levelUpValues, setLevelUpValues] = useState(null);
   const [randomItemReceived, setRandomItemReceived] = useState(null);
   const [heroImage, setHeroImage] = useState(null);
@@ -35,8 +33,14 @@ export const BattlePage = () => {
     useState(false);
   const [showFlashOverlay, setShowFlashOverlay] = useState(false);
 
+  const [showInventoryModal, setShowInventoryModal] = useState(false);
+  const [modalSelectedItem, setModalSelectedItem] = useState(null);
+
   const [heroPotions, setHeroPotions] = useState(4);
   const [currentHeroHealth, setCurrentHeroHealth] = useState(null);
+  const [currentMonsterHealth, setCurrentMonsterHealth] = useState(null);
+
+  const [monsterIsDead, setMonsterIsDead] = useState(false);
 
   const token = useSelector((state) => state.auth.token);
   const navigate = useNavigate();
@@ -50,15 +54,24 @@ export const BattlePage = () => {
   }, []);
 
   useEffect(() => {
+    if (!isPlayerTurn & !monsterIsDead){
+      setTimeout(() => {
+        monsterAttack();
+      }, 1500)
+    }
+  }, [isPlayerTurn, monsterIsDead])
+
+  useEffect(() => {
     const fetchData = async () => {
       if (!battle || createNewBattle) {
         setCreateNewBattle(false);
         const data = await createBattle(token);
         if (data && data.status === "success") {
           setBattle(data.data);
-          setInitialHeroHealth(data.data.hero.health);
+
           setCurrentHeroHealth(data.data.hero.health);
-          setInitialMonsterHealth(data.data.monster.health);
+
+          setCurrentMonsterHealth(data.data.monster.health);
           if (data.data.hero && data.data.hero.hero_image_id) {
             const heroImage = await getHeroImage(
               data.data.hero.hero_image_id,
@@ -131,11 +144,33 @@ export const BattlePage = () => {
     return selectedItemObj ? selectedItemObj.attack_modifier : 0;
   };
 
-  const Potion = ({ index, handleUsePotion, isActive }) => {
+  const openInventoryModal = () => {
+    setShowInventoryModal(true);
+  };
+
+  const closeInventoryModal = () => {
+    setShowInventoryModal(false);
+  };
+
+  const handleModalItemClick = (item) => {
+    setModalSelectedItem(item);
+  };
+
+  const findItemById = (id) => {
+    return heroItems.find((item) => item.id === id);
+  };
+
+  const Potion = ({ index, handleUsePotion, isActive, isClickable }) => {
+    const handleClick = () => {
+      if (isClickable) {
+        handleUsePotion(index);
+      }
+    };
+  
     return (
       <div
-        className={`potion${isActive ? " active" : ""}`}
-        onClick={() => handleUsePotion(index)}
+        className={`potion${isActive ? " active" : ""}${isClickable ? " clickable" : ""}`}
+        onClick={handleClick}
       />
     );
   };
@@ -143,33 +178,23 @@ export const BattlePage = () => {
   const handleUsePotion = () => {
     if (isPlayerTurn && heroPotions > 0) {
       setHeroPotions((prevPotions) => prevPotions - 1);
-
+      console.log("vida actual del héroe: ",currentHeroHealth);
       const updatedHeroHealth = Math.min(
-        initialHeroHealth,
+        battle.hero.health,
         currentHeroHealth + 50
       );
-      setCurrentHeroHealth(updatedHeroHealth);
-      setBattle((prevState) => ({
-        ...prevState,
-        hero: {
-          ...prevState.hero,
-          health: updatedHeroHealth,
-        },
-      }));
+      console.log("updated hero health: ", updatedHeroHealth);
+
+        setCurrentHeroHealth(updatedHeroHealth);
+
+      console.log("vida actual del héroe next: ",currentHeroHealth);
       setIsPlayerTurn(false);
-      setTimeout(() => {
-        monsterAttack();
-      }, 1500);
+      // setTimeout(() => {
+      //   monsterAttack();
+      // }, 1500);
     }
   };
 
-  // useEffect(() => {
-  //   if (!isPlayerTurn && currentHeroHealth > 0) {
-  //     setTimeout(() => {
-  //       monsterAttack();
-  //     }, 1500);
-  //   }
-  // }, [currentHeroHealth, isPlayerTurn]);
 
   const getSelectedItemDefenseModifier = () => {
     const selectedItemInt = parseInt(selectedItem);
@@ -228,19 +253,14 @@ export const BattlePage = () => {
       console.log("Defensa del monstruo:", monsterDefense);
       console.log("Daño realizado al monstruo:", damage);
 
-      const newMonsterHp = Math.max(0, battle.monster.health - damage);
-      setBattle((prevState) => ({
-        ...prevState,
-        monster: {
-          ...prevState.monster,
-          health: newMonsterHp,
-        },
-      }));
+      const newMonsterHp = Math.max(0, currentMonsterHealth - damage);
+      setCurrentMonsterHealth(newMonsterHp);
 
       setIsPlayerTurn(false);
 
       if (newMonsterHp <= 0) {
         setShowModal(true);
+        setMonsterIsDead(true);
         setModalMessage("¡Has vencido al monstruo!");
 
         if (Math.random() > 0.7) {
@@ -280,9 +300,9 @@ export const BattlePage = () => {
       }
 
       //ATAQUE DEL MONSTRUO//
-      setTimeout(() => {
-        monsterAttack();
-      }, 1500);
+      // setTimeout(() => {
+      //   monsterAttack();
+      // }, 1500);
     }
   };
 
@@ -300,16 +320,9 @@ export const BattlePage = () => {
       heroDefense
     );
     console.log("Daño realizado al héroe:", heroDamageTaken);
-
+    console.log("vida actual del héroe en monster attack: ",currentHeroHealth);
     const newHeroHp = Math.max(0, currentHeroHealth - heroDamageTaken);
     setCurrentHeroHealth(newHeroHp);
-    setBattle((prevState) => ({
-      ...prevState,
-      hero: {
-        ...prevState.hero,
-        health: newHeroHp,
-      },
-    }));
 
     setShowMonsterAttackAnimation(true);
     setTimeout(() => {
@@ -320,7 +333,7 @@ export const BattlePage = () => {
     setTimeout(() => {
       setShowFlashOverlay(false);
     }, 1000);
-
+    console.log("vida actual del héroe en 322: ",currentHeroHealth);
     if (newHeroHp <= 0) {
       setShowModal(true);
       setModalMessage("El monstruo ha derrotado a tu héroe.");
@@ -368,8 +381,8 @@ export const BattlePage = () => {
                       )`}
                       style={{
                         width: `${getHealthPercentage(
-                          battle.monster.health,
-                          initialMonsterHealth
+                          currentMonsterHealth,
+                          battle.monster.health
                         )}%`,
                       }}
                     ></div>
@@ -405,14 +418,14 @@ export const BattlePage = () => {
                     <div
                       className={`health-bar-fill ${getHealthBarColorClass(
                         getHealthPercentage(
-                          battle.hero.health,
-                          initialHeroHealth
+                          currentHeroHealth,
+                          battle.hero.health
                         )
                       )}`}
                       style={{
                         width: `${getHealthPercentage(
-                          battle.hero.health,
-                          initialHeroHealth
+                          currentHeroHealth,
+                          battle.hero.health
                         )}%`,
                       }}
                     ></div>
@@ -451,28 +464,27 @@ export const BattlePage = () => {
                   <Button
                     variant="dark"
                     onClick={handleAttack}
-                    className="attack-button me-3"
+                    className="attack-button"
                   >
                     Atacar
                   </Button>
-                  <Form.Select
-                    value={selectedItem}
-                    onChange={(e) => setSelectedItem(e.target.value)}
+                  <Button
+                    variant="dark"
+                    onClick={openInventoryModal}
+                    className="attack-button inventory-button me-3"
                   >
-                    <option value="">Selecciona un objeto</option>
-                    {heroItems.map((item) => (
-                      <option key={item.id} value={item.id}>
-                        {item.name}
-                      </option>
-                    ))}
-                  </Form.Select>
-                  <div className="d-flex justify-content-center mt-3">
+                    {selectedItem
+                      ? findItemById(selectedItem).name
+                      : "Inventario"}
+                  </Button>
+                  <div className="d-flex justify-content-center mt-3 potion-button">
                     {Array.from({ length: 4 }, (_, index) => (
                       <Potion
                         key={index}
                         index={index}
                         handleUsePotion={handleUsePotion}
                         isActive={index < heroPotions}
+                        isClickable={index < heroPotions}
                       />
                     ))}
                   </div>
@@ -494,6 +506,58 @@ export const BattlePage = () => {
                 />
               )}
             </div>
+            <Modal
+              show={showInventoryModal}
+              onHide={closeInventoryModal}
+              centered
+            >
+              <Modal.Header closeButton>
+                <Modal.Title>Inventario</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                {heroItems.map((item) => (
+                  <Button
+                    key={item.id}
+                    variant="dark"
+                    className="mb-2"
+                    onClick={() => handleModalItemClick(item)}
+                  >
+                    {item.name}
+                  </Button>
+                ))}
+                {modalSelectedItem && (
+                  <div className="mt-3">
+                    <h5>Detalles del ítem:</h5>
+                    <p>
+                      Nombre: {modalSelectedItem.name} <br />
+                      Descripción: {modalSelectedItem.description} <br />
+                      Modificador de Ataque: +{" "}
+                      {modalSelectedItem.attack_modifier} <br />
+                      Modificador de Defensa: +{" "}
+                      {modalSelectedItem.defense_modifier} <br />
+                    </p>
+                  </div>
+                )}
+              </Modal.Body>
+
+              <Modal.Footer>
+                <Button
+                  variant="success"
+                  onClick={() => {
+                    if (modalSelectedItem) {
+                      setSelectedItem(modalSelectedItem.id);
+                      closeInventoryModal();
+                    }
+                  }}
+                  disabled={!modalSelectedItem}
+                >
+                  Seleccionar ítem
+                </Button>
+                <Button variant="secondary" onClick={closeInventoryModal}>
+                  Cerrar
+                </Button>
+              </Modal.Footer>
+            </Modal>
           </Col>
         </Col>
       </Row>

@@ -30,6 +30,11 @@ export const BattlePage = () => {
   const [heroImage, setHeroImage] = useState(null);
   const [monsterImage, setMonsterImage] = useState(null);
 
+  const [showHeroAttackAnimation, setShowHeroAttackAnimation] = useState(false);
+  const [showMonsterAttackAnimation, setShowMonsterAttackAnimation] =
+  useState(false);
+  const [showFlashOverlay, setShowFlashOverlay] = useState(false);
+
   const token = useSelector((state) => state.auth.token);
   const navigate = useNavigate();
 
@@ -152,6 +157,16 @@ export const BattlePage = () => {
       battle.monster &&
       battle.stage
     ) {
+      setShowHeroAttackAnimation(true);
+      setTimeout(() => {
+        setShowHeroAttackAnimation(false);
+        setShowFlashOverlay(true);
+      }, 300);
+
+      setTimeout(() => {
+        setShowFlashOverlay(false);
+      }, 1000);
+
       //ATAQUE DEL HÉROE//
 
       const heroDamage =
@@ -214,45 +229,58 @@ export const BattlePage = () => {
 
         setConsecutiveWins((prevWins) => {
           const newWins = prevWins + 1;
-
           return newWins;
         });
+
         return;
       }
 
       //ATAQUE DEL MONSTRUO//
-
       setTimeout(() => {
-        const monsterDamage = battle.monster.attack * 2;
-        const heroDefense =
-          battle.hero.defense +
-          getSelectedItemDefenseModifier() +
-          battle.stage.defense_modifier;
-        const heroDamageTaken = Math.max(0, monsterDamage - heroDefense);
+        monsterAttack();
+      }, 1500);
+    }
+  };
 
-        console.log("Ataque del monstruo:", monsterDamage);
-        console.log(
-          "Defensa del héroe (incluye modificador de objeto y escenario):",
-          heroDefense
-        );
-        console.log("Daño realizado al héroe:", heroDamageTaken);
+  const monsterAttack = () => {
+    const monsterDamage = battle.monster.attack * 2;
+    const heroDefense =
+      battle.hero.defense +
+      getSelectedItemDefenseModifier() +
+      battle.stage.defense_modifier;
+    const heroDamageTaken = Math.max(0, monsterDamage - heroDefense);
 
-        const newHeroHp = Math.max(0, battle.hero.health - heroDamageTaken);
-        setBattle((prevState) => ({
-          ...prevState,
-          hero: {
-            ...prevState.hero,
-            health: newHeroHp,
-          },
-        }));
+    console.log("Ataque del monstruo:", monsterDamage);
+    console.log(
+      "Defensa del héroe (incluye modificador de escenario):",
+      heroDefense
+    );
+    console.log("Daño realizado al héroe:", heroDamageTaken);
 
-        if (newHeroHp <= 0) {
-          setShowModal(true);
-          setModalMessage("Tu héroe ha sido derrotado.");
-        } else {
-          setIsPlayerTurn(true);
-        }
-      }, 2000);
+    const newHeroHp = Math.max(0, battle.hero.health - heroDamageTaken);
+    setBattle((prevState) => ({
+      ...prevState,
+      hero: {
+        ...prevState.hero,
+        health: newHeroHp,
+      },
+    }));
+
+    setShowMonsterAttackAnimation(true);
+    setTimeout(() => {
+      setShowMonsterAttackAnimation(false);
+      setShowFlashOverlay(true);
+    }, 300);
+
+    setTimeout(() => {
+      setShowFlashOverlay(false);
+    }, 1000);
+
+    if (newHeroHp <= 0) {
+      setShowModal(true);
+      setModalMessage("El monstruo ha derrotado a tu héroe.");
+    } else {
+      setIsPlayerTurn(true);
     }
   };
 
@@ -307,7 +335,8 @@ export const BattlePage = () => {
             <div className="tv-outer-frame d-flex flex-column">
               <div className="tv-inner-frame">
                 <div className="tv-screen-box">
-                <div className="overlay"></div>
+                  <div className="scanlines"></div>
+                  {showFlashOverlay && <div className="flash-overlay"></div>}
                   <div className="health-bar">
                     <div
                       className={`health-bar-fill (
@@ -332,13 +361,23 @@ export const BattlePage = () => {
                   <div className="tv-box d-flex">
                     <div className="tv-box-hero">
                       <img
-                        className="tv-box-hero"
+                        className={`tv-box-hero ${
+                          showHeroAttackAnimation ? "hero-attack-animation" : ""
+                        }`}
                         src={heroImage}
                         alt={battle.hero.name}
                       />
                     </div>
                     <div className="tv-box-monster">
-                      <img src={monsterImage} alt={battle.monster.name} />
+                      <img
+                        className={`${
+                          showMonsterAttackAnimation
+                            ? "monster-attack-animation"
+                            : ""
+                        }`}
+                        src={monsterImage}
+                        alt={battle.monster.name}
+                      />
                     </div>
                   </div>
                   <div className="health-bar">

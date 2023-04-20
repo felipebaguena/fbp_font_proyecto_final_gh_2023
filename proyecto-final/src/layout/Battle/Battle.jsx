@@ -32,8 +32,11 @@ export const BattlePage = () => {
 
   const [showHeroAttackAnimation, setShowHeroAttackAnimation] = useState(false);
   const [showMonsterAttackAnimation, setShowMonsterAttackAnimation] =
-  useState(false);
+    useState(false);
   const [showFlashOverlay, setShowFlashOverlay] = useState(false);
+
+  const [heroPotions, setHeroPotions] = useState(4);
+  const [currentHeroHealth, setCurrentHeroHealth] = useState(null);
 
   const token = useSelector((state) => state.auth.token);
   const navigate = useNavigate();
@@ -54,6 +57,7 @@ export const BattlePage = () => {
         if (data && data.status === "success") {
           setBattle(data.data);
           setInitialHeroHealth(data.data.hero.health);
+          setCurrentHeroHealth(data.data.hero.health);
           setInitialMonsterHealth(data.data.monster.health);
           if (data.data.hero && data.data.hero.hero_image_id) {
             const heroImage = await getHeroImage(
@@ -126,6 +130,46 @@ export const BattlePage = () => {
     );
     return selectedItemObj ? selectedItemObj.attack_modifier : 0;
   };
+
+  const Potion = ({ index, handleUsePotion, isActive }) => {
+    return (
+      <div
+        className={`potion${isActive ? " active" : ""}`}
+        onClick={() => handleUsePotion(index)}
+      />
+    );
+  };
+
+  const handleUsePotion = () => {
+    if (isPlayerTurn && heroPotions > 0) {
+      setHeroPotions((prevPotions) => prevPotions - 1);
+
+      const updatedHeroHealth = Math.min(
+        initialHeroHealth,
+        currentHeroHealth + 50
+      );
+      setCurrentHeroHealth(updatedHeroHealth);
+      setBattle((prevState) => ({
+        ...prevState,
+        hero: {
+          ...prevState.hero,
+          health: updatedHeroHealth,
+        },
+      }));
+      setIsPlayerTurn(false);
+      setTimeout(() => {
+        monsterAttack();
+      }, 1500);
+    }
+  };
+
+  // useEffect(() => {
+  //   if (!isPlayerTurn && currentHeroHealth > 0) {
+  //     setTimeout(() => {
+  //       monsterAttack();
+  //     }, 1500);
+  //   }
+  // }, [currentHeroHealth, isPlayerTurn]);
 
   const getSelectedItemDefenseModifier = () => {
     const selectedItemInt = parseInt(selectedItem);
@@ -257,7 +301,8 @@ export const BattlePage = () => {
     );
     console.log("Daño realizado al héroe:", heroDamageTaken);
 
-    const newHeroHp = Math.max(0, battle.hero.health - heroDamageTaken);
+    const newHeroHp = Math.max(0, currentHeroHealth - heroDamageTaken);
+    setCurrentHeroHealth(newHeroHp);
     setBattle((prevState) => ({
       ...prevState,
       hero: {
@@ -307,30 +352,6 @@ export const BattlePage = () => {
       </div>
       <Row>
         <Col xs={12}>
-          {/* <h2>
-            <img src={heroImage} alt={battle.hero.name} />
-            {battle.hero.name} vs {battle.monster.name}
-            <img src={monsterImage} alt={battle.monster.name} />
-          </h2> */}
-
-          {/* <p>Vida del Monstruo:</p> */}
-          {/* <div className="health-bar">
-            <div
-              className={`health-bar-fill ${getHealthBarColorClass(
-                getHealthPercentage(battle.monster.health, initialMonsterHealth)
-              )}`}
-              style={{
-                width: `${getHealthPercentage(
-                  battle.monster.health,
-                  initialMonsterHealth
-                )}%`,
-              }}
-            ></div>
-            <div className="health-bar-text-container">
-              <span className="health-bar-text">{battle.monster.name}</span>
-            </div>
-          </div> */}
-
           <Col xs={12} className="d-flex justify-content-center">
             <div className="tv-outer-frame d-flex flex-column">
               <div className="tv-inner-frame">
@@ -415,69 +436,65 @@ export const BattlePage = () => {
               </div>
             </div>
           </Col>
-
-          {/* <p>Vida del Héroe:</p> */}
-          {/* <div className="health-bar">
-            <div
-              className={`health-bar-fill ${getHealthBarColorClass(
-                getHealthPercentage(battle.hero.health, initialHeroHealth)
-              )}`}
-              style={{
-                width: `${getHealthPercentage(
-                  battle.hero.health,
-                  initialHeroHealth
-                )}%`,
-              }}
-            ></div>
-            <div className="health-bar-text-container">
-              <span className="health-bar-text">{battle.hero.name}</span>
-            </div>
-          </div> */}
         </Col>
+      </Row>
 
-        <Col className="mt-3">
-          {isPlayerTurn && (
-            <div
-              className="d-flex justify-content-center mt-3"
-              style={{ marginTop: "1rem" }}
-            >
-              <div className="action-buttons-container">
-                <Button
-                  variant="dark"
-                  onClick={handleAttack}
-                  className="attack-button me-3"
-                >
-                  Atacar
-                </Button>
-                <Form.Select
-                  value={selectedItem}
-                  onChange={(e) => setSelectedItem(e.target.value)}
-                >
-                  <option value="">Selecciona un objeto</option>
-                  {heroItems.map((item) => (
-                    <option key={item.id} value={item.id}>
-                      {item.name}
-                    </option>
-                  ))}
-                </Form.Select>
+      <Row>
+        <Col className="controls-container">
+          <Col className="mt-3 ">
+            {isPlayerTurn && (
+              <div
+                className="d-flex justify-content-center mt-3"
+                style={{ marginTop: "1rem" }}
+              >
+                <div className="action-buttons-container">
+                  <Button
+                    variant="dark"
+                    onClick={handleAttack}
+                    className="attack-button me-3"
+                  >
+                    Atacar
+                  </Button>
+                  <Form.Select
+                    value={selectedItem}
+                    onChange={(e) => setSelectedItem(e.target.value)}
+                  >
+                    <option value="">Selecciona un objeto</option>
+                    {heroItems.map((item) => (
+                      <option key={item.id} value={item.id}>
+                        {item.name}
+                      </option>
+                    ))}
+                  </Form.Select>
+                  <div className="d-flex justify-content-center mt-3">
+                    {Array.from({ length: 4 }, (_, index) => (
+                      <Potion
+                        key={index}
+                        index={index}
+                        handleUsePotion={handleUsePotion}
+                        isActive={index < heroPotions}
+                      />
+                    ))}
+                  </div>
+                </div>
               </div>
-            </div>
-          )}
-          <div className="modal-monster-turn">
-            {!isPlayerTurn && !showModal && <p>Es el turno del enemigo...</p>}
-            {showModal && (
-              <BattleModal
-                showModal={showModal}
-                closeModal={closeModal}
-                onNextBattle={onNextBattle}
-                message={modalMessage}
-                showNextBattle={battle && battle.monster.health <= 0}
-                goToHome={goToHome}
-                levelUpValues={levelUpValues}
-                randomItemReceived={randomItemReceived}
-              />
             )}
-          </div>
+            <div className="modal-monster-turn">
+              {!isPlayerTurn && !showModal && <p>Es el turno del enemigo...</p>}
+              {showModal && (
+                <BattleModal
+                  showModal={showModal}
+                  closeModal={closeModal}
+                  onNextBattle={onNextBattle}
+                  message={modalMessage}
+                  showNextBattle={battle && battle.monster.health <= 0}
+                  goToHome={goToHome}
+                  levelUpValues={levelUpValues}
+                  randomItemReceived={randomItemReceived}
+                />
+              )}
+            </div>
+          </Col>
         </Col>
       </Row>
     </Container>

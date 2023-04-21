@@ -473,7 +473,7 @@ export const BattlePage = () => {
           <Col className="mt-3 ">
             {isPlayerTurn && (
               <div
-                className="d-flex justify-content-around mt-3"
+                className="d-flex justify-content-around mt-3 buttons-battle-container"
                 style={{ marginTop: "1rem" }}
               >
                 <div className="action-buttons-container">

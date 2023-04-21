@@ -42,6 +42,9 @@ export const BattlePage = () => {
 
   const [monsterIsDead, setMonsterIsDead] = useState(false);
 
+  const [heroCurrentDefense, setHeroCurrentDefense] = useState(null);
+  const [monsterAttackFailure, setMonsterAttackFailure] = useState(0);
+
   const token = useSelector((state) => state.auth.token);
   const navigate = useNavigate();
 
@@ -70,6 +73,7 @@ export const BattlePage = () => {
           setBattle(data.data);
           setCurrentHeroHealth(data.data.hero.health);
           setCurrentMonsterHealth(data.data.monster.health);
+          setHeroCurrentDefense(data.data.hero.defense);
           if (data.data.hero && data.data.hero.hero_image_id) {
             const heroImage = await getHeroImage(
               data.data.hero.hero_image_id,
@@ -236,7 +240,12 @@ export const BattlePage = () => {
           battle.stage.attack_modifier) *
         2;
       const monsterDefense = battle.monster.defense;
-      const damage = Math.max(0, heroDamage - monsterDefense);
+      const randomChance = Math.random();
+      const failedAttack = randomChance < 0.05;
+      const criticalHit = Math.random() < 0.1;
+      const damage = failedAttack
+        ? 0
+        : Math.max(0, heroDamage - monsterDefense) * (criticalHit ? 2 : 1);
 
       console.log(
         "Ataque del héroe (incluye modificador de escenario):",
@@ -293,15 +302,35 @@ export const BattlePage = () => {
     }
   };
 
+  // DEFENSA DEL HÉROE //
+
+  const handleDefense = () => {
+    setHeroCurrentDefense((prevDefense) => prevDefense * 1.1);
+    setMonsterAttackFailure((prevFailure) => prevFailure + 0.05);
+    setIsPlayerTurn(false);
+  };
+
   //ATAQUE DEL MONSTRUO//
 
   const monsterAttack = () => {
     const monsterDamage = battle.monster.attack * 2;
     const heroDefense =
-      battle.hero.defense +
+      heroCurrentDefense +
       getSelectedItemDefenseModifier() +
       battle.stage.defense_modifier;
-    const heroDamageTaken = Math.max(0, monsterDamage - heroDefense);
+    const randomChance = Math.random();
+    const baseFailureChance = 0.05;
+    const failedAttack =
+      randomChance < baseFailureChance + monsterAttackFailure;
+    const criticalHit = Math.random() < 0.1;
+    const heroDamageTaken = failedAttack
+      ? 0
+      : Math.max(0, monsterDamage - heroDefense) * (criticalHit ? 2 : 1);
+
+    console.log(
+      "Probabilidad de fallo del monstruo:",
+      (baseFailureChance + monsterAttackFailure) * 100 + "%"
+    );
 
     console.log("Ataque del monstruo:", monsterDamage);
     console.log(
@@ -346,16 +375,14 @@ export const BattlePage = () => {
     setCreateNewBattle(true);
     setLevelUpValues(null);
     setMonsterIsDead(false);
+    setMonsterAttackFailure(0);
   };
 
   return (
-    <Container>
-      <div>
-        <h2 className="battle-title">Batalla en {battle.stage.name}</h2>
-      </div>
-      <Row>
-        <Col xs={12}>
-          <Col xs={12} className="d-flex justify-content-center">
+    <Container fluid>
+      <Row className="justify-content-center">
+        <Col xs={11} sm={10} lg={8}>
+          <Col xs={12} className="d-flex justify-content-center background-tv">
             <div className="tv-outer-frame d-flex flex-column">
               <div className="tv-inner-frame">
                 <div className="tv-screen-box">
@@ -363,12 +390,10 @@ export const BattlePage = () => {
                   {showFlashOverlay && <div className="flash-overlay"></div>}
                   <div className="health-bar">
                     <div
-                      className={`health-bar-fill ${
-                        getHealthPercentage(
-                          battle.monster.health,
-                          currentMonsterHealth
-                        )
-                      }`}
+                      className={`health-bar-fill ${getHealthPercentage(
+                        battle.monster.health,
+                        currentMonsterHealth
+                      )}`}
                       style={{
                         width: `${getHealthPercentage(
                           currentMonsterHealth,
@@ -442,15 +467,20 @@ export const BattlePage = () => {
         </Col>
       </Row>
 
-      <Row>
-        <Col className="controls-container">
+      <Row className="justify-content-center">
+        <Col xs={11} sm={10} lg={8} className="controls-container">
           <Col className="mt-3 ">
             {isPlayerTurn && (
               <div
-                className="d-flex justify-content-center mt-3"
+                className="d-flex justify-content-around mt-3"
                 style={{ marginTop: "1rem" }}
               >
                 <div className="action-buttons-container">
+                  <div>
+                    <p className="battle-title">
+                      Batalla en {battle.stage.name}
+                    </p>
+                  </div>
                   <Button
                     variant="dark"
                     onClick={handleAttack}
@@ -460,14 +490,25 @@ export const BattlePage = () => {
                   </Button>
                   <Button
                     variant="dark"
+                    onClick={handleDefense}
+                    className="attack-button defense-button"
+                  >
+                    Defensa
+                  </Button>
+                </div>
+                <div className="inventory-potion-container">
+                  <p className="battle-title">Inventario</p>
+                  <Button
+                    variant="dark"
                     onClick={openInventoryModal}
                     className="attack-button inventory-button me-3"
                   >
                     {selectedItem
                       ? findItemById(selectedItem).name
-                      : "Inventario"}
+                      : "Selecciona un objeto"}
                   </Button>
-                  <div className="d-flex justify-content-center mt-3 potion-button">
+
+                  <div className="d-flex justify-content-center potion-button">
                     {Array.from({ length: 4 }, (_, index) => (
                       <Potion
                         key={index}
@@ -482,7 +523,7 @@ export const BattlePage = () => {
               </div>
             )}
             <div className="modal-monster-turn">
-              {!isPlayerTurn && !showModal && <p>Es el turno del enemigo...</p>}
+              {!isPlayerTurn && !showModal && <p className="battle-title">Es el turno del enemigo...</p>}
               {showModal && (
                 <BattleModal
                   showModal={showModal}

@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import "./Battle";
 
 export const BattleModal = ({
   showModal,
@@ -19,10 +20,10 @@ export const BattleModal = ({
 
   return (
     <div style={{ display: showModal ? "block" : "none" }}>
-      <div>
+      <div className="battle-title d-flex flex-column align-items-center">
         {message}
         {levelUpValues && (
-          <p>
+          <p className="battle-title">
             ¡Tu héroe ha subido de nivel! Valores añadidos:
             <br />
             Ataque: {levelUpValues.attack}
@@ -33,14 +34,16 @@ export const BattleModal = ({
           </p>
         )}
         {randomItemReceived && (
-          <p>
+          <p className="battle-title">
             ¡Tu héroe ha recibido un objeto aleatorio! Objeto: {randomItemReceived.data.name}
           </p>
         )}
         {showNextBattle && (
-          <button onClick={onNextBattle}>Siguiente Batalla</button>
+
+          <button className="next-battle-button" onClick={onNextBattle}>Siguiente Batalla</button>
+
         )}
-        <button onClick={goToHome}>Salir al Home</button>
+        <button className="go-home-button" onClick={goToHome}>Salir al Home</button>
       </div>
     </div>
   );

@@ -45,6 +45,12 @@
   background-color: red;
 }
 
+.background-tv{
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  background-color: #b7b7b7;
+}
+
 .tv-screen-box {
   position: relative;
 }
@@ -115,7 +121,8 @@
   position: relative;
   min-height: 28vh;
   background-image: linear-gradient(to top, #010345 30%, #161a93 60%, #6274cd);
-  padding: 1rem;
+  padding: 0.5rem;
+  padding-top: 0;
   border-radius: 5px;
   border: solid 0.1rem #828282;
 }
@@ -140,10 +147,10 @@
 .controls-container:before {
   content: "";
   position: absolute;
-  top: -0.6rem;
-  left: -0.6rem;
-  right: -0.6rem;
-  bottom: -0.6rem;
+  top: -0.5rem;
+  left: -0.5rem;
+  right: -0.5rem;
+  bottom: -0.5rem;
   background-image: linear-gradient(to top, #808080, #c0c0c0);
   border-radius: 7px;
   border: solid 0.2rem #828282;
@@ -181,7 +188,19 @@
 }
 
 .action-buttons-container {
-  width: 21rem;
+  width: 60%;
+  padding: 0.3rem;
+  border-radius: 0.3rem;
+  border: outset 3px #b1b1b1;
+  margin: 5px;
+}
+
+.inventory-potion-container{
+  width: 40%;
+  padding: 0.3rem;
+  border-radius: 0.3rem;
+  border: outset 3px #b1b1b1;
+  margin: 5px;
 }
 
 .attack-button {
@@ -199,6 +218,15 @@
   transition: 0.3s;
 }
 
+.defense-button {
+  background-image: linear-gradient(to top, #322500 30%, #904b01 60%, #e79c62);
+}
+
+.defense-button:hover {
+  background-image: linear-gradient(to top, #322500 30%, #e79c62 70%, #904b01);
+  transition: 0.3s;
+}
+
 .inventory-button {
   background-image: linear-gradient(to top, #222222 30%, #4a4a4a 60%, #d1d1d1);
 }
@@ -208,11 +236,34 @@
 }
 
 .potion-button {
+  height: fit-content;
+
   margin-bottom: 0.5rem;
   background-image: linear-gradient(to top, #222222 30%, #4a4a4a 60%, #d1d1d1);
   border: solid 3px #828282;
 }
 
+.next-battle-button {
+  width: 100%;
+  margin-bottom: 0.5rem;
+  font-family: "VT323", monospace;
+  color: #d7d7d7;
+  font-size: x-large;
+  background-image: linear-gradient(to top, #4b3800 30%, #906801 60%, #e7cc62);
+  transition: 0.3s;
+  border: solid 3px #828282;
+}
+
+.go-home-button {
+  width: 100%;
+  margin-bottom: 0.5rem;
+  font-family: "VT323", monospace;
+  color: #d7d7d7;
+  font-size: x-large;
+  background-image: linear-gradient(to top, #4b1100 30%, #903f01 60%, #e77162);
+  transition: 0.3s;
+  border: solid 3px #828282;
+}
 
 .modal-monster-turn {
   width: 100%;
@@ -224,6 +275,8 @@
   font-family: "VT323", monospace;
   font-size: 2rem;
   text-align: center;
+  color: #d7d7d7;
+  text-shadow: 0.1rem 0.1rem 0.4rem black;
 }
 
 /* ANIMATIONS */

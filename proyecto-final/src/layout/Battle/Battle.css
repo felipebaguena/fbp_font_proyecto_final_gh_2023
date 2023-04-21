@@ -58,7 +58,33 @@
   z-index: 10;
   margin: 0;
   border-radius: 0.5rem;
-  border: outset 2px rgb(54, 54, 54);
+}
+
+.background-tv:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 0.2rem;
+  background-image: linear-gradient(to right, #b7b7b7 30%, #7a7a7a 80%, #b7b7b7);
+  border: 2px solid #6c655cc5;
+  background-size: 100% 4px;
+  z-index: -30;
+}
+
+.background-tv:before {
+  content: "";
+  position: absolute;
+  top: -0.5rem;
+  left: -0.5rem;
+  right: -0.5rem;
+  bottom: -0.5rem;
+  background-image: linear-gradient(to top, #aeaeae, #c0c0c0);
+  border-radius: 7px;
+  border: solid 0.2rem #828282;
+  z-index: -30;
 }
 
 

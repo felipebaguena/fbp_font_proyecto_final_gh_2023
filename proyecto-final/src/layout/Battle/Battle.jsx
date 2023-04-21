@@ -54,12 +54,12 @@ export const BattlePage = () => {
   }, []);
 
   useEffect(() => {
-    if (!isPlayerTurn & !monsterIsDead){
+    if (!isPlayerTurn & !monsterIsDead) {
       setTimeout(() => {
         monsterAttack();
-      }, 1500)
+      }, 1500);
     }
-  }, [isPlayerTurn, monsterIsDead])
+  }, [isPlayerTurn, monsterIsDead]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -68,9 +68,7 @@ export const BattlePage = () => {
         const data = await createBattle(token);
         if (data && data.status === "success") {
           setBattle(data.data);
-
           setCurrentHeroHealth(data.data.hero.health);
-
           setCurrentMonsterHealth(data.data.monster.health);
           if (data.data.hero && data.data.hero.hero_image_id) {
             const heroImage = await getHeroImage(
@@ -166,10 +164,12 @@ export const BattlePage = () => {
         handleUsePotion(index);
       }
     };
-  
+
     return (
       <div
-        className={`potion${isActive ? " active" : ""}${isClickable ? " clickable" : ""}`}
+        className={`potion${isActive ? " active" : ""}${
+          isClickable ? " clickable" : ""
+        }`}
         onClick={handleClick}
       />
     );
@@ -178,23 +178,15 @@ export const BattlePage = () => {
   const handleUsePotion = () => {
     if (isPlayerTurn && heroPotions > 0) {
       setHeroPotions((prevPotions) => prevPotions - 1);
-      console.log("vida actual del héroe: ",currentHeroHealth);
+      console.log("vida actual del héroe: ", currentHeroHealth);
       const updatedHeroHealth = Math.min(
         battle.hero.health,
         currentHeroHealth + 50
       );
-      console.log("updated hero health: ", updatedHeroHealth);
-
-        setCurrentHeroHealth(updatedHeroHealth);
-
-      console.log("vida actual del héroe next: ",currentHeroHealth);
+      setCurrentHeroHealth(updatedHeroHealth);
       setIsPlayerTurn(false);
-      // setTimeout(() => {
-      //   monsterAttack();
-      // }, 1500);
     }
   };
-
 
   const getSelectedItemDefenseModifier = () => {
     const selectedItemInt = parseInt(selectedItem);
@@ -298,13 +290,10 @@ export const BattlePage = () => {
 
         return;
       }
-
-      //ATAQUE DEL MONSTRUO//
-      // setTimeout(() => {
-      //   monsterAttack();
-      // }, 1500);
     }
   };
+
+  //ATAQUE DEL MONSTRUO//
 
   const monsterAttack = () => {
     const monsterDamage = battle.monster.attack * 2;
@@ -320,7 +309,7 @@ export const BattlePage = () => {
       heroDefense
     );
     console.log("Daño realizado al héroe:", heroDamageTaken);
-    console.log("vida actual del héroe en monster attack: ",currentHeroHealth);
+    console.log("vida actual del héroe en monster attack: ", currentHeroHealth);
     const newHeroHp = Math.max(0, currentHeroHealth - heroDamageTaken);
     setCurrentHeroHealth(newHeroHp);
 
@@ -333,7 +322,7 @@ export const BattlePage = () => {
     setTimeout(() => {
       setShowFlashOverlay(false);
     }, 1000);
-    console.log("vida actual del héroe en 322: ",currentHeroHealth);
+    console.log("vida actual del héroe en 322: ", currentHeroHealth);
     if (newHeroHp <= 0) {
       setShowModal(true);
       setModalMessage("El monstruo ha derrotado a tu héroe.");
@@ -356,6 +345,7 @@ export const BattlePage = () => {
     setRandomItemReceived(null);
     setCreateNewBattle(true);
     setLevelUpValues(null);
+    setMonsterIsDead(false);
   };
 
   return (
@@ -499,7 +489,7 @@ export const BattlePage = () => {
                   closeModal={closeModal}
                   onNextBattle={onNextBattle}
                   message={modalMessage}
-                  showNextBattle={battle && battle.monster.health <= 0}
+                  showNextBattle={battle && currentMonsterHealth <= 0}
                   goToHome={goToHome}
                   levelUpValues={levelUpValues}
                   randomItemReceived={randomItemReceived}

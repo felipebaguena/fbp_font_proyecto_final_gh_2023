@@ -5,6 +5,7 @@ import { UserList } from '../AdminUsers/AdminUsers';
 import { BattlePage } from '../Battle/Battle';
 import { HeroPage } from '../Heroes/HeroPage';
 import { HomePage } from '../Home/HomePage';
+import { MonsterDex } from '../MonsterDex/MonsterDex';
 import { HeroesAndItems } from '../Profile/MyHeroes';
 import { UserProfile } from '../Profile/Profile';
 
@@ -19,6 +20,7 @@ export const Body = () => {
           <Route path="/profile" element={<UserProfile />} />
           <Route path="/myheroes" element={<HeroesAndItems />} />
           <Route path="/battle" element={<BattlePage />} />
+          <Route path="/monsterdex/:heroId" element={<MonsterDex />} />
           </Routes>
     </>
   )

@@ -102,7 +102,6 @@ export const getAllHeroImages = async (token) => {
   }
 };
 
-
 export const getMonsterImage = async (imageId) => {
   try {
     const response = await axios.get(`${root}monster/image/${imageId}`, {
@@ -202,7 +201,7 @@ export const createHero = async (token, body) => {
         Authorization: `Bearer ${token}`,
       },
     });
-    console.log('Server response:', response.data);
+    console.log("Server response:", response.data);
     return response.data;
   } catch (error) {
     console.error("Error creating hero:", error);
@@ -226,7 +225,9 @@ export const deleteHero = async (token, heroId) => {
     console.error("Error deleting hero:", error);
     return {
       status: "error",
-      message: error.response ? error.response.data.message : "Error deleting hero",
+      message: error.response
+        ? error.response.data.message
+        : "Error deleting hero",
     };
   }
 };
@@ -337,6 +338,24 @@ export const createBattle = async (token) => {
     return response.data;
   } catch (error) {
     console.error("Error creating battle:", error);
+    return null;
+  }
+};
+
+export const getDefeatedMonsters = async (token, heroId) => {
+  try {
+    const response = await axios.get(
+      `${root}heroes/defeated-monsters/${heroId}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching defeated monsters:", error);
     return null;
   }
 };

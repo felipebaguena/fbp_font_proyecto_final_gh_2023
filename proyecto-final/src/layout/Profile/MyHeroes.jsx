@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { setHeroId } from "../../heroSlice";
 import {
   assignRandomItemToHeroById,
   createHero,
@@ -27,6 +28,13 @@ export const HeroesAndItems = () => {
   const [heroImages, setHeroImages] = useState([]);
   const [heroImagesById, setHeroImagesById] = useState({});
   const [heroToDelete, setHeroToDelete] = useState(null);
+
+  const dispatch = useDispatch();
+
+  const handleDefeatedMonstersClick = (heroId) => {
+    dispatch(setHeroId(heroId));
+    navigate(`/monsterdex/${heroId}`);
+  };
 
   const handleShowImageSelectionModal = (imageId) => {
     setSelectedHeroImageId(imageId);
@@ -290,6 +298,12 @@ export const HeroesAndItems = () => {
           </Button>
           <Button variant="danger" onClick={() => handleDeleteHero(hero)}>
             Eliminar héroe
+          </Button>
+          <Button
+            variant="secondary"
+            onClick={() => handleDefeatedMonstersClick(hero.id)}
+          >
+            Monstruos Eliminados
           </Button>
         </Card.Body>
       </Card>

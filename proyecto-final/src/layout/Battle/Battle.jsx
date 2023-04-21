@@ -363,12 +363,12 @@ export const BattlePage = () => {
                   {showFlashOverlay && <div className="flash-overlay"></div>}
                   <div className="health-bar">
                     <div
-                      className={`health-bar-fill (
+                      className={`health-bar-fill ${
                         getHealthPercentage(
                           battle.monster.health,
-                          initialMonsterHealth
+                          currentMonsterHealth
                         )
-                      )`}
+                      }`}
                       style={{
                         width: `${getHealthPercentage(
                           currentMonsterHealth,

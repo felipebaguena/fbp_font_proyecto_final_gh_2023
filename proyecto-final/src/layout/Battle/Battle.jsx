@@ -381,8 +381,9 @@ export const BattlePage = () => {
   return (
     <Container fluid>
       <Row className="justify-content-center">
-        <Col xs={11} sm={10} lg={8}>
+        <Col className="container-table" xs={12} sm={10} lg={8}>
           <Col xs={12} className="d-flex justify-content-center background-tv">
+          <div className="table"></div>
             <div className="tv-outer-frame d-flex flex-column">
               <div className="tv-inner-frame">
                 <div className="tv-screen-box">
@@ -541,6 +542,7 @@ export const BattlePage = () => {
               show={showInventoryModal}
               onHide={closeInventoryModal}
               centered
+              className="custom-modal"
             >
               <Modal.Header closeButton>
                 <Modal.Title>Inventario</Modal.Title>
@@ -550,14 +552,14 @@ export const BattlePage = () => {
                   <Button
                     key={item.id}
                     variant="dark"
-                    className="mb-2"
+                    className="mb-2 custom-button"
                     onClick={() => handleModalItemClick(item)}
                   >
                     {item.name}
                   </Button>
                 ))}
                 {modalSelectedItem && (
-                  <div className="mt-3">
+                  <div className="mt-3 custom-inventory-text">
                     <h5>Detalles del ítem:</h5>
                     <p>
                       Nombre: {modalSelectedItem.name} <br />
@@ -574,6 +576,7 @@ export const BattlePage = () => {
               <Modal.Footer>
                 <Button
                   variant="success"
+                  className="mb-2 custom-button custom-button-select"
                   onClick={() => {
                     if (modalSelectedItem) {
                       setSelectedItem(modalSelectedItem.id);
@@ -584,7 +587,7 @@ export const BattlePage = () => {
                 >
                   Seleccionar ítem
                 </Button>
-                <Button variant="secondary" onClick={closeInventoryModal}>
+                <Button variant="secondary" className="custom-button custom-button-close" onClick={closeInventoryModal}>
                   Cerrar
                 </Button>
               </Modal.Footer>

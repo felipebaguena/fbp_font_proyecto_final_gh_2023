@@ -6,7 +6,7 @@
 }
 
 .health-bar-fill {
-  background-color: rgb(172, 0, 0);
+  background-image: linear-gradient(to top, #6b0101 30%, #900101 60%, #e76262);
   position: absolute;
   top: 0;
   left: 0;
@@ -34,22 +34,33 @@
 }
 
 .health-bar-fill-green {
-  background-color: green;
+  background-image: linear-gradient(to top, hwb(121 0% 58%) 30%, #01900d 60%, #62e776);
 }
 
 .health-bar-fill-orange {
-  background-color: orange;
+  background-image: linear-gradient(to top, #7c5101 30%, #ae7100 60%, #e79762);
 }
 
 .health-bar-fill-red {
-  background-color: red;
+  background-image: linear-gradient(to top, #6b0101 30%, #900101 60%, #e76262);
+}
+
+.container-table{
+  margin: 0;
+  padding: 0;
 }
 
 .background-tv{
+  position: relative;
   padding-top: 2rem;
   padding-bottom: 2rem;
-  background-color: #b7b7b7;
+  background-image: linear-gradient(to right, #b7b7b7 30%, #7a7a7a 80%, #b7b7b7);
+  z-index: 10;
+  margin: 0;
+  border-radius: 0.5rem;
+  border: outset 2px rgb(54, 54, 54);
 }
+
 
 .tv-screen-box {
   position: relative;
@@ -75,7 +86,8 @@
   background: linear-gradient(to top, rgb(50, 50, 50), #4a4a4a);
   border-radius: 10px;
   padding: 1.5rem 0.8rem 1.5rem 0.8rem;
-  box-shadow: 1.7rem -0.6rem 5rem 1rem rgba(0, 0, 0, 0.5);
+  box-shadow: 1.5rem -0.2rem 3rem 1rem rgba(0, 0, 0, 0.5);
+  border: 2px outset rgba(101, 101, 101, 0.69);
 }
 
 .tv-inner-frame {
@@ -90,7 +102,6 @@
 .tv-box {
   position: relative;
   background-color: #222;
-  /* border-radius: 5px; */
   height: 13rem;
   width: 20rem;
   align-items: center;
@@ -119,13 +130,13 @@
 .controls-container {
   margin-top: 1rem;
   position: relative;
-  min-height: 28vh;
+  min-height: 31vh;
   background-image: linear-gradient(to top, #010345 30%, #161a93 60%, #6274cd);
   padding: 0.5rem;
   padding-top: 0;
   border-radius: 5px;
-  border: solid 0.1rem #828282;
 }
+
 
 .controls-container:after {
   content: "";
@@ -142,6 +153,7 @@
   background-size: 100% 4px;
   z-index: 10;
   pointer-events: none;
+
 }
 
 .controls-container:before {
@@ -156,6 +168,7 @@
   border: solid 0.2rem #828282;
   z-index: -10;
 }
+
 
 .tv-control-knob {
   background-color: rgb(59, 59, 59);
@@ -187,8 +200,31 @@
   transform: scale(1.2);
 }
 
+.table{
+  position: absolute;
+  bottom: 0;
+  height: 30%;
+  width: 100%;
+  margin: 0;
+  background-image: url("../../../public/wood-grain.svg"), linear-gradient(to top, #62422b, #875a45);
+  z-index: -20;
+  border-top: 1.5px solid rgba(112, 96, 87, 0.338);
+  box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.table::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1.5rem; 
+  background-image: linear-gradient(to bottom, #413025 60%, #512d1d);
+}
+
+
 .action-buttons-container {
-  width: 60%;
+  width: 55%;
   padding: 0.3rem;
   border-radius: 0.3rem;
   border: outset 3px #b1b1b1;
@@ -196,11 +232,42 @@
 }
 
 .inventory-potion-container{
-  width: 40%;
+  width: 45%;
   padding: 0.3rem;
   border-radius: 0.3rem;
   border: outset 3px #b1b1b1;
   margin: 5px;
+}
+
+.custom-modal .modal-content {
+  background-image: linear-gradient(to top, #010345 30%, #161a93 60%, #6274cd);
+  font-family: "VT323", monospace;
+  font-size: x-large;
+}
+
+.modal-title{
+  color: whitesmoke;
+  font-size: xx-large;
+}
+
+.custom-button {
+  background-image: linear-gradient(to top, #222222 30%, #4a4a4a 60%, #9b9b9b);
+  font-family: "VT323", monospace;
+  font-size: x-large;
+  width: 48%;
+  margin: 1%;
+}
+
+.custom-button-select{
+  background-image: linear-gradient(to top, #4b3800 30%, #906801 60%, #e7cc62);
+}
+
+.custom-button-close {
+  background-image: linear-gradient(to top, #322500 30%, #902501 60%, #e77d62);
+}
+
+.custom-inventory-text{
+  color: whitesmoke;
 }
 
 .attack-button {
@@ -214,16 +281,16 @@
 }
 
 .attack-button:hover {
-  background-image: linear-gradient(to top, #4b3800 30%, #d6bd56 70%, #906801);
+  background-image: linear-gradient(to top, #2d2200 30%, #d6bd56 70%, #906801);
   transition: 0.3s;
 }
 
 .defense-button {
-  background-image: linear-gradient(to top, #322500 30%, #904b01 60%, #e79c62);
+  background-image: linear-gradient(to top, #322500 30%, #902501 60%, #e77d62);
 }
 
 .defense-button:hover {
-  background-image: linear-gradient(to top, #322500 30%, #e79c62 70%, #904b01);
+  background-image: linear-gradient(to top, #1e0700 30%, #e77d62 70%, #902201);
   transition: 0.3s;
 }
 

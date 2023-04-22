@@ -359,3 +359,18 @@ export const getDefeatedMonsters = async (token, heroId) => {
     return null;
   }
 };
+
+export const getTotalMonsters = async (token) => {
+  try {
+    const response = await axios.get(`${root}monsters`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data.length;
+  } catch (error) {
+    console.error("Error fetching total monsters:", error);
+    return null;
+  }
+};

@@ -34,7 +34,12 @@
 }
 
 .health-bar-fill-green {
-  background-image: linear-gradient(to top, hwb(121 0% 58%) 30%, #01900d 60%, #62e776);
+  background-image: linear-gradient(
+    to top,
+    hwb(121 0% 58%) 30%,
+    #01900d 60%,
+    #62e776
+  );
 }
 
 .health-bar-fill-orange {
@@ -45,16 +50,21 @@
   background-image: linear-gradient(to top, #6b0101 30%, #900101 60%, #e76262);
 }
 
-.container-table{
+.container-table {
   margin: 0;
   padding: 0;
 }
 
-.background-tv{
+.background-tv {
   position: relative;
   padding-top: 2rem;
   padding-bottom: 2rem;
-  background-image: linear-gradient(to right, #b7b7b7 30%, #7a7a7a 80%, #b7b7b7);
+  background-image: linear-gradient(
+    to right,
+    #b7b7b7 30%,
+    #7a7a7a 80%,
+    #b7b7b7
+  );
   z-index: 10;
   margin: 0;
   border-radius: 0.5rem;
@@ -68,7 +78,12 @@
   right: 0;
   bottom: 0;
   border-radius: 0.2rem;
-  background-image: linear-gradient(to right, #b7b7b7 30%, #7a7a7a 80%, #b7b7b7);
+  background-image: linear-gradient(
+    to right,
+    #b7b7b7 30%,
+    #7a7a7a 80%,
+    #b7b7b7
+  );
   border: 2px solid #6c655cc5;
   background-size: 100% 4px;
   z-index: -30;
@@ -86,7 +101,6 @@
   border: solid 0.2rem #828282;
   z-index: -30;
 }
-
 
 .tv-screen-box {
   position: relative;
@@ -163,7 +177,6 @@
   border-radius: 5px;
 }
 
-
 .controls-container:after {
   content: "";
   position: absolute;
@@ -179,7 +192,6 @@
   background-size: 100% 4px;
   z-index: 10;
   pointer-events: none;
-
 }
 
 .controls-container:before {
@@ -194,7 +206,6 @@
   border: solid 0.2rem #828282;
   z-index: -10;
 }
-
 
 .tv-control-knob {
   background-color: rgb(59, 59, 59);
@@ -226,13 +237,14 @@
   transform: scale(1.2);
 }
 
-.table{
+.table {
   position: absolute;
   bottom: 0;
   height: 30%;
   width: 100%;
   margin: 0;
-  background-image: url("../../../public/wood-grain.svg"), linear-gradient(to top, #62422b, #875a45);
+  background-image: url("../../../public/wood-grain.svg"),
+    linear-gradient(to top, #62422b, #875a45);
   z-index: -20;
   border-top: 1.5px solid rgba(112, 96, 87, 0.338);
   box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.3);
@@ -244,10 +256,9 @@
   left: 0;
   right: 0;
   bottom: 0;
-  height: 1.5rem; 
+  height: 1.5rem;
   background-image: linear-gradient(to bottom, #413025 60%, #512d1d);
 }
-
 
 .action-buttons-container {
   width: 55%;
@@ -257,7 +268,7 @@
   margin: 5px;
 }
 
-.inventory-potion-container{
+.inventory-potion-container {
   width: 45%;
   padding: 0.3rem;
   border-radius: 0.3rem;
@@ -266,12 +277,30 @@
 }
 
 .custom-modal .modal-content {
+  position: relative;
   background-image: linear-gradient(to top, #010345 30%, #161a93 60%, #6274cd);
   font-family: "VT323", monospace;
   font-size: x-large;
 }
 
-.modal-title{
+.custom-modal::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.05) 50%,
+    rgba(255, 255, 255, 0.03) 50%
+  );
+  background-size: 100% 4px;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.modal-title {
   color: whitesmoke;
   font-size: xx-large;
 }
@@ -284,7 +313,7 @@
   margin: 1%;
 }
 
-.custom-button-select{
+.custom-button-select {
   background-image: linear-gradient(to top, #4b3800 30%, #906801 60%, #e7cc62);
 }
 
@@ -292,7 +321,7 @@
   background-image: linear-gradient(to top, #322500 30%, #902501 60%, #e77d62);
 }
 
-.custom-inventory-text{
+.custom-inventory-text {
   color: whitesmoke;
 }
 
@@ -456,7 +485,7 @@
 }
 
 .potion:not(.clickable) {
-  cursor:default;
+  cursor: default;
 }
 
 .potion:last-child {
@@ -469,11 +498,10 @@
     flex-basis: 100%;
   }
 
-  .buttons-battle-container{
+  .buttons-battle-container {
     flex-wrap: wrap;
   }
 }
-
 
 @media (max-width: 365px) {
   .action-buttons-container,
@@ -481,18 +509,18 @@
     flex-basis: 100%;
   }
 
-  .buttons-battle-container{
+  .buttons-battle-container {
     flex-wrap: wrap;
   }
 
-  .battle-title{
+  .battle-title {
     font-size: x-large;
   }
 
   .tv-screen-box {
     position: relative;
   }
-  
+
   .scanlines {
     position: absolute;
     z-index: 10;
@@ -508,7 +536,7 @@
     background-size: 100% 3.2px;
     opacity: 0.8;
   }
-  
+
   .tv-outer-frame {
     background: linear-gradient(to top, rgb(50, 50, 50), #4a4a4a);
     border-radius: 8px;
@@ -516,7 +544,7 @@
     box-shadow: 1.2rem -0.16rem 2.4rem 0.8rem rgba(0, 0, 0, 0.5);
     border: 1.6px outset rgba(101, 101, 101, 0.69);
   }
-  
+
   .tv-inner-frame {
     background-color: #333;
     border-radius: 0.24rem;
@@ -525,7 +553,7 @@
     border-left: 0.8rem inset rgb(123, 123, 123);
     border-right: 0.8rem inset rgb(0, 0, 0);
   }
-  
+
   .tv-box {
     position: relative;
     background-color: #222;
@@ -540,7 +568,7 @@
       rgba(0, 0, 0, 0) 56%
     );
   }
-  
+
   .tv-controls {
     background-color: #222;
     border-radius: 4px;
@@ -566,6 +594,4 @@
   .background-tv:after {
     display: none;
   }
-
-
 }

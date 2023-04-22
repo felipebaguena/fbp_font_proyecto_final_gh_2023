@@ -145,7 +145,7 @@ export const HeroPage = () => {
   const renderNewHeroCard = () => {
     return (
       <Card style={{ width: "18rem" }}>
-        <Card.Body className="custom-card new-hero-custom-card">
+        <Card.Body className="custom-card">
           <Card.Title className="custom-card-title text-center">
             Nuevo héroe
           </Card.Title>
@@ -164,7 +164,7 @@ export const HeroPage = () => {
           <Card.Text className="custom-card-text m-1 text-center story-card-container">
             Crea un nuevo personaje para tu aventura
           </Card.Text>
-          <div className="d-flex flex-column">
+          <div className="d-flex flex-column card-buttons-container">
             <Button
               variant="primary"
               className="mb-1 custom-button"
@@ -317,7 +317,7 @@ export const HeroPage = () => {
           <Card.Text className="custom-card-text m-1 text-center story-card-container">
             {hero.story}
           </Card.Text>
-          <div className="d-flex flex-column">
+          <div className="d-flex flex-column card-buttons-container">
             <Button
               variant="primary"
               className="mb-1 custom-button"

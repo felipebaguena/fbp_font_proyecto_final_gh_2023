@@ -34,7 +34,7 @@ export const BattlePage = () => {
   const [showFlashOverlay, setShowFlashOverlay] = useState(false);
 
   const [showInventoryModal, setShowInventoryModal] = useState(false);
-  const [modalSelectedItem, setModalSelectedItem] = useState(null);
+  const [selectedItemIndex, setSelectedItemIndex] = useState(null);
 
   const [heroPotions, setHeroPotions] = useState(4);
   const [currentHeroHealth, setCurrentHeroHealth] = useState(null);
@@ -152,10 +152,6 @@ export const BattlePage = () => {
 
   const closeInventoryModal = () => {
     setShowInventoryModal(false);
-  };
-
-  const handleModalItemClick = (item) => {
-    setModalSelectedItem(item);
   };
 
   const findItemById = (id) => {
@@ -383,7 +379,7 @@ export const BattlePage = () => {
       <Row className="justify-content-center">
         <Col className="container-table" xs={12} sm={10} lg={8}>
           <Col xs={12} className="d-flex justify-content-center background-tv">
-          <div className="table"></div>
+            <div className="table"></div>
             <div className="tv-outer-frame d-flex flex-column">
               <div className="tv-inner-frame">
                 <div className="tv-screen-box">
@@ -524,7 +520,9 @@ export const BattlePage = () => {
               </div>
             )}
             <div className="modal-monster-turn">
-              {!isPlayerTurn && !showModal && <p className="battle-title">Es el turno del enemigo...</p>}
+              {!isPlayerTurn && !showModal && (
+                <p className="battle-title">Es el turno del enemigo...</p>
+              )}
               {showModal && (
                 <BattleModal
                   showModal={showModal}
@@ -548,46 +546,62 @@ export const BattlePage = () => {
                 <Modal.Title>Inventario</Modal.Title>
               </Modal.Header>
               <Modal.Body>
-                {heroItems.map((item) => (
-                  <Button
-                    key={item.id}
-                    variant="dark"
-                    className="mb-2 custom-button"
-                    onClick={() => handleModalItemClick(item)}
-                  >
-                    {item.name}
-                  </Button>
-                ))}
-                {modalSelectedItem && (
-                  <div className="mt-3 custom-inventory-text">
-                    <h5>Detalles del ítem:</h5>
-                    <p>
-                      Nombre: {modalSelectedItem.name} <br />
-                      Descripción: {modalSelectedItem.description} <br />
-                      Modificador de Ataque: +{" "}
-                      {modalSelectedItem.attack_modifier} <br />
-                      Modificador de Defensa: +{" "}
-                      {modalSelectedItem.defense_modifier} <br />
-                    </p>
-                  </div>
-                )}
+                <div className="list-group">
+                  {heroItems.map((item, index) => (
+                    <React.Fragment key={item.id}>
+                      <Button
+                        variant="dark"
+                        className={`custom-button ${
+                          selectedItemIndex === index
+                            ? "custom-button-select"
+                            : ""
+                        }`}
+                        onClick={() =>
+                          selectedItemIndex === index
+                            ? setSelectedItemIndex(null)
+                            : setSelectedItemIndex(index)
+                        }
+                      >
+                        {item.name}
+                      </Button>
+                      {selectedItemIndex === index && (
+                        <div className="mt-3 custom-inventory-text">
+                          <h5>Detalles del ítem:</h5>
+                          <p>
+                            Nombre: {item.name} <br />
+                            Descripción: {item.description} <br />
+                            Modificador de Ataque: +{item.attack_modifier}{" "}
+                            <br />
+                            Modificador de Defensa: +{
+                              item.defense_modifier
+                            }{" "}
+                            <br />
+                          </p>
+                        </div>
+                      )}
+                    </React.Fragment>
+                  ))}
+                </div>
               </Modal.Body>
-
               <Modal.Footer>
                 <Button
                   variant="success"
                   className="mb-2 custom-button custom-button-select"
                   onClick={() => {
-                    if (modalSelectedItem) {
-                      setSelectedItem(modalSelectedItem.id);
+                    if (selectedItemIndex !== null) {
+                      setSelectedItem(heroItems[selectedItemIndex].id);
                       closeInventoryModal();
                     }
                   }}
-                  disabled={!modalSelectedItem}
+                  disabled={selectedItemIndex === null}
                 >
                   Seleccionar ítem
                 </Button>
-                <Button variant="secondary" className="custom-button custom-button-close" onClick={closeInventoryModal}>
+                <Button
+                  variant="secondary"
+                  className="custom-button custom-button-close"
+                  onClick={closeInventoryModal}
+                >
                   Cerrar
                 </Button>
               </Modal.Footer>

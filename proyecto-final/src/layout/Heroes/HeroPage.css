@@ -75,11 +75,14 @@
 
   .selector-hero-title{
     display: flex;
+    text-align: center;
     background-color: #4a4a4a;
     justify-content: center;
     font-family: "VT323", monospace;
     color: whitesmoke;
     font-size: xx-large;
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
   }
 
   .new-hero-custom-card{

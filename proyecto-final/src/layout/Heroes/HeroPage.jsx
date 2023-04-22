@@ -224,57 +224,69 @@ export const HeroPage = () => {
   const renderInventoryModal = () => {
     if (!selectedHero) return null;
     return (
-      <Modal show={showInventoryModal} onHide={handleCloseInventoryModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>Inventario de {selectedHero.name}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <div className="list-group">
-            {selectedHero.items.map((item, index) => (
-              <React.Fragment key={index}>
-                <div
-                  className="list-group-item"
-                  style={{
-                    cursor: "pointer",
-                    backgroundColor:
-                      selectedItemIndex === index ? "#f8f9fa" : "",
-                  }}
-                  onClick={() =>
-                    selectedItemIndex === index
-                      ? setSelectedItemIndex(null)
-                      : setSelectedItemIndex(index)
-                  }
-                >
-                  {item.name}
+      <Modal
+      show={showInventoryModal}
+      onHide={handleCloseInventoryModal}
+      centered
+      className="custom-modal"
+    >
+      <Modal.Header closeButton>
+        <Modal.Title className="modal-title">
+          Inventario de {selectedHero.name}
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <div className="list-group">
+          {selectedHero.items.map((item, index) => (
+            <React.Fragment key={index}>
+              <div
+                className={`list-group-item custom-button custom-inventory-text ${
+                  selectedItemIndex === index ? "custom-button-select" : ""
+                }`}
+                style={{
+                  cursor: "pointer",
+                }}
+                onClick={() =>
+                  selectedItemIndex === index
+                    ? setSelectedItemIndex(null)
+                    : setSelectedItemIndex(index)
+                }
+              >
+                {item.name}
+              </div>
+              {selectedItemIndex === index && (
+                <div className="custom-inventory-text">
+                  <p>{selectedHero.items[selectedItemIndex].description}</p>
+                  <p>
+                    Modificador de Ataque:{" "}
+                    {selectedHero.items[selectedItemIndex].attack_modifier}
+                  </p>
+                  <p>
+                    Modificador de Defensa:{" "}
+                    {selectedHero.items[selectedItemIndex].defense_modifier}
+                  </p>
+                  <p>
+                    Modificador de Salud:{" "}
+                    {selectedHero.items[selectedItemIndex].health_modifier}
+                  </p>
+                  <p>Rareza: {selectedHero.items[selectedItemIndex].rare}</p>
                 </div>
-                {selectedItemIndex === index && (
-                  <div>
-                    <p>{selectedHero.items[selectedItemIndex].description}</p>
-                    <p>
-                      Attack Modifier:{" "}
-                      {selectedHero.items[selectedItemIndex].attack_modifier}
-                    </p>
-                    <p>
-                      Defense Modifier:{" "}
-                      {selectedHero.items[selectedItemIndex].defense_modifier}
-                    </p>
-                    <p>
-                      Health Modifier:{" "}
-                      {selectedHero.items[selectedItemIndex].health_modifier}
-                    </p>
-                    <p>Rarity: {selectedHero.items[selectedItemIndex].rare}</p>
-                  </div>
-                )}
-              </React.Fragment>
-            ))}
-          </div>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseInventoryModal}>
-            Cerrar
-          </Button>
-        </Modal.Footer>
-      </Modal>
+              )}
+            </React.Fragment>
+          ))}
+        </div>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button
+          variant="secondary"
+          className="custom-button custom-button-close"
+          onClick={handleCloseInventoryModal}
+        >
+          Cerrar
+        </Button>
+      </Modal.Footer>
+    </Modal>
+    
     );
   };
 
@@ -320,9 +332,6 @@ export const HeroPage = () => {
     </div>
   </Card.Body>
 </Card>
-
-
-
     );
   };
 
@@ -340,13 +349,13 @@ export const HeroPage = () => {
       {renderInventoryModal()}
       {renderImageSelectionModal()}
 
-      <Modal show={showModal} onHide={handleCloseModal}>
+      <Modal show={showModal} onHide={handleCloseModal} className="custom-modal">
         <Modal.Header closeButton>
           <Modal.Title>Crea un nuevo héroe</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form>
-            <div className="form-group">
+            <div className="form-group custom-inventory-text">
               <label htmlFor="name">Nombre</label>
               <input
                 type="text"
@@ -357,7 +366,7 @@ export const HeroPage = () => {
                 onChange={(e) => setNewHeroName(e.target.value)}
               />
             </div>
-            <div className="form-group">
+            <div className="form-group custom-inventory-text">
               <label htmlFor="story">Historia</label>
               <textarea
                 className="form-control"
@@ -377,7 +386,7 @@ export const HeroPage = () => {
           )}
           {creationMessage === null && (
             <>
-              <Button variant="info" onClick={handleShowImageSelectionModal}>
+              <Button variant="dark" onClick={handleShowImageSelectionModal} className="m-0 mt-3 mb-1 custom-button custom-inventory-text">
                 Seleccionar imagen
               </Button>
             </>
@@ -386,10 +395,10 @@ export const HeroPage = () => {
         <Modal.Footer>
           {creationMessage === null && (
             <>
-              <Button variant="secondary" onClick={handleCloseModal}>
+              <Button variant="secondary" onClick={handleCloseModal} className="custom-button-close">
                 Cerrar
               </Button>
-              <Button variant="primary" onClick={handleCreateHero}>
+              <Button variant="primary" onClick={handleCreateHero} className="custom-button-select">
                 Crear héroe
               </Button>
             </>

@@ -281,6 +281,7 @@
   background-image: linear-gradient(to top, #010345 30%, #161a93 60%, #6274cd);
   font-family: "VT323", monospace;
   font-size: x-large;
+  border: 0.4rem solid rgb(165, 165, 165);
 }
 
 .custom-modal::after {
@@ -299,6 +300,7 @@
   z-index: 10;
   pointer-events: none;
 }
+
 
 .modal-title {
   color: whitesmoke;

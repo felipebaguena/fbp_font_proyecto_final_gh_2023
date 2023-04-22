@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import "./HeroPage.css";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
@@ -10,6 +11,7 @@ import {
   getHeroImage,
 } from "../../services/apiCalls";
 import { Card, Button, Modal } from "react-bootstrap";
+
 
 export const HeroPage = () => {
   const [heroes, setHeroes] = useState([]);
@@ -247,40 +249,49 @@ export const HeroPage = () => {
       heroImagesById[hero.id]
     );
     return (
-      <Card key={index} style={{ width: "18rem" }}>
-        <Card.Body>
-          <Card.Title>
-            {hero.name}
-            {hero.hero_image_id && heroImagesById[hero.id] && (
-              <img
-                src={heroImagesById[hero.id]}
-                alt={hero.name}
-                style={{ width: "64px" }}
-              />
-            )}
-          </Card.Title>
-          <Card.Subtitle className="mb-2 text-muted">
-            Level {hero.level}
-          </Card.Subtitle>
-          <Card.Text>{hero.story}</Card.Text>
-          <Button
-            variant="primary"
-            className="mr-2"
-            onClick={() => handleShowInventoryModal(hero)}
-          >
-            Inventario
-          </Button>
-          <Button variant="success" onClick={() => handleSelectHero(hero.id)}>
-            Seleccionar
-          </Button>
-        </Card.Body>
-      </Card>
+<Card key={index} style={{ width: "18rem" }}>
+  <Card.Body className="custom-card">
+    <Card.Title className="custom-card-title text-center">
+      {hero.name}
+    </Card.Title>
+    <div className="image-card-container d-flex mb-3 align-items-center justify-content-center">
+      {hero.hero_image_id && heroImagesById[hero.id] && (
+        <img
+          src={heroImagesById[hero.id]}
+          alt={hero.name}
+          style={{ width: "64px" }}
+        />
+      )}
+      <div className="ml-auto">
+        <Card.Subtitle className="text-muted custom-card-subtitle">
+          Level {hero.level}
+        </Card.Subtitle>
+      </div>
+    </div>
+    <Card.Text className="custom-card-text m-1 text-center story-card-container">{hero.story}</Card.Text>
+    <div className="d-flex flex-column">
+      <Button
+        variant="primary"
+        className="mb-1 custom-button"
+        onClick={() => handleShowInventoryModal(hero)}
+      >
+        Inventario
+      </Button>
+      <Button variant="success" className="custom-button custom-button-select" onClick={() => handleSelectHero(hero.id)}>
+        Seleccionar
+      </Button>
+    </div>
+  </Card.Body>
+</Card>
+
+
+
     );
   };
 
   return (
     <div>
-      <h2>Selecciona un héroe</h2>
+      <div className="selector-hero-title">Selecciona un héroe para tu aventura</div>
       <div className="d-flex flex-wrap justify-content-center">
         {heroes.map((hero, index) => (
           <div key={index} className="m-2">
@@ -290,9 +301,11 @@ export const HeroPage = () => {
       </div>
       {renderInventoryModal()}
       {renderImageSelectionModal()}
-      <Button variant="primary" onClick={handleShowModal}>
+      <div className="button-new-hero-container">
+      <Button className="new-hero-button" variant="primary" onClick={handleShowModal}>
         Nuevo héroe
       </Button>
+      </div>
       <Modal show={showModal} onHide={handleCloseModal}>
         <Modal.Header closeButton>
           <Modal.Title>Crea un nuevo héroe</Modal.Title>

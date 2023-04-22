@@ -1,0 +1,95 @@
+
+.custom-card {
+    position: relative;
+    border: 0.4rem solid rgb(165, 165, 165);
+    background-image: linear-gradient(to top, #010345 30%, #161a93 60%, #6274cd);
+    font-family: "VT323", monospace;
+    color: whitesmoke;
+  }
+  
+  .custom-card::before {
+    content: "";
+    position: absolute;
+    z-index: 10;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.05) 50%,
+      rgba(255, 255, 255, 0.03) 50%
+    );
+    background-size: 100% 4px;
+    opacity: 0.8;
+    pointer-events: none;
+  }
+
+  .custom-card-title {
+    color: whitesmoke;
+    font-size: xx-large;
+    padding-bottom: 0.4rem;
+    border-bottom: 2px solid rgba(245, 245, 245, 0.722);
+  }
+
+  .image-card-container{
+    padding-top: 0.2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid rgba(245, 245, 245, 0.722);
+  }
+  
+  .custom-card-subtitle {
+    color: whitesmoke;
+    font-size: x-large;
+    margin-left: 1rem;
+  }
+  
+  .custom-card-text {
+    color: whitesmoke;
+  }
+
+  .story-card-container{
+    min-height: 3.5rem;
+  }
+  
+  .custom-button {
+    background-image: linear-gradient(to top, #222222 30%, #4a4a4a 60%, #9b9b9b);
+    font-family: "VT323", monospace;
+    font-size: x-large;
+    width: 100%;
+  }
+  
+  .custom-button-select {
+    background-image: linear-gradient(to top, #4b3800 30%, #906801 60%, #e7cc62);
+  }
+  
+  .custom-button-close {
+    background-image: linear-gradient(to top, #322500 30%, #902501 60%, #e77d62);
+  }
+  
+  .custom-inventory-text {
+    color: whitesmoke;
+  }
+
+
+  .selector-hero-title{
+    display: flex;
+    background-color: #4a4a4a;
+    justify-content: center;
+    font-family: "VT323", monospace;
+    color: whitesmoke;
+    font-size: xx-large;
+  }
+
+  .button-new-hero-container{
+    display: flex;
+    justify-content: center;
+    font-family: "VT323", monospace;
+    color: whitesmoke;
+    font-size: xx-large;
+  }
+
+  .new-hero-button{
+    width: 50%;
+    height: 5rem;
+  }

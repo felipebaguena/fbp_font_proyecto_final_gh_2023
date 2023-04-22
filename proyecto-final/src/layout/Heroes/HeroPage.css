@@ -33,6 +33,7 @@
   }
 
   .image-card-container{
+    min-height: 6rem;
     padding-top: 0.2rem;
     padding-bottom: 1rem;
     border-bottom: 2px solid rgba(245, 245, 245, 0.722);
@@ -81,15 +82,6 @@
     font-size: xx-large;
   }
 
-  .button-new-hero-container{
-    display: flex;
-    justify-content: center;
-    font-family: "VT323", monospace;
-    color: whitesmoke;
-    font-size: xx-large;
-  }
-
-  .new-hero-button{
-    width: 50%;
-    height: 5rem;
+  .new-hero-custom-card{
+    min-height: 23rem;
   }

@@ -143,6 +143,43 @@ export const HeroPage = () => {
     setRefreshHeroes(true);
   };
 
+  const renderNewHeroCard = () => {
+    return (
+      <Card style={{ width: "18rem" }}>
+        <Card.Body className="custom-card new-hero-custom-card">
+          <Card.Title className="custom-card-title text-center">
+            Nuevo héroe
+          </Card.Title>
+          <div className="image-card-container d-flex mb-3 align-items-center justify-content-center">
+        {/* <img
+          src={heroImagesById[hero.id]}
+          alt={hero.name}
+          style={{ width: "64px" }}
+        /> */}
+      <div className="ml-auto">
+        <Card.Subtitle className="text-muted custom-card-subtitle">
+          Level 1
+        </Card.Subtitle>
+      </div>
+    </div>
+          <Card.Text className="custom-card-text m-1 text-center story-card-container">
+            Crea un nuevo personaje para tu aventura
+          </Card.Text>
+          <div className="d-flex flex-column">
+            <Button
+              variant="primary"
+              className="mb-1 custom-button"
+              onClick={handleShowModal}
+            >
+              Crear
+            </Button>
+          </div>
+        </Card.Body>
+      </Card>
+    );
+  };
+  
+
   const renderImageSelectionModal = () => {
     console.log("heroImages:", heroImages);
     return (
@@ -298,14 +335,11 @@ export const HeroPage = () => {
             {renderHeroCard(hero, index)}
           </div>
         ))}
+              <div className="m-2">{renderNewHeroCard()}</div>
       </div>
       {renderInventoryModal()}
       {renderImageSelectionModal()}
-      <div className="button-new-hero-container">
-      <Button className="new-hero-button" variant="primary" onClick={handleShowModal}>
-        Nuevo héroe
-      </Button>
-      </div>
+
       <Modal show={showModal} onHide={handleCloseModal}>
         <Modal.Header closeButton>
           <Modal.Title>Crea un nuevo héroe</Modal.Title>

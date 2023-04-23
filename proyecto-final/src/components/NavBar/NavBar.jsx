@@ -90,7 +90,7 @@ export function NavbarTop() {
   }, [token]);
 
   return (
-    <Navbar bg="dark" variant="dark" expand={expand} className="mb-3">
+    <Navbar bg="black" variant="dark" expand={expand} className="mb-3 sega-navbar">
       <Container fluid>
         <Navbar.Brand as={Link} to="/">Navbar Offcanvas</Navbar.Brand>
         <Navbar.Toggle aria-controls="navbar-nav" />

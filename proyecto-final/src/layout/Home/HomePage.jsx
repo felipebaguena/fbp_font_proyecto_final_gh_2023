@@ -2,6 +2,7 @@ import React from "react";
 import "./HomePage.css";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { Container, Row, Col } from "react-bootstrap";
 
 export const HomePage = () => {
   const navigate = useNavigate();
@@ -16,22 +17,33 @@ export const HomePage = () => {
   };
 
   return (
-    <div>
-      <h1>Home</h1>
-
-      <div className="books-container">
-  <div className="book-container">
-    <div className="book" onClick={startStory}>
-      <img src="../../../public/images/battle_cover.png" />
-    </div>
-  </div>
-  <div className="book-container">
-    <div className="book" onClick={viewHeroes}>
-      <img src="../../../public/images/heroes_cover.png" />
-    </div>
-  </div>
-</div>
-
-    </div>
+      <Container fluid>
+      <div className="banner battle-title">
+        <h1>Texto para el Home</h1>
+      </div>
+        <Row className="games-banner">
+          <Col xs={12} sm={6} md={3} className="game-container">
+            <div className="game" onClick={startStory}>
+              <img className="game-img" src="../../../public/images/aventuras_cover.png" width="400" />
+            </div>
+          </Col>
+          <Col xs={12} sm={6} md={3} className="game-container">
+            <div className="game" onClick={viewHeroes}>
+              <img className="game-img" src="../../../public/images/misheroes_cover.png" width="400" />
+            </div>
+          </Col>
+          <Col xs={12} sm={6} md={3} className="game-container">
+            <div className="game" onClick={startStory}>
+              <img className="game-img" src="../../../public/images/perfil_cover.png" width="400" />
+            </div>
+          </Col>
+          <Col xs={12} sm={6} md={3} className="game-container">
+            <div className="game" onClick={viewHeroes}>
+              <img className="game-img" src="../../../public/images/historia_cover.png" width="400" />
+            </div>
+          </Col>
+        </Row>
+      </Container>
   );
+
 };

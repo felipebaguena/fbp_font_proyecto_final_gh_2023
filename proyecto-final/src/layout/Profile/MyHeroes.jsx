@@ -167,6 +167,10 @@ export const HeroesAndItems = () => {
     setRefreshHeroes(true);
   };
 
+  const handleBackToHome = () => {
+    navigate("/");
+  };
+
   const renderImageSelectionModal = () => {
     console.log("heroImages:", heroImages);
     return (
@@ -474,6 +478,12 @@ export const HeroesAndItems = () => {
           </Modal.Footer>
         </Modal>
       )}
+        <div
+        className="selector-hero-title back-heroes-view"
+        onClick={handleBackToHome}
+      >
+        Volver al incio
+      </div>
     </div>
   );
 };

@@ -4,10 +4,13 @@ import { getDefeatedMonsters, getTotalMonsters } from "../../services/apiCalls";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import { Col, Container, Row } from "react-bootstrap";
+import { MonsterCard } from "../../components/MonsterCard/MonsterCard";
+import { useNavigate } from "react-router-dom";
 
 export function MonsterDex() {
   const heroId = useSelector((state) => state.hero.hero_id);
   const token = useSelector((state) => state.auth.token);
+  const navigate = useNavigate();
   const [monsters, setMonsters] = useState([]);
   const [totalMonsters, setTotalMonsters] = useState(0);
   const [expandedMonsterId, setExpandedMonsterId] = useState(null);
@@ -56,52 +59,33 @@ export function MonsterDex() {
     }
   };
 
+  const handleBackToHeroes = () => {
+    navigate("/myheroes");
+  };
+
   return (
-    <Container>
-      <h3>Defeated Monsters</h3>
-      <p>
-        Has acabado con {monsters.length} de {totalMonsters} tipos de monstruos
-      </p>
-      <Row xs={1} md={2} lg={3}>
-        {monsters.map((monster) => (
-          <Card
-            className="m-1"
-            key={monster.id}
-            style={{ width: "18rem", marginBottom: "1rem" }}
-          >
-            <Card.Body>
-              <Row>
-                <Col xs={4}>
-                  <Card.Img
-                    src={monster.imageUrl}
-                    alt={monster.name}
-                    style={{ width: "64px", objectFit: "cover" }}
-                  />
-                </Col>
-                <Col xs={8}>
-                  <Card.Title>{monster.name}</Card.Title>
-                  <Card.Text>Número: {monster.id}</Card.Text>
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  {expandedMonsterId === monster.id && (
-                    <Card.Text>{monster.description}</Card.Text>
-                  )}
-                  <Button
-                    variant="primary"
-                    onClick={() => toggleDescription(monster.id)}
-                  >
-                    {expandedMonsterId === monster.id
-                      ? "Ocultar descripción"
-                      : "Descripción"}
-                  </Button>
-                </Col>
-              </Row>
-            </Card.Body>
-          </Card>
-        ))}
-      </Row>
-    </Container>
+<Container fluid>
+  <div className="selector-hero-title">Monstruos eliminados</div>
+  <div className="selector-hero-title defeated-monster-subtitle">
+    Has acabado con {monsters.length} de {totalMonsters} tipos de monstruos
+  </div>
+  <div className="d-flex flex-wrap justify-content-center">
+    {monsters.map((monster) => (
+      <div key={monster.id} className="m-2">
+        <MonsterCard
+          monster={monster}
+          expandedMonsterId={expandedMonsterId}
+          toggleDescription={toggleDescription}
+        />
+      </div>
+    ))}
+  </div>
+  <div
+        className="selector-hero-title back-heroes-view"
+        onClick={handleBackToHeroes}
+      >
+        Volver a Mis héroes
+      </div>
+</Container>
   );
 }

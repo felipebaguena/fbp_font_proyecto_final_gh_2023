@@ -142,6 +142,10 @@ export const HeroPage = () => {
     setRefreshHeroes(true);
   };
 
+  const handleBackToHome = () => {
+    navigate("/");
+  };
+
   const renderNewHeroCard = () => {
     return (
       <Card style={{ width: "18rem" }}>
@@ -426,6 +430,12 @@ export const HeroPage = () => {
           )}
         </Modal.Footer>
       </Modal>
+      <div
+        className="selector-hero-title back-heroes-view"
+        onClick={handleBackToHome}
+      >
+        Volver al incio
+      </div>
     </div>
   );
 };

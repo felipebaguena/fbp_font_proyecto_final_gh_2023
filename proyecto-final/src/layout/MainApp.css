@@ -1,3 +1,12 @@
 body {
     background-color: #9f9f9f;
   }
+
+
+  .form-container {
+    border: 1px solid black;
+  }
+  
+  .user-mail-container{
+    width: 30%;
+  }

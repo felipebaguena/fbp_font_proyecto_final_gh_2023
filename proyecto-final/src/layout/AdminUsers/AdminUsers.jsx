@@ -1,22 +1,14 @@
 import React, { useState, useEffect } from "react";
-import {
-  Container,
-  Row,
-  Col,
-  Table,
-  Modal,
-  Button,
-  Form,
-} from "react-bootstrap";
+import "./AdminUsers.css";
+import { Container, Row, Col, Modal, Button, ListGroup } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import {
   bringUsers,
   getUser,
   changeUserRole,
   bringRoles,
+  deleteUser,
 } from "../../services/apiCalls";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { UserDetailsModal } from "../../components/UserModal/UserDetailsModal";
 
 export const UserList = () => {
@@ -27,6 +19,29 @@ export const UserList = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [roles, setRoles] = useState([]);
   const [selectedRole, setSelectedRole] = useState(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [userToDelete, setUserToDelete] = useState(null);
+
+  const handleDeleteClick = (user) => {
+    setUserToDelete(user);
+    setShowDeleteModal(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (userToDelete && userToDelete.id) {
+      try {
+        await deleteUser(userToDelete.id, token);
+        const updatedUsers = users.filter(
+          (user) => user.id !== userToDelete.id
+        );
+        setUsers(updatedUsers);
+      } catch (error) {
+        console.error("Error deleting user:", error);
+      }
+    }
+    setUserToDelete(null);
+    setShowDeleteModal(false);
+  };
 
   const handleShowModal = async (user) => {
     setLoading(true);
@@ -108,34 +123,39 @@ export const UserList = () => {
           {loading ? (
             <p>Cargando usuarios...</p>
           ) : (
-            <Table striped bordered hover>
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Nombre</th>
-                  <th>Email</th>
-                  <th>Gestión</th>
-                </tr>
-              </thead>
-              <tbody>
-                {users.map((user) => (
-                  <tr key={user.id}>
-                    <td>{user.id}</td>
-                    <td
-                      onClick={() => handleShowModal(user)}
-                      style={{ cursor: "pointer" }}
+            <ListGroup>
+              {users.map((user, index) => (
+                <ListGroup.Item
+                  key={user.id}
+                  className="d-flex flex-wrap align-items-center"
+                  onClick={() => handleShowModal(user)}
+                  action
+                >
+                  <Col xs={12} sm={6} className="d-flex">
+                    <span className="me-2">{index + 1}.</span>
+                    <span>{user.name}</span>
+                  </Col>
+                  <Col
+                    xs={12}
+                    sm={6}
+                    className="d-flex justify-content-between mt-2 mt-sm-0"
+                  >
+                    <span>{user.email}</span>
+                    <Button
+                      variant="danger"
+                      size="sm"
+                      className="ms-2"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDeleteClick(user);
+                      }}
                     >
-                      {user.name}
-                    </td>
-                    <td>{user.email}</td>
-                    <td>
-                      <FontAwesomeIcon icon={faEdit} className="me-2" />
-                      <FontAwesomeIcon icon={faTrash} />
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </Table>
+                      Eliminar
+                    </Button>
+                  </Col>
+                </ListGroup.Item>
+              ))}
+            </ListGroup>
           )}
         </Col>
       </Row>
@@ -147,6 +167,23 @@ export const UserList = () => {
         handleRoleChange={handleRoleChange}
         loading={loading}
       />
+      <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Eliminar usuario</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          ¿Estás seguro de que deseas eliminar el usuario{" "}
+          <strong>{userToDelete?.name}</strong>?
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
+            Cancelar
+          </Button>
+          <Button variant="danger" onClick={handleConfirmDelete}>
+            Eliminar
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </Container>
   );
 };

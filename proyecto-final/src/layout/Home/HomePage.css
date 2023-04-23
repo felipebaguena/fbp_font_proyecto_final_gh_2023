@@ -1,35 +1,84 @@
+.banner-top {
+  width: 80%;
+  height: fit-content;
+  background-color: #3969a7;
 
-      .banner {
-        width: 100%;
-        height: 200px;
-        background-color: black;
-        background-image: linear-gradient(0deg, rgba(155, 155, 155, 0.15) 1px, transparent 1px),
-                          linear-gradient(90deg, rgba(165, 165, 165, 0.15) 1px, transparent 1px);
-        background-size: 30px 30px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
+  border-top: 0.5rem solid #6487b6;
+  border-bottom: 0.5rem solid #6487b6;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
 
-      .game-container {
-        padding: 15px;
-        position: relative;
-      }
+.banner-top-left-right {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  background-color: #3969a7;
+  width: 10%;
+  border-top: 0.5rem solid #6487b6;
+  border-bottom: 0.5rem solid #6487b6;
+  background-image: radial-gradient(
+      circle,
+      rgba(255, 255, 255, 0.1) 20%,
+      transparent 10%
+    ),
+    radial-gradient(circle, rgba(255, 255, 255, 0.1) 20%, transparent 10%);
+  background-size: 50px 50px;
+  background-position: 0 0, 25px 25px;
+}
 
-      .game {
-        position: relative;
-      }
-      
-      .game-img {
-        max-width: 100%;
-        height: auto;
-        cursor: pointer;
-        transition: all 0.3s ease;
-      }
-      
-      .game-img:hover {
-        transform: scale(1.2);
-        z-index: 1;
-        position: absolute;
-      }
-      
+.logo-img {
+  margin-top: 1.1rem;
+  margin-bottom: 1rem;
+  width: 80%;
+}
+
+.banner {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  width: 100%;
+  height: 200px;
+  background-color: black;
+  background-image: linear-gradient(
+      0deg,
+      rgba(155, 155, 155, 0.23) 1px,
+      transparent 1px
+    ),
+    linear-gradient(90deg, rgba(155, 155, 155, 0.23) 1px, transparent 1px);
+  background-size: 30px 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.game-container {
+  padding: 15px;
+  position: relative;
+}
+
+.game {
+  position: relative;
+}
+
+.game-img {
+  max-width: 100%;
+  height: auto;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgb(0, 0, 0);
+}
+
+.game-img:hover {
+  transform: scale(1.2);
+  z-index: 1;
+  position: absolute;
+}
+
+@media (max-width: 365px) {
+  .banner-top {
+    display: none;
+  }
+
+  .banner-top-left-right {
+    display: none;
+  }
+}

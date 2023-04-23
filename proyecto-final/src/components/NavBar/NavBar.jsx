@@ -90,13 +90,26 @@ export function NavbarTop() {
   }, [token]);
 
   return (
-    <Navbar bg="black" variant="dark" expand={expand} className="mb-3 sega-navbar">
+    <Navbar
+      bg="black"
+      variant="dark"
+      expand={expand}
+      className="mb-3 sega-navbar"
+    >
       <Container fluid>
-        <Navbar.Brand as={Link} to="/">Navbar Offcanvas</Navbar.Brand>
+        <Navbar.Brand as={Link} to="/">
+          <img
+            src="../../../public/images/logo-juego-s.png"
+            alt="Nombre de tu logo"
+            height="40"
+          />
+        </Navbar.Brand>
         <Navbar.Toggle aria-controls="navbar-nav" />
         <Navbar.Collapse id="navbar-nav">
           <Nav className="ms-auto">
-            <Nav.Link as={Link} to="/">Home</Nav.Link>
+            <Nav.Link as={Link} to="/">
+              Home
+            </Nav.Link>
             {userRole === 2 && (
               <NavDropdown title="Admin" id="navbar-dropdown" align="end">
                 <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
@@ -111,8 +124,12 @@ export function NavbarTop() {
             )}
             {token ? (
               <NavDropdown title="Perfil" id="navbar-dropdown" align="end">
-                <NavDropdown.Item as={Link} to="/profile">Mi perfil</NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="/myheroes">Mis héroes</NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="/profile">
+                  Mi perfil
+                </NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="/myheroes">
+                  Mis héroes
+                </NavDropdown.Item>
                 <NavDropdown.Item href="#">Configuración</NavDropdown.Item>
                 <NavDropdown.Divider />
                 <NavDropdown.Item onClick={handleLogout}>

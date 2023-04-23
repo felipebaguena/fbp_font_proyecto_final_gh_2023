@@ -64,28 +64,33 @@ export function MonsterDex() {
   };
 
   return (
-<Container fluid>
-  <div className="selector-hero-title">Monstruos eliminados</div>
-  <div className="selector-hero-title defeated-monster-subtitle">
-    Has acabado con {monsters.length} de {totalMonsters} tipos de monstruos
-  </div>
-  <div className="d-flex flex-wrap justify-content-center">
-    {monsters.map((monster) => (
-      <div key={monster.id} className="m-2">
-        <MonsterCard
-          monster={monster}
-          expandedMonsterId={expandedMonsterId}
-          toggleDescription={toggleDescription}
-        />
-      </div>
-    ))}
-  </div>
-  <div
-        className="selector-hero-title back-heroes-view"
-        onClick={handleBackToHeroes}
-      >
-        Volver a Mis héroes
-      </div>
-</Container>
+    <Container fluid>
+      <Row>
+        <div className="selector-hero-title">Monstruos eliminados</div>
+
+        <div className="selector-hero-title defeated-monster-subtitle">
+          Has acabado con {monsters.length} de {totalMonsters} tipos de
+          monstruos
+        </div>
+
+        <div className="d-flex flex-wrap justify-content-center">
+          {monsters.map((monster) => (
+            <div key={monster.id} className="m-2">
+              <MonsterCard
+                monster={monster}
+                expandedMonsterId={expandedMonsterId}
+                toggleDescription={toggleDescription}
+              />
+            </div>
+          ))}
+        </div>
+        <div
+          className="selector-hero-title back-heroes-view"
+          onClick={handleBackToHeroes}
+        >
+          Volver a Mis héroes
+        </div>
+      </Row>
+    </Container>
   );
 }

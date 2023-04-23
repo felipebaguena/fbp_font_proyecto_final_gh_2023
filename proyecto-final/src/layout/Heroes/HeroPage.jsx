@@ -343,7 +343,7 @@ export const HeroPage = () => {
   };
 
   return (
-    <div>
+    <div className="">
       <div className="selector-hero-title">
         Selecciona un héroe para tu aventura
       </div>

@@ -4,8 +4,8 @@
 
 .sega-navbar {
     background-color: black;
-    background-image: linear-gradient(0deg, rgba(135, 133, 133, 0.215) 1px, transparent 1px),
-                      linear-gradient(90deg, rgba(135, 133, 133, 0.215) 1px, transparent 1px);
+    background-image: linear-gradient(0deg, rgba(155, 155, 155, 0.23) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(155, 155, 155, 0.23) 1px, transparent 1px);
     background-size: 30px 30px;
   }
   

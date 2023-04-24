@@ -8,6 +8,7 @@ import { HomePage } from '../Home/HomePage';
 import { MonsterDex } from '../MonsterDex/MonsterDex';
 import { HeroesAndItems } from '../Profile/MyHeroes';
 import { UserProfile } from '../Profile/Profile';
+import { StoryMode } from '../StoryMode/StoryMode';
 
 
 export const Body = () => {
@@ -21,6 +22,7 @@ export const Body = () => {
           <Route path="/myheroes" element={<HeroesAndItems />} />
           <Route path="/battle" element={<BattlePage />} />
           <Route path="/monsterdex/:heroId" element={<MonsterDex />} />
+          <Route path="/storymode" element={<StoryMode />} />
           </Routes>
     </>
   )

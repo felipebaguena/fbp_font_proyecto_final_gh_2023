@@ -1,20 +1,51 @@
-import React from "react";
+import React, { useState } from "react";
 import "./HomePage.css";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Modal, Button } from "react-bootstrap";
 
 export const HomePage = () => {
+  const [showModal, setShowModal] = useState(false);
+
+  const handleCloseModal = () => setShowModal(false);
+  const handleShowModal = () => setShowModal(true);
+
   const navigate = useNavigate();
   const token = useSelector((state) => state.auth.token);
 
   const startStory = () => {
+    if (!token) {
+      handleShowModal();
+    } else {
     navigate("/heroes");
+  }
   };
 
   const viewHeroes = () => {
+    if (!token) {
+      handleShowModal();
+    } else {
     navigate("/myheroes");
+  }
   };
+
+  const viewProfile = () => {
+    if (!token) {
+      handleShowModal();
+    } else {
+      navigate("/profile");
+    }
+  };
+  
+
+  const startStoryMode = () => {
+    if (!token) {
+      handleShowModal();
+    } else {
+      navigate("/storymode");
+    }
+  };
+  
 
   return (
     <Container fluid>
@@ -46,7 +77,7 @@ export const HomePage = () => {
           </div>
         </Col>
         <Col xs={12} sm={6} md={3} className="game-container">
-          <div className="game" onClick={startStory}>
+          <div className="game" onClick={viewProfile}>
             <img
               className="game-img"
               src="../../../public/images/perfil_cover.png"
@@ -55,7 +86,7 @@ export const HomePage = () => {
           </div>
         </Col>
         <Col xs={12} sm={6} md={3} className="game-container">
-          <div className="game" onClick={viewHeroes}>
+          <div className="game" onClick={startStoryMode}>
             <img
               className="game-img"
               src="../../../public/images/historia_cover.png"
@@ -67,6 +98,19 @@ export const HomePage = () => {
           <h1>Texto para el Home</h1>
         </div>
       </Row>
+      <Modal show={showModal} onHide={handleCloseModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Atención</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Por favor, inicia sesión para visitar tu perfil o regístrate
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseModal}>
+            Cerrar
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </Container>
   );
 };

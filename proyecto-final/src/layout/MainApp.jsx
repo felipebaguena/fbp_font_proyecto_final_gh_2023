@@ -7,6 +7,7 @@ import { Body } from './Body/Body';
 
 
 export const MainApp = () => {
+
   return (
     <>
     <NavbarTop/>

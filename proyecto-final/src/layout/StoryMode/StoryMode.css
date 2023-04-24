@@ -58,3 +58,12 @@
     opacity: 0.8;
     pointer-events: none;
   }
+
+  .talk-villager-button{
+    background-image: linear-gradient(to top, #4b3800 30%, #906801 60%, #e7cc62);
+  }
+
+  .talk-villager-button:hover {
+    background-image: linear-gradient(to top, #2d2200 30%, #d6bd56 70%, #906801);
+    transition: 0.3s;
+  }

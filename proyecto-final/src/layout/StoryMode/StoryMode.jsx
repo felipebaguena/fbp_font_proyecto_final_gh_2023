@@ -161,7 +161,7 @@ export const StoryMode = () => {
                 {currentConversation.final ? (
                   <div className="d-flex flex-column">
                     <div
-                      className="conversation-options"
+                      className="conversation-options talk-villager-button"
                       onClick={handleNewConversation}
                     >
                       Nueva conversación

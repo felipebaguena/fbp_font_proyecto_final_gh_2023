@@ -103,7 +103,7 @@ export const HomePage = () => {
           <Modal.Title>Atención</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          Por favor, inicia sesión para visitar tu perfil o regístrate
+          Por favor, inicia sesión o regístrate
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCloseModal}>

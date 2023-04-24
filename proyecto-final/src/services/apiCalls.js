@@ -388,3 +388,29 @@ export const getTotalMonsters = async (token) => {
     return null;
   }
 };
+
+export const getVillagerImageById = async (imageId) => {
+  try {
+    const response = await axios.get(`${root}villager/image/${imageId}`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (response.data && response.data.image_url) {
+      return {
+        status: "success",
+        data: {
+          image_url: response.data.image_url,
+          name: response.data.name,
+        },
+      };
+    } else {
+      console.error("Error fetching villager image:", response.data);
+      return { status: "error", error: "Failed to fetch villager image" };
+    }
+  } catch (error) {
+    console.error("Error fetching villager image:", error);
+    return { status: "error", error: error };
+  }
+};

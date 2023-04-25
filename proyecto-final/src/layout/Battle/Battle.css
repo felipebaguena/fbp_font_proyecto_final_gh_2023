@@ -229,18 +229,34 @@
   z-index: 5;
 }
 
-.tv-box-hero::before,
-.tv-box-monster::before {
-  background-color: rgba(0, 0, 0, 0.627);
-  content: "";
+.tv-box-hero,
+.tv-box-monster {
+  position: relative;
+}
+
+.tv-box-hero-shadow {
   position: absolute;
-  z-index: -1;
-  top: 60%;
-  left: 15%;
-  width: 50%;
-  height: 50%;
+  z-index: -10;
+  background-color: #00000087;
+  content: "";
+  width: 40px;
+  height: 40px;
+  left: 10%;
+  top: 50%;
   border-radius: 50%;
-  box-shadow: 0 10px 40px 15px rgb(0, 0, 0);
+  box-shadow: 0 10px 30px 15px rgba(0, 0, 0, 0.637);
+}
+
+.tv-box-monster-shadow {
+  left: 30%;
+}
+
+.shadow-hero-attack-animation {
+  animation: hero-attack 0.3s linear;
+}
+
+.shadow-monster-attack-animation {
+  animation: monster-attack 0.3s linear;
 }
 
 .tv-box-hero {

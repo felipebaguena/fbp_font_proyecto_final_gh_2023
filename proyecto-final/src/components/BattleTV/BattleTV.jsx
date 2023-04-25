@@ -13,7 +13,6 @@ export const BattleTV = ({
   getHealthPercentage,
   getHealthBarColorClass,
 }) => {
-
   const [bgImage, setBgImage] = useState("");
 
   useEffect(() => {
@@ -67,7 +66,15 @@ export const BattleTV = ({
                   src={heroImage}
                   alt={battle.hero.name}
                 />
+                <div
+                  className={`tv-box-hero-shadow ${
+                    showHeroAttackAnimation
+                      ? "shadow-hero-attack-animation"
+                      : ""
+                  }`}
+                ></div>
               </div>
+
               <div className="tv-box-monster">
                 <img
                   className={`${
@@ -76,6 +83,13 @@ export const BattleTV = ({
                   src={monsterImage}
                   alt={battle.monster.name}
                 />
+                <div
+                  className={`tv-box-hero-shadow tv-box-monster-shadow ${
+                    showMonsterAttackAnimation
+                      ? "shadow-monster-attack-animation"
+                      : ""
+                  }`}
+                ></div>
               </div>
               <div
                 className="ground ground-texture"

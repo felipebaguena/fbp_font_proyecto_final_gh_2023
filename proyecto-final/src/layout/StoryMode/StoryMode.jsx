@@ -104,7 +104,7 @@ export const StoryMode = () => {
     <Container fluid>
       {showHistory ? (
         <Row className="d-flex justify-content-center conversation-container ">
-          <div className="selector-hero-title">La historia de Ravenhollow</div>
+          <div className="selector-hero-title selector-hero-title-story">La historia de Ravenhollow</div>
           <Col
             md={10}
             lg={8}
@@ -134,7 +134,7 @@ export const StoryMode = () => {
         currentConversation && (
           <>
             <Row className="d-flex justify-content-center conversation-container ">
-              <div className="selector-hero-title">En la aldea</div>
+              <div className="selector-hero-title selector-hero-title-story">En la aldea</div>
               <Col
                 md={4}
                 lg={3}

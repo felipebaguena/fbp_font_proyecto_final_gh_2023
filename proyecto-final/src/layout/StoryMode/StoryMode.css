@@ -67,3 +67,7 @@
     background-image: linear-gradient(to top, #2d2200 30%, #d6bd56 70%, #906801);
     transition: 0.3s;
   }
+
+  .selector-hero-title-story{
+    margin-bottom: 5%;
+  }

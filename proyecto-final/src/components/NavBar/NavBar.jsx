@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUserData, logMe, registerUser } from "../../services/apiCalls";
 import { Link, useNavigate } from "react-router-dom";
 import { clearToken } from "../../authSlice";
+import { validate } from "../../services/validations";
 
 export function NavbarTop() {
   const dispatch = useDispatch();
@@ -19,6 +20,9 @@ export function NavbarTop() {
   const [showLoginOffcanvas, setShowLoginOffcanvas] = useState(false);
   const [showRegisterOffcanvas, setShowRegisterOffcanvas] = useState(false);
   const [userRole, setUserRole] = useState(null);
+  const [errors, setErrors] = useState({});
+  const [loginError, setLoginError] = useState(null);
+
   const navigate = useNavigate();
 
   const handleLoginOffcanvasClose = () => {
@@ -31,13 +35,36 @@ export function NavbarTop() {
   };
   const handleRegisterOffcanvasShow = () => setShowRegisterOffcanvas(true);
 
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    const validationResult = validate(name, value, true);
+    setErrors({ ...errors, [name]: validationResult.message });
+  };
+
   // Manejador para el registro de usuarios
+
   const handleRegisterSubmit = async (event) => {
     event.preventDefault();
 
     const name = event.target.formBasicName.value;
     const email = event.target.formBasicEmail.value;
     const password = event.target.formBasicPassword.value;
+
+    const newErrors = {};
+
+    const nameValidation = validate("name", name, true);
+    const emailValidation = validate("email", email, true);
+    const passwordValidation = validate("password", password, true);
+
+    if (!nameValidation.validated) newErrors.name = nameValidation.message;
+    if (!emailValidation.validated) newErrors.email = emailValidation.message;
+    if (!passwordValidation.validated)
+      newErrors.password = passwordValidation.message;
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
 
     try {
       const response = await registerUser({ name, email, password });
@@ -61,8 +88,10 @@ export function NavbarTop() {
       console.log(response.data);
 
       handleLoginOffcanvasClose();
+      setLoginError(null);
     } catch (error) {
       console.error(error);
+      setLoginError("Email o contraseña incorrectos");
     }
   };
 
@@ -161,6 +190,11 @@ export function NavbarTop() {
         </Offcanvas.Header>
         <Offcanvas.Body>
           <Form onSubmit={handleLoginSubmit}>
+            {loginError && (
+              <div className="alert alert-danger" role="alert">
+                {loginError}
+              </div>
+            )}
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label className="text-white">Email address</Form.Label>
               <Form.Control type="email" placeholder="Enter email" />
@@ -191,15 +225,42 @@ export function NavbarTop() {
           <Form onSubmit={handleRegisterSubmit}>
             <Form.Group className="mb-3" controlId="formBasicName">
               <Form.Label className="text-white">Name</Form.Label>
-              <Form.Control type="text" placeholder="Enter name" />
+              <Form.Control
+                name="name"
+                type="text"
+                placeholder="Enter name"
+                isInvalid={!!errors.name}
+                onBlur={handleInputChange}
+              />
+              <Form.Control.Feedback type="invalid">
+                {errors.name}
+              </Form.Control.Feedback>
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label className="text-white">Email address</Form.Label>
-              <Form.Control type="email" placeholder="Enter email" />
+              <Form.Control
+                name="email"
+                type="email"
+                placeholder="Enter email"
+                isInvalid={!!errors.email}
+                onBlur={handleInputChange}
+              />
+              <Form.Control.Feedback type="invalid">
+                {errors.email}
+              </Form.Control.Feedback>
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicPassword">
               <Form.Label className="text-white">Password</Form.Label>
-              <Form.Control type="password" placeholder="Password" />
+              <Form.Control
+                name="password"
+                type="password"
+                placeholder="Password"
+                isInvalid={!!errors.password}
+                onBlur={handleInputChange}
+              />
+              <Form.Control.Feedback type="invalid">
+                {errors.password}
+              </Form.Control.Feedback>
             </Form.Group>
             <Button variant="primary" type="submit">
               Register

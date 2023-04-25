@@ -3,12 +3,14 @@ import { Form, Button, Container, Row, Col } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { getUserData, updateUserData } from "../../services/apiCalls";
 import dayjs from "dayjs";
+import { validate } from "../../services/validations";
 
 export const UserProfile = () => {
   const token = useSelector((state) => state.auth.token);
   const [userData, setUserData] = useState(null);
   const [formData, setFormData] = useState({ name: "", email: "" });
   const [isEditable, setIsEditable] = useState(false);
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,15 +35,46 @@ export const UserProfile = () => {
   };
 
   const handleSaveClick = async () => {
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    const nameValidation = validate("name", name, true);
+    const emailValidation = validate("email", email, true);
+    const passwordValidation = isEditable
+      ? validate("password", password, true)
+      : { validated: true };
+
+    let newErrors = {};
+
+    if (!nameValidation.validated) {
+      newErrors.name = nameValidation.message;
+    }
+
+    if (!emailValidation.validated) {
+      newErrors.email = emailValidation.message;
+    }
+
+    if (!passwordValidation.validated) {
+      newErrors.password = passwordValidation.message;
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
     const updatedData = {
-      name: document.getElementById("name").value,
-      email: document.getElementById("email").value,
+      name: name,
+      email: email,
+      password: password,
     };
 
     try {
       const updatedUserData = await updateUserData(token, updatedData);
       setUserData(updatedUserData);
       setIsEditable(false);
+      setErrors({});
     } catch (error) {
       console.error("Error updating user data:", error);
     }
@@ -49,6 +82,7 @@ export const UserProfile = () => {
 
   const handleCancelClick = () => {
     setIsEditable(false);
+    setErrors({});
   };
 
   return (
@@ -66,9 +100,14 @@ export const UserProfile = () => {
                   type="text"
                   value={formData.name}
                   disabled={!isEditable}
+                  isInvalid={errors.name}
                   onChange={handleInputChange}
                 />
+                <Form.Control.Feedback type="invalid">
+                  {errors.name}
+                </Form.Control.Feedback>
               </Form.Group>
+
               <Form.Group>
                 <Form.Label htmlFor="email">Email</Form.Label>
                 <Form.Control
@@ -76,9 +115,29 @@ export const UserProfile = () => {
                   name="email"
                   type="email"
                   value={formData.email}
-                  disabled={!isEditable}
+                  // disabled={!isEditable}
+                  disabled={true}
+                  isInvalid={errors.email}
                   onChange={handleInputChange}
                 />
+                <Form.Control.Feedback type="invalid">
+                  {errors.email}
+                </Form.Control.Feedback>
+              </Form.Group>
+              <Form.Group>
+                <Form.Label htmlFor="password">Nueva contraseña</Form.Label>
+                <Form.Control
+                  id="password"
+                  name="password"
+                  type="password"
+                  disabled={!isEditable}
+                  isInvalid={errors.password}
+                  placeholder="Introduce una nueva contraseña"
+                  onChange={handleInputChange}
+                />
+                <Form.Control.Feedback type="invalid">
+                  {errors.password}
+                </Form.Control.Feedback>
               </Form.Group>
               <Form.Group controlId="createdAt">
                 <Form.Label>Fecha de creación</Form.Label>

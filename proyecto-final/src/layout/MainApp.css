@@ -4,6 +4,9 @@ body {
     color: whitesmoke; */
   }
 
+  .Body {
+    flex: 1;
+  }
 
   .form-container {
     border: 1px solid black;
@@ -12,3 +15,10 @@ body {
   .user-mail-container{
     width: 30%;
   }
+
+  .main-app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+

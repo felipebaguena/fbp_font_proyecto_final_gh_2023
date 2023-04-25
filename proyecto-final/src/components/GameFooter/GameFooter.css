@@ -1,0 +1,47 @@
+.footer-text {
+    font-family: "VT323", monospace;
+    color: whitesmoke;
+}
+
+.footer-text-xl {
+    font-size: xx-large;
+}
+
+.background-sega-md {
+    background-color: black;
+    background-image: linear-gradient(
+        0deg,
+        rgba(155, 155, 155, 0.23) 1px,
+        transparent 1px
+      ),
+      linear-gradient(90deg, rgba(155, 155, 155, 0.23) 1px, transparent 1px);
+    background-size: 30px 30px;
+}
+
+.background-footer-none {
+    background: none;
+}
+
+.logo-img-footer{
+    width: 80%;
+}
+
+.text-footer-logo{
+    padding: 1rem;
+    width: 80%;
+}
+
+.links-footer {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .links-footer:hover {
+    color: #ccc;
+    text-decoration: underline;
+  }
+
+  .links-footer-2:hover {
+    color: rgb(59, 59, 59);
+    text-decoration: none;
+  }

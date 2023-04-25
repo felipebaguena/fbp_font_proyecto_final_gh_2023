@@ -14,6 +14,7 @@ import { StoryMode } from '../StoryMode/StoryMode';
 export const Body = () => {
     return (
       <>
+      <div className="Body">
           <Routes>
           <Route path = '/' element = {<HomePage/>}/>
           <Route path = '/users' element = {<UserList/>}/>
@@ -24,6 +25,7 @@ export const Body = () => {
           <Route path="/monsterdex/:heroId" element={<MonsterDex />} />
           <Route path="/storymode" element={<StoryMode />} />
           </Routes>
+      </div>
     </>
   )
 }

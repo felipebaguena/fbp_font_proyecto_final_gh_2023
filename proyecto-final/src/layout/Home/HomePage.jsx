@@ -97,10 +97,16 @@ export const HomePage = () => {
         {/* <div className="banner battle-title">
           <h1>Texto para el Home</h1>
         </div> */}
-        <Col className="banner battle-title banner-console-img" onClick={startStory}>
+        <Col xs={12} className="banner battle-title banner-console-img-container" onClick={startStory}>
           <img
             className="banner-console-img"
             src="../../../public/images/logo-consola-tv-2.png"
+          />
+        </Col>
+        <Col xs={12} className="banner-console-img-container banner-story-img-container" onClick={startStoryMode}>
+          <img
+            className="banner-story-img"
+            src="../../../public/images/story-home-cover.png"
           />
         </Col>
       </Row>

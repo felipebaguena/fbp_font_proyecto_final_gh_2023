@@ -226,7 +226,21 @@
 .tv-box-hero,
 .tv-box-monster {
   position: relative;
-  z-index: 1;
+  z-index: 5;
+}
+
+.tv-box-hero::before,
+.tv-box-monster::before {
+  background-color: rgba(0, 0, 0, 0.627);
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 60%;
+  left: 15%;
+  width: 50%;
+  height: 50%;
+  border-radius: 50%;
+  box-shadow: 0 10px 40px 15px rgb(0, 0, 0);
 }
 
 .tv-box-hero {
@@ -235,6 +249,19 @@
 
 .tv-box-monster {
   transform: scale(1.2);
+}
+
+.ground {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 6rem;
+  background-color: #4c4c4c;
+  z-index: 1;
+  border-left: 0.2rem solid #222;
+  border-right: 0.2rem solid #222;
+  background-size: repeat;
+  box-shadow: inset 0 13px 8px -8px rgba(0, 0, 0, 0.5);
 }
 
 .table {

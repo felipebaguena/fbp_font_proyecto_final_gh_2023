@@ -1,17 +1,22 @@
+.banner-top-logo-home{
+  margin: 0;
+  padding: 0;
+  margin-top: 1rem;
+  box-shadow: 0 0px 20px rgb(0, 0, 0);
+}
+
+
 .banner-top {
   width: 80%;
   height: fit-content;
   background-color: #3969a7;
-
   border-top: 0.5rem solid #6487b6;
   border-bottom: 0.5rem solid #6487b6;
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
+
+
 }
 
 .banner-top-left-right {
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
   background-color: #3969a7;
   width: 10%;
   border-top: 0.5rem solid #6487b6;
@@ -51,7 +56,7 @@
 }
 
 .game-container {
-  padding: 15px;
+  padding: 2rem;
   position: relative;
 }
 
@@ -73,6 +78,19 @@
   position: absolute;
 }
 
+.banner-console-img{
+  width: 70%;
+  cursor: pointer;
+}
+
+.banner-console-img{
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  position: relative;
+  height: fit-content;
+}
+
+
 @media (max-width: 365px) {
   .banner-top {
     display: none;
@@ -80,5 +98,9 @@
 
   .banner-top-left-right {
     display: none;
+  }
+
+  .banner-console-img{
+    width: 100%;
   }
 }

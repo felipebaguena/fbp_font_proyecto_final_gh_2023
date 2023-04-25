@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Col } from "react-bootstrap";
 
 export const BattleTV = ({
@@ -13,6 +13,26 @@ export const BattleTV = ({
   getHealthPercentage,
   getHealthBarColorClass,
 }) => {
+
+  const [bgImage, setBgImage] = useState("");
+
+  useEffect(() => {
+    const images = [
+      "/images/textures/BIGLEAVES.png",
+      "/images/textures/DIRT.png",
+      "/images/textures/FLATSTONES.png",
+      "/images/textures/GOLDROCKS.png",
+      "/images/textures/GRAYROCKS.png",
+      "/images/textures/ICEYROCKS.png",
+      "/images/textures/PATHROCKS.png",
+      "/images/textures/SAND.png",
+      "/images/textures/SNOW.png",
+      "/images/textures/TINYLEAVES.png",
+    ];
+    const randomImage = images[Math.floor(Math.random() * images.length)];
+    setBgImage(randomImage);
+  }, [battle]);
+
   return (
     <Col xs={12} className="d-flex justify-content-center background-tv">
       <div className="table"></div>
@@ -57,6 +77,10 @@ export const BattleTV = ({
                   alt={battle.monster.name}
                 />
               </div>
+              <div
+                className="ground ground-texture"
+                style={{ backgroundImage: `url(${bgImage})` }}
+              ></div>
             </div>
             <div className="health-bar">
               <div

@@ -17,16 +17,16 @@ export const HomePage = () => {
     if (!token) {
       handleShowModal();
     } else {
-    navigate("/heroes");
-  }
+      navigate("/heroes");
+    }
   };
 
   const viewHeroes = () => {
     if (!token) {
       handleShowModal();
     } else {
-    navigate("/myheroes");
-  }
+      navigate("/myheroes");
+    }
   };
 
   const viewProfile = () => {
@@ -36,7 +36,6 @@ export const HomePage = () => {
       navigate("/profile");
     }
   };
-  
 
   const startStoryMode = () => {
     if (!token) {
@@ -45,11 +44,11 @@ export const HomePage = () => {
       navigate("/storymode");
     }
   };
-  
 
   return (
     <Container fluid>
       <Row className="games-banner">
+        <div className="banner-top-logo-home d-flex">
         <div className="banner-top-left-right"></div>
         <div className="banner-top battle-title">
           <img
@@ -58,6 +57,7 @@ export const HomePage = () => {
           />
         </div>
         <div className="banner-top-left-right"></div>
+        </div>
         <Col xs={12} sm={6} md={3} className="game-container">
           <div className="game" onClick={startStory}>
             <img
@@ -94,17 +94,21 @@ export const HomePage = () => {
             />
           </div>
         </Col>
-        <div className="banner battle-title">
+        {/* <div className="banner battle-title">
           <h1>Texto para el Home</h1>
-        </div>
+        </div> */}
+        <Col className="banner battle-title banner-console-img" onClick={startStory}>
+          <img
+            className="banner-console-img"
+            src="../../../public/images/logo-consola-tv-2.png"
+          />
+        </Col>
       </Row>
       <Modal show={showModal} onHide={handleCloseModal}>
         <Modal.Header closeButton>
           <Modal.Title>Atención</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-          Por favor, inicia sesión o regístrate
-        </Modal.Body>
+        <Modal.Body>Por favor, inicia sesión o regístrate</Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCloseModal}>
             Cerrar

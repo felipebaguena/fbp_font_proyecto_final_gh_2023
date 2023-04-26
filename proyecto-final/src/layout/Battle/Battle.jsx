@@ -71,10 +71,17 @@ export const BattlePage = () => {
         setCreateNewBattle(false);
         const data = await createBattle(token);
         if (data && data.status === "success") {
+          const adjustedMonsterHealth = calculateAdjustedMonsterHealth(
+            data.data.monster,
+            data.data.hero
+          );
+          data.data.monster.health = adjustedMonsterHealth;
+
           setBattle(data.data);
           setCurrentHeroHealth(data.data.hero.health);
-          setCurrentMonsterHealth(data.data.monster.health);
+          setCurrentMonsterHealth(adjustedMonsterHealth);
           setHeroCurrentDefense(data.data.hero.defense);
+
           if (data.data.hero && data.data.hero.hero_image_id) {
             const heroImage = await getHeroImage(
               data.data.hero.hero_image_id,
@@ -120,22 +127,25 @@ export const BattlePage = () => {
   }, [battle, token]);
 
   useEffect(() => {
-    if (consecutiveWins === 4 && battle && battle.hero) {
-      levelUpHero(token, battle.hero.id)
-        .then((response) => {
-          if (response.status === "success") {
-            console.log("Hero leveled up!");
-            setLevelUpValues(response.addedValues);
-            setShowModal(true);
-          } else {
-            console.error("Error leveling up hero:", response.message);
-          }
-        })
-        .catch((error) => {
-          console.error("Error leveling up hero:", error);
-        });
+    if (battle && battle.hero) {
+      const winsNeeded = 3 + battle.hero.level;
+      if (consecutiveWins === winsNeeded) {
+        levelUpHero(token, battle.hero.id)
+          .then((response) => {
+            if (response.status === "success") {
+              console.log("Hero leveled up!");
+              setLevelUpValues(response.addedValues);
+              setShowModal(true);
+            } else {
+              console.error("Error leveling up hero:", response.message);
+            }
+          })
+          .catch((error) => {
+            console.error("Error leveling up hero:", error);
+          });
 
-      setConsecutiveWins(0);
+        setConsecutiveWins(0);
+      }
     }
   }, [consecutiveWins, token, battle]);
 
@@ -144,7 +154,13 @@ export const BattlePage = () => {
     const selectedItemObj = heroItems.find(
       (item) => item.id === selectedItemInt
     );
-    return selectedItemObj ? selectedItemObj.attack_modifier : 0;
+    if (selectedItemObj) {
+      const heroLevel = battle.hero.level;
+      const itemAttackModifier = selectedItemObj.attack_modifier;
+      const itemAttackMultiplier = 1 + heroLevel * 0.05;
+      return itemAttackModifier * itemAttackMultiplier;
+    }
+    return 0;
   };
 
   const openInventoryModal = () => {
@@ -211,6 +227,29 @@ export const BattlePage = () => {
     }
   };
 
+  const randomMultiplier = () => Math.random() * (2.2 - 1.8) + 1.8;
+
+  const calculateAdjustedMonsterAttack = () => {
+    const heroLevel = battle.hero.level;
+    const damageMultiplier = 1 + heroLevel * 0.07;
+    return battle.monster.attack * damageMultiplier;
+  };
+
+  const calculateAdjustedMonsterDefense = () => {
+    const heroLevel = battle.hero.level;
+    const defenseMultiplier = 1 + heroLevel * 0.1;
+    return battle.monster.defense * defenseMultiplier;
+  };
+
+  function calculateAdjustedMonsterHealth(monster, hero) {
+    const heroLevel = hero.level;
+    const baseMonsterHealth = monster.health;
+
+    const adjustedHealth = baseMonsterHealth * (1 + (heroLevel - 1) * 0.1);
+
+    return adjustedHealth;
+  }
+
   const handleAttack = async () => {
     if (
       isPlayerTurn &&
@@ -229,14 +268,16 @@ export const BattlePage = () => {
         setShowFlashOverlay(false);
       }, 1000);
 
-      //ATAQUE DEL HÉROE//
+      const heroLevel = battle.hero.level;
+      console.log("datos del héroe ==>", heroLevel);
 
+      //ATAQUE DEL HÉROE//
       const heroDamage =
         (battle.hero.attack +
           getSelectedItemAttackModifier() +
           battle.stage.attack_modifier) *
-        2;
-      const monsterDefense = battle.monster.defense;
+        randomMultiplier();
+      const monsterDefense = calculateAdjustedMonsterDefense();
       const randomChance = Math.random();
       const failedAttack = randomChance < 0.05;
       const criticalHit = Math.random() < 0.1;
@@ -310,7 +351,7 @@ export const BattlePage = () => {
   //ATAQUE DEL MONSTRUO//
 
   const monsterAttack = () => {
-    const monsterDamage = battle.monster.attack * 2;
+    const monsterDamage = calculateAdjustedMonsterAttack() * randomMultiplier();
     const heroDefense =
       heroCurrentDefense +
       getSelectedItemDefenseModifier() +

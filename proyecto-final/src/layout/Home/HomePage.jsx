@@ -49,20 +49,20 @@ export const HomePage = () => {
     <Container fluid>
       <Row className="games-banner">
         <div className="banner-top-logo-home d-flex">
-        <div className="banner-top-left-right"></div>
-        <div className="banner-top battle-title">
-          <img
-            className="logo-img"
-            src="../../../public/images/logo-juego.png"
-          />
-        </div>
-        <div className="banner-top-left-right"></div>
+          <div className="banner-top-left-right"></div>
+          <div className="banner-top battle-title">
+            <img
+              className="logo-img"
+              src="../../../public/images/logo-juego.png"
+            />
+          </div>
+          <div className="banner-top-left-right"></div>
         </div>
         <Col xs={12} sm={6} md={3} className="game-container">
           <div className="game" onClick={startStory}>
             <img
               className="game-img"
-              src="../../../public/images/aventuras_cover.png"
+              src="../../../public/images/aventuras_cover-2.png"
               width="400"
             />
           </div>
@@ -71,7 +71,7 @@ export const HomePage = () => {
           <div className="game" onClick={viewHeroes}>
             <img
               className="game-img"
-              src="../../../public/images/misheroes_cover.png"
+              src="../../../public/images/heroes_cover-2.png"
               width="400"
             />
           </div>
@@ -80,7 +80,7 @@ export const HomePage = () => {
           <div className="game" onClick={viewProfile}>
             <img
               className="game-img"
-              src="../../../public/images/perfil_cover.png"
+              src="../../../public/images/perfil_cover-3.png"
               width="400"
             />
           </div>
@@ -89,7 +89,7 @@ export const HomePage = () => {
           <div className="game" onClick={startStoryMode}>
             <img
               className="game-img"
-              src="../../../public/images/historia_cover.png"
+              src="../../../public/images/historia_cover-2.png"
               width="400"
             />
           </div>
@@ -97,13 +97,21 @@ export const HomePage = () => {
         {/* <div className="banner battle-title">
           <h1>Texto para el Home</h1>
         </div> */}
-        <Col xs={12} className="banner battle-title banner-console-img-container" onClick={startStory}>
+        <Col
+          xs={12}
+          className="banner battle-title banner-console-img-container"
+          onClick={startStory}
+        >
           <img
             className="banner-console-img"
             src="../../../public/images/logo-consola-tv-2.png"
           />
         </Col>
-        <Col xs={12} className="banner-console-img-container banner-story-img-container" onClick={startStoryMode}>
+        <Col
+          xs={12}
+          className="banner-console-img-container banner-story-img-container"
+          onClick={startStoryMode}
+        >
           <img
             className="banner-story-img"
             src="../../../public/images/story-home-cover.png"

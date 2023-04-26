@@ -25,7 +25,6 @@ export const BattleTV = ({
       "/images/textures/ICEYROCKS.png",
       "/images/textures/PATHROCKS.png",
       "/images/textures/SAND.png",
-      "/images/textures/SNOW.png",
       "/images/textures/TINYLEAVES.png",
     ];
     const randomImage = images[Math.floor(Math.random() * images.length)];

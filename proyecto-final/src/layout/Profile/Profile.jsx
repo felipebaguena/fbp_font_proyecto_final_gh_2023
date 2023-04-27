@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { getUserData, updateUserData } from "../../services/apiCalls";
 import dayjs from "dayjs";
 import { validate } from "../../services/validations";
+import "./Profile.css";
 
 export const UserProfile = () => {
   const token = useSelector((state) => state.auth.token);
@@ -87,8 +88,8 @@ export const UserProfile = () => {
 
   return (
     <Container>
-      <Row>
-        <Col>
+      <Row className="justify-content-center">
+        <Col xs={12} sm={10} lg={8} className="custom-modal-content">
           <h1>Perfil de usuario</h1>
           {userData ? (
             <Form>
@@ -153,18 +154,26 @@ export const UserProfile = () => {
               </Form.Group>
               <div className="d-flex">
                 {!isEditable ? (
-                  <Button variant="primary" onClick={handleEditClick}>
+                  <Button
+                    variant="primary"
+                    onClick={handleEditClick}
+                    className="inventory-button edit-button-profile font-size-modal-l"
+                  >
                     Editar
                   </Button>
                 ) : (
                   <>
-                    <Button variant="success" onClick={handleSaveClick}>
+                    <Button
+                      variant="success"
+                      onClick={handleSaveClick}
+                      className="edit-button-profile"
+                    >
                       Guardar
                     </Button>
                     <Button
                       variant="secondary"
                       onClick={handleCancelClick}
-                      className="ms-2"
+                      className="ms-2 edit-button-profile font-size-modal-l"
                     >
                       Cancelar
                     </Button>

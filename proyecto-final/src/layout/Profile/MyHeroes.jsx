@@ -212,6 +212,21 @@ export const HeroesAndItems = () => {
     );
   };
 
+  const getBackgroundColorByRarity = (rare) => {
+    switch (rare) {
+      case "comun":
+        return "common-item";
+      case "raro":
+        return "rare-item";
+      case "epico":
+        return "epic-item";
+      case "legendario":
+        return "legendary-item";
+      default:
+        return "";
+    }
+  };
+
   const renderInventoryModal = () => {
     if (!selectedHero) return null;
     return (
@@ -230,13 +245,11 @@ export const HeroesAndItems = () => {
           <div className="list-group">
             {selectedHero.items.map((item, index) => (
               <React.Fragment key={index}>
-                <div
-                  className={`list-group-item custom-button custom-inventory-text ${
+                <Button
+                  variant="dark"
+                  className={`custom-button ${
                     selectedItemIndex === index ? "custom-button-select" : ""
-                  }`}
-                  style={{
-                    cursor: "pointer",
-                  }}
+                  } ${getBackgroundColorByRarity(item.rare)}`}
                   onClick={() =>
                     selectedItemIndex === index
                       ? setSelectedItemIndex(null)
@@ -244,7 +257,7 @@ export const HeroesAndItems = () => {
                   }
                 >
                   {item.name}
-                </div>
+                </Button>
                 {selectedItemIndex === index && (
                   <div className="custom-inventory-text">
                     <p>{selectedHero.items[selectedItemIndex].description}</p>
@@ -478,7 +491,7 @@ export const HeroesAndItems = () => {
           </Modal.Footer>
         </Modal>
       )}
-        <div
+      <div
         className="selector-hero-title back-heroes-view"
         onClick={handleBackToHome}
       >

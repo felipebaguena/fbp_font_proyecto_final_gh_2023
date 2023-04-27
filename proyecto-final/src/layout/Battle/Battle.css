@@ -401,6 +401,38 @@
   background-image: linear-gradient(to top, #222222 30%, #b5b5b5 70%, #4a4a4a);
 }
 
+.legendary-item{
+  background-image: linear-gradient(to top, #bb8c00 30%, #6f5000 60%, #fff5cc) !important;
+}
+
+.legendary-item:hover{
+  background-image: linear-gradient(to top, #dfb740 30%, #755401 50%, #fefefe) !important;
+}
+
+.epic-item{
+  background-image: linear-gradient(to top, #5700b4 30%, #2b005c 60%, #6f62e7) !important;
+}
+
+.epic-item:hover{
+  background-image: linear-gradient(to top, #710edb 30%, #210146 50%, #9f95f8) !important;
+}
+
+.rare-item{
+  background-image: linear-gradient(to top, #304a84 20%, #042ea1 60%, #628ee7) !important;
+}
+
+.rare-item:hover{
+  background-image: linear-gradient(to top, #4e6fb6 20%, #062477 50%, #8aaef6) !important;
+}
+
+.common-item{
+  background-image: linear-gradient(to top, #595959 30%, #3c3c3c 60%, #d9d9d9) !important;
+}
+
+.common-item:hover{
+  background-image: linear-gradient(to top, #787878 30%, #1f1f1f 50%, #f7f7f7) !important;
+}
+
 .potion-button {
   height: fit-content;
 
@@ -639,3 +671,4 @@
     display: none;
   }
 }
+

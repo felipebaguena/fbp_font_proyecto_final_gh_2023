@@ -241,13 +241,11 @@ export const HeroPage = () => {
           <div className="list-group">
             {selectedHero.items.map((item, index) => (
               <React.Fragment key={index}>
-                <div
-                  className={`list-group-item custom-button custom-inventory-text ${
+                <Button
+                  variant="dark"
+                  className={`custom-button ${
                     selectedItemIndex === index ? "custom-button-select" : ""
-                  }`}
-                  style={{
-                    cursor: "pointer",
-                  }}
+                  } ${getBackgroundColorByRarity(item.rare)}`}
                   onClick={() =>
                     selectedItemIndex === index
                       ? setSelectedItemIndex(null)
@@ -255,7 +253,7 @@ export const HeroPage = () => {
                   }
                 >
                   {item.name}
-                </div>
+                </Button>
                 {selectedItemIndex === index && (
                   <div className="custom-inventory-text">
                     <p>{selectedHero.items[selectedItemIndex].description}</p>
@@ -340,6 +338,21 @@ export const HeroPage = () => {
         </Card.Body>
       </Card>
     );
+  };
+
+  const getBackgroundColorByRarity = (rare) => {
+    switch (rare) {
+      case "comun":
+        return "common-item";
+      case "raro":
+        return "rare-item";
+      case "epico":
+        return "epic-item";
+      case "legendario":
+        return "legendary-item";
+      default:
+        return "";
+    }
   };
 
   return (

@@ -322,7 +322,7 @@ export const BattlePage = () => {
             );
           });
 
-        if (Math.random() > 0.7) {
+        if (Math.random() > 0.3) {
           assignRandomItemToSelectedHero(token, battle.hero.id)
             .then(async (response) => {
               if (response.status === "success") {
@@ -436,6 +436,21 @@ export const BattlePage = () => {
     setMonsterAttackFailure(0);
   };
 
+  const getBackgroundColorByRarity = (rare) => {
+    switch (rare) {
+      case "comun":
+        return "common-item";
+      case "raro":
+        return "rare-item";
+      case "epico":
+        return "epic-item";
+      case "legendario":
+        return "legendary-item";
+      default:
+        return "";
+    }
+  };
+
   return (
     <Container fluid>
       <Row className="justify-content-center">
@@ -545,7 +560,7 @@ export const BattlePage = () => {
                           selectedItemIndex === index
                             ? "custom-button-select"
                             : ""
-                        }`}
+                        } ${getBackgroundColorByRarity(item.rare)}`}
                         onClick={() =>
                           selectedItemIndex === index
                             ? setSelectedItemIndex(null)
@@ -554,6 +569,7 @@ export const BattlePage = () => {
                       >
                         {item.name}
                       </Button>
+
                       {selectedItemIndex === index && (
                         <div className="mt-3 custom-inventory-text">
                           <h5>Detalles del ítem:</h5>

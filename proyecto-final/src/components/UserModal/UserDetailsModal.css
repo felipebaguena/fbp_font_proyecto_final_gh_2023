@@ -1,0 +1,48 @@
+.custom-modal-content {
+    border: 0.4rem solid rgb(165, 165, 165);
+    background-image: linear-gradient(to top, #010345 30%, #161a93 60%, #6274cd);
+    font-family: "VT323", monospace;
+    color: whitesmoke;
+  }
+
+  .custom-modal-content-mames:hover{
+    color: rgb(216, 177, 1);
+  }
+  
+  .pointer-modal{
+    cursor: pointer;
+  }
+
+  .modal-text-button{
+    font-family: "VT323", monospace;
+    color: whitesmoke;
+    font-size: x-large;
+  }
+
+  .font-size-modal-l{
+    font-size: large;
+  }
+
+  .custom-delete-button {
+    padding: 0.25rem 0.5rem;
+    font-size: large;
+    line-height: 1.5;
+    color: #fff;
+    cursor: pointer;
+    background-color: #dc3545;
+    border: 1px solid #dc3545;
+    border-radius: 0.25rem;
+    user-select: none;
+    transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+  }
+  
+  .custom-delete-button:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+  }
+  
+  .custom-delete-button:focus {
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+  }
+  

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Modal, Button, Card, Form } from "react-bootstrap";
 import dayjs from "dayjs";
+import "./UserDetailsModal.css";
 
 export const UserDetailsModal = ({
   show,
@@ -22,11 +23,18 @@ export const UserDetailsModal = ({
   };
 
   return (
-    <Modal show={show} onHide={handleClose} size="lg">
-      <Modal.Header closeButton>
+    <Modal
+      show={show}
+      onHide={handleClose}
+      size="lg"
+
+    >
+      <Modal.Header closeButton 
+      className="custom-modal-content">
         <Modal.Title>Detalles del usuario</Modal.Title>
       </Modal.Header>
-      <Modal.Body>
+      <Modal.Body
+            className="custom-modal-content">
         {user && (
           <>
             <p>ID: {user.id}</p>
@@ -71,17 +79,15 @@ export const UserDetailsModal = ({
                 </Form.Control>
               </Form.Group>
             </Form>
-            <h5>Héroes:</h5>
+            <div className="mt-2 mb-2">Héroes:</div>
             {user.heroes && user.heroes.length > 0 ? (
               user.heroes.map((hero, index) => (
-                <Card key={hero.id}>
-                  <Card.Header>
-                    <Button
-                      variant="link"
-                      onClick={() => toggleHeroDetails(index)}
-                    >
+                <Card className="custom-modal-content modal-text-button font-size-modal-l" key={hero.id}>
+                  <Card.Header variant="link" className="pointer-modal"
+                      onClick={() => toggleHeroDetails(index)}>
+                    <div className="text-hero-modal">
                       {hero.name}
-                    </Button>
+                    </div>
                   </Card.Header>
                   {activeHeroIndex === index && (
                     <Card.Body>
@@ -103,12 +109,13 @@ export const UserDetailsModal = ({
           </>
         )}
       </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={handleClose}>
+      <Modal.Footer className="custom-modal-content">
+        <Button variant="secondary" className="modal-text-button" onClick={handleClose}>
           Cerrar
         </Button>
         <Button
           variant="primary"
+          className="modal-text-button"
           onClick={() => handleRoleChange(selectedRole)}
           disabled={!selectedRole}
         >

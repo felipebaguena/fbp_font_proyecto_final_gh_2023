@@ -117,8 +117,8 @@ export const UserList = () => {
 
   return (
     <Container>
-      <Row>
-        <Col>
+      <Row className="custom-modal-content">
+        <Col className="pb-3">
           <h1>Lista de usuarios</h1>
           {loading ? (
             <p>Cargando usuarios...</p>
@@ -127,7 +127,7 @@ export const UserList = () => {
               {users.map((user, index) => (
                 <ListGroup.Item
                   key={user.id}
-                  className="d-flex flex-wrap align-items-center"
+                  className="d-flex flex-wrap align-items-center custom-modal-content font-size-modal-l custom-modal-content-mames"
                   onClick={() => handleShowModal(user)}
                   action
                 >
@@ -141,17 +141,15 @@ export const UserList = () => {
                     className="d-flex justify-content-between mt-2 mt-sm-0"
                   >
                     <span>{user.email}</span>
-                    <Button
-                      variant="danger"
-                      size="sm"
-                      className="ms-2"
+                    <div
+                      className="custom-delete-button ms-2"
                       onClick={(e) => {
                         e.stopPropagation();
                         handleDeleteClick(user);
                       }}
                     >
                       Eliminar
-                    </Button>
+                    </div>
                   </Col>
                 </ListGroup.Item>
               ))}

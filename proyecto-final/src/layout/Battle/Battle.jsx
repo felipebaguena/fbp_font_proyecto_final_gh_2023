@@ -130,7 +130,7 @@ export const BattlePage = () => {
 
   useEffect(() => {
     if (battle && battle.hero) {
-      const winsNeeded = 3 + battle.hero.level;
+      const winsNeeded = 2 + battle.hero.level;
       if (consecutiveWins === winsNeeded) {
         levelUpHero(token, battle.hero.id)
           .then((response) => {
@@ -322,7 +322,7 @@ export const BattlePage = () => {
             );
           });
 
-        if (Math.random() > 0.3) {
+        if (Math.random() > 0.7) {
           assignRandomItemToSelectedHero(token, battle.hero.id)
             .then(async (response) => {
               if (response.status === "success") {
@@ -503,13 +503,18 @@ export const BattlePage = () => {
                   <Button
                     variant="dark"
                     onClick={openInventoryModal}
-                    className="attack-button inventory-button me-3"
+                    className={`attack-button inventory-button me-3 ${
+                      selectedItem
+                        ? getBackgroundColorByRarity(
+                            findItemById(selectedItem).rare
+                          )
+                        : ""
+                    }`}
                   >
                     {selectedItem
                       ? findItemById(selectedItem).name
                       : "Selecciona un objeto"}
                   </Button>
-
                   <div className="d-flex justify-content-center potion-button">
                     {Array.from({ length: 4 }, (_, index) => (
                       <Potion

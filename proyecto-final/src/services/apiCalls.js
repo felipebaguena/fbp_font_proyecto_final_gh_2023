@@ -414,3 +414,31 @@ export const getVillagerImageById = async (imageId) => {
     return { status: "error", error: error };
   }
 };
+
+export const updateBattleResult = async (battleId, hero_victory, token) => {
+  try {
+    const response = await axios.put(
+      `${root}battles/${battleId}`,
+      { hero_victory: hero_victory },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    if (response.data && response.data.status === "success") {
+      return {
+        status: "success",
+        data: response.data.data,
+      };
+    } else {
+      console.error("Error updating battle result:", response.data);
+      return { status: "error", error: "Failed to update battle result" };
+    }
+  } catch (error) {
+    console.error("Error updating battle result:", error);
+    return { status: "error", error: error };
+  }
+};

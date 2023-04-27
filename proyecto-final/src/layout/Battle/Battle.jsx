@@ -11,6 +11,7 @@ import {
   getItemById,
   getMonsterImage,
   levelUpHero,
+  updateBattleResult,
 } from "../../services/apiCalls";
 import { BattleModal } from "./BattleModal";
 import { BattleTV } from "../../components/BattleTV/BattleTV";
@@ -66,6 +67,7 @@ export const BattlePage = () => {
   }, [isPlayerTurn, monsterIsDead]);
 
   useEffect(() => {
+    console.log("Creating a new battle...");
     const fetchData = async () => {
       if (!battle || createNewBattle) {
         setCreateNewBattle(false);
@@ -301,6 +303,24 @@ export const BattlePage = () => {
         setShowModal(true);
         setMonsterIsDead(true);
         setModalMessage("¡Has vencido al monstruo!");
+
+        updateBattleResult(battle.id, true, token)
+          .then((response) => {
+            if (response.status === "success") {
+              console.log("Resultado de la batalla actualizado correctamente");
+            } else {
+              console.error(
+                "Error actualizando el resultado de la batalla:",
+                response.message
+              );
+            }
+          })
+          .catch((error) => {
+            console.error(
+              "Error actualizando el resultado de la batalla:",
+              error
+            );
+          });
 
         if (Math.random() > 0.7) {
           assignRandomItemToSelectedHero(token, battle.hero.id)

@@ -233,13 +233,13 @@ export const BattlePage = () => {
 
   const calculateAdjustedMonsterAttack = () => {
     const heroLevel = battle.hero.level;
-    const damageMultiplier = 1 + heroLevel * 0.07;
+    const damageMultiplier = 1 + heroLevel * 0.1;
     return battle.monster.attack * damageMultiplier;
   };
 
   const calculateAdjustedMonsterDefense = () => {
     const heroLevel = battle.hero.level;
-    const defenseMultiplier = 1 + heroLevel * 0.1;
+    const defenseMultiplier = 1 + heroLevel * 0.2;
     return battle.monster.defense * defenseMultiplier;
   };
 
@@ -322,7 +322,7 @@ export const BattlePage = () => {
             );
           });
 
-        if (Math.random() > 0.7) {
+        if (Math.random() > 0.5) {
           assignRandomItemToSelectedHero(token, battle.hero.id)
             .then(async (response) => {
               if (response.status === "success") {

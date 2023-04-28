@@ -9,6 +9,7 @@ import {
   getAllHeroImages,
   selectHero,
   getHeroImage,
+  removeItemFromHero,
 } from "../../services/apiCalls";
 import { Card, Button, Modal } from "react-bootstrap";
 
@@ -27,6 +28,9 @@ export const HeroPage = () => {
   const [showImageSelectionModal, setShowImageSelectionModal] = useState(false);
   const [heroImages, setHeroImages] = useState([]);
   const [heroImagesById, setHeroImagesById] = useState({});
+
+  const [showDeleteConfirmModal, setShowDeleteConfirmModal] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState(null);
 
   const handleShowImageSelectionModal = (imageId) => {
     setSelectedHeroImageId(imageId);
@@ -265,7 +269,25 @@ export const HeroPage = () => {
                       Modificador de Defensa:{" "}
                       {selectedHero.items[selectedItemIndex].defense_modifier}
                     </p>
-                    <p>Rareza: {translateRarity(selectedHero.items[selectedItemIndex].rare)}</p>
+                    <p>
+                      Rareza:{" "}
+                      {translateRarity(
+                        selectedHero.items[selectedItemIndex].rare
+                      )}
+                    </p>
+                    {selectedItemIndex !== null && (
+                      <Button
+                        variant="danger"
+                        className="custom-button custom-button-remove"
+                        onClick={() =>
+                          handleShowDeleteConfirmModal(
+                            selectedHero.items[selectedItemIndex]
+                          )
+                        }
+                      >
+                        Eliminar ítem
+                      </Button>
+                    )}
                   </div>
                 )}
               </React.Fragment>
@@ -336,6 +358,66 @@ export const HeroPage = () => {
     );
   };
 
+  const handleRemoveItem = async () => {
+    if (selectedHero && itemToDelete) {
+      const itemId = itemToDelete.id;
+      const result = await removeItemFromHero(token, selectedHero.id, itemId);
+      if (result && result.status === "success") {
+        console.log("Item removed successfully");
+
+        setSelectedHero((prevHero) => {
+          const updatedItems = prevHero.items.filter(
+            (item) => item.id !== itemId
+          );
+          return { ...prevHero, items: updatedItems };
+        });
+
+        setShowDeleteConfirmModal(false);
+        setItemToDelete(null);
+      } else {
+        console.error("Error removing item:", result);
+      }
+    }
+  };
+
+  const renderDeleteConfirmModal = () => {
+    return (
+      <Modal
+        show={showDeleteConfirmModal}
+        onHide={() => setShowDeleteConfirmModal(false)}
+        centered
+        className="custom-modal"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Eliminar ítem</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {itemToDelete && (
+            <p className="custom-inventory-text">
+              ¿Estás seguro de que deseas eliminar el ítem {itemToDelete.name}?
+            </p>
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="secondary"
+            onClick={() => setShowDeleteConfirmModal(false)}
+          >
+            Cancelar
+          </Button>
+          <Button variant="danger" onClick={handleRemoveItem}>
+            Eliminar
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    );
+  };
+
+  const handleShowDeleteConfirmModal = (item) => {
+    setItemToDelete(item);
+    setShowDeleteConfirmModal(true);
+  };
+
   const getBackgroundColorByRarity = (rare) => {
     switch (rare) {
       case "comun":
@@ -365,7 +447,6 @@ export const HeroPage = () => {
         return rarity;
     }
   };
-  
 
   return (
     <div className="">
@@ -382,6 +463,7 @@ export const HeroPage = () => {
       </div>
       {renderInventoryModal()}
       {renderImageSelectionModal()}
+      {renderDeleteConfirmModal()}
 
       <Modal
         show={showModal}

@@ -442,3 +442,21 @@ export const updateBattleResult = async (battleId, hero_victory, token) => {
     return { status: "error", error: error };
   }
 };
+
+export const removeItemFromHero = async (token, heroId, itemId) => {
+  try {
+    const response = await axios.delete(
+      `${root}heroes/${heroId}/items/${itemId}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error removing item from hero:", error);
+    return null;
+  }
+};

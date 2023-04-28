@@ -227,6 +227,21 @@ export const HeroesAndItems = () => {
     }
   };
 
+  const translateRarity = (rarity) => {
+    switch (rarity) {
+      case "comun":
+        return "Común";
+      case "raro":
+        return "Raro";
+      case "epico":
+        return "Épico";
+      case "legendario":
+        return "Legendario";
+      default:
+        return rarity;
+    }
+  };
+
   const renderInventoryModal = () => {
     if (!selectedHero) return null;
     return (
@@ -269,11 +284,7 @@ export const HeroesAndItems = () => {
                       Modificador de Defensa:{" "}
                       {selectedHero.items[selectedItemIndex].defense_modifier}
                     </p>
-                    <p>
-                      Modificador de Salud:{" "}
-                      {selectedHero.items[selectedItemIndex].health_modifier}
-                    </p>
-                    <p>Rareza: {selectedHero.items[selectedItemIndex].rare}</p>
+                    <p>Rareza: {translateRarity(selectedHero.items[selectedItemIndex].rare)}</p>
                   </div>
                 )}
               </React.Fragment>

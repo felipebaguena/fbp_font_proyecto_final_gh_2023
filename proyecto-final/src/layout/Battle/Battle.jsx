@@ -451,6 +451,21 @@ export const BattlePage = () => {
     }
   };
 
+  const translateRarity = (rarity) => {
+    switch (rarity) {
+      case "comun":
+        return "Común";
+      case "raro":
+        return "Raro";
+      case "epico":
+        return "Épico";
+      case "legendario":
+        return "Legendario";
+      default:
+        return rarity;
+    }
+  };
+
   return (
     <Container fluid>
       <Row className="justify-content-center">
@@ -587,6 +602,7 @@ export const BattlePage = () => {
                               item.defense_modifier
                             }{" "}
                             <br />
+                            Rareza: {translateRarity(item.rare)} <br />
                           </p>
                         </div>
                       )}

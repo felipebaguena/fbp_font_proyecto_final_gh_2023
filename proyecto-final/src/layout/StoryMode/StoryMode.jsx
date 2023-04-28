@@ -12,6 +12,8 @@ export const StoryMode = () => {
   const [villagerData, setVillagerData] = useState({ image_url: "", name: "" });
   const [textIndex, setTextIndex] = useState(0);
   const [historyCompleted, setHistoryCompleted] = useState(false);
+  const [animationClass, setAnimationClass] = useState("");
+
 
   const navigate = useNavigate();
 
@@ -31,6 +33,13 @@ export const StoryMode = () => {
   const handleTalkToVillagers = () => {
     setShowHistory(false);
   };
+
+  const handleAnimation = async () => {
+    setAnimationClass("");
+    await new Promise((resolve) => setTimeout(resolve, 100));
+    setAnimationClass("fade-in");
+  };
+  
 
   const fetchVillagerImage = async () => {
     const imageId = Math.floor(Math.random() * 49) + 1;
@@ -55,10 +64,12 @@ export const StoryMode = () => {
     }
   };
 
-  const handleNewConversation = () => {
+  const handleNewConversation = async () => {
+    await handleAnimation();
     setCurrentConversation(getRandomConversation());
     fetchVillagerImage();
   };
+  
 
   const handleGoHome = () => {
     navigate("/");
@@ -133,13 +144,14 @@ export const StoryMode = () => {
       ) : (
         currentConversation && (
           <>
-            <Row className="d-flex justify-content-center conversation-container ">
+<Row className="d-flex justify-content-center conversation-container">
+
               <div className="selector-hero-title selector-hero-title-story">En la aldea</div>
               <Col
                 md={4}
                 lg={3}
                 xs={12}
-                className="custom-text-container conversation-text-container conversation-image-container d-flex justify-content-center"
+                className={`custom-text-container conversation-text-container conversation-image-container d-flex justify-content-center ${animationClass}`}
               >
                 <div style={{ overflow: "hidden" }}>
                   <img
@@ -152,7 +164,7 @@ export const StoryMode = () => {
               <Col
                 md={7}
                 xs={12}
-                className="custom-text-container conversation-text-container d-flex flex-column justify-content-between"
+                className={`custom-text-container conversation-text-container d-flex flex-column justify-content-between ${animationClass}`}
               >
                 <p>
                   <strong>{villagerData.name}:</strong>{" "}

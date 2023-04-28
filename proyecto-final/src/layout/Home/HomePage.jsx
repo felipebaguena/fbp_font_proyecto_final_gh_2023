@@ -117,6 +117,36 @@ export const HomePage = () => {
             src="../../../public/images/story-home-cover.png"
           />
         </Col>
+        <Col className="banner-top-logo-home d-flex justify-content-center">
+          <div className="banner-top-left-right banner-bottom-left-right"></div>
+          <Col className="banner-bottom battle-title d-flex justify-content-center">
+            <a
+              href="https://github.com/felipebaguena"
+              className="cartdrige-img"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                className="cartdrige"
+                src="../../../public/images/md-cartridge-gh.png"
+                alt="GitHub"
+              />
+            </a>
+            <a
+              href="https://www.linkedin.com/in/felipe-b%C3%A1guena-b20689269/"
+              className="cartdrige-img"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                className="cartdrige"
+                src="../../../public/images/md-cartridge-gh-li.png"
+                alt="LinkedIn"
+              />
+            </a>
+          </Col>
+          <div className="banner-top-left-right banner-bottom-left-right"></div>
+        </Col>
       </Row>
       <Modal show={showModal} onHide={handleCloseModal}>
         <Modal.Header closeButton>

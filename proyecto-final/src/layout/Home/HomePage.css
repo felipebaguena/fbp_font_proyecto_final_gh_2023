@@ -1,4 +1,4 @@
-.banner-top-logo-home{
+.banner-top-logo-home {
   margin: 0;
   padding: 0;
   margin-top: 1rem;
@@ -11,7 +11,6 @@
   background-color: #3969a7;
   border-top: 0.5rem solid #6487b6;
   border-bottom: 0.5rem solid #6487b6;
-
 }
 
 .banner-top-left-right {
@@ -75,34 +74,60 @@
   position: absolute;
 }
 
-.banner-console-img-container{
+.banner-console-img-container {
   height: fit-content;
   cursor: pointer;
 }
 
-.banner-console-img{
+.banner-console-img {
   width: 62%;
   margin-top: 2rem;
   margin-bottom: 2rem;
 }
 
-.banner-story-img-container{
+.banner-story-img-container {
   margin: 0;
   padding: 0;
   margin-top: 1.5rem;
 }
 
-.banner-story-img{
+.banner-story-img {
   width: 100%;
 }
 
-.banner-console-img{
+.banner-console-img {
   padding-top: 1rem;
   padding-bottom: 1rem;
   position: relative;
   height: fit-content;
 }
 
+.banner-bottom-left-right {
+  width: 20%;
+}
+
+.banner-bottom {
+  width: 60%;
+  height: fit-content;
+  background-color: #3969a7;
+  border-top: 0.5rem solid #6487b6;
+  border-bottom: 0.5rem solid #6487b6;
+}
+
+.cartdrige {
+  width: 100%;
+}
+
+.cartdrige-img {
+  width: 40%;
+  margin: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cartdrige-img:hover {
+  transform: scale(1.2);
+}
 
 @media (max-width: 365px) {
   .banner-top {
@@ -113,7 +138,7 @@
     display: none;
   }
 
-  .banner-console-img{
+  .banner-console-img {
     width: 100%;
   }
 }

@@ -72,6 +72,9 @@
     color: whitesmoke;
   }
 
+  .custom-button-remove{
+    background-image: linear-gradient(to top, #222222 30%, #343434 60%, #121212);
+  }
 
   .selector-hero-title{
     display: flex;

@@ -1,7 +1,7 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 
-export function BattleControls({
+export const BattleControls = ({
   handleAttack,
   handleDefense,
   openInventoryModal,
@@ -12,7 +12,7 @@ export function BattleControls({
   handleUsePotion,
   PotionComponent,
   battle,
-}) {
+}) => {
   return (
     <div className="d-flex justify-content-around mt-3 buttons-battle-container" style={{ marginTop: '1rem' }}>
       <div className="action-buttons-container">
@@ -51,4 +51,5 @@ export function BattleControls({
       </div>
     </div>
   );
-}
+};
+

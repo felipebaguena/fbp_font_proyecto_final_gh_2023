@@ -15,7 +15,8 @@ import {
 } from "../../services/apiCalls";
 import { BattleModal } from "./BattleModal";
 import { BattleTV } from "../../components/BattleTV/BattleTV";
-import BattleControls from "../../components/BattleComponents/BattleControls";
+import { BattleControls } from "../../components/BattleComponents/BattleControls";
+import { InventoryModal } from "../../components/BattleComponents/InventoryModal";
 
 export const BattlePage = () => {
   const [battle, setBattle] = useState(null);
@@ -519,78 +520,16 @@ export const BattlePage = () => {
                 />
               )}
             </div>
-            <Modal
-              show={showInventoryModal}
-              onHide={closeInventoryModal}
-              centered
-              className="custom-modal"
-            >
-              <Modal.Header closeButton>
-                <Modal.Title>Inventario</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>
-                <div className="list-group">
-                  {heroItems.map((item, index) => (
-                    <React.Fragment key={item.id}>
-                      <Button
-                        variant="dark"
-                        className={`custom-button ${
-                          selectedItemIndex === index
-                            ? "custom-button-select"
-                            : ""
-                        } ${getBackgroundColorByRarity(item.rare)}`}
-                        onClick={() =>
-                          selectedItemIndex === index
-                            ? setSelectedItemIndex(null)
-                            : setSelectedItemIndex(index)
-                        }
-                      >
-                        {item.name}
-                      </Button>
-
-                      {selectedItemIndex === index && (
-                        <div className="mt-3 custom-inventory-text">
-                          <h5>Detalles del ítem:</h5>
-                          <p>
-                            Nombre: {item.name} <br />
-                            Descripción: {item.description} <br />
-                            Modificador de Ataque: +{item.attack_modifier}{" "}
-                            <br />
-                            Modificador de Defensa: +{
-                              item.defense_modifier
-                            }{" "}
-                            <br />
-                            Rareza: {translateRarity(item.rare)} <br />
-                          </p>
-                        </div>
-                      )}
-                    </React.Fragment>
-                  ))}
-                </div>
-              </Modal.Body>
-              <Modal.Footer>
-                <Button
-                  variant="success"
-                  className="mb-2 custom-button custom-button-select"
-                  onClick={() => {
-                    if (selectedItemIndex !== null) {
-                      setSelectedItem(heroItems[selectedItemIndex].id);
-                      closeInventoryModal();
-                    }
-                  }}
-                  disabled={selectedItemIndex === null}
-                >
-                  Seleccionar ítem
-                </Button>
-                <Button
-                  variant="secondary"
-                  className="custom-button custom-button-close"
-                  onClick={closeInventoryModal}
-                >
-                  Cerrar
-                </Button>
-              </Modal.Footer>
-            </Modal>
+            <InventoryModal
+              showInventoryModal={showInventoryModal}
+              closeInventoryModal={closeInventoryModal}
+              heroItems={heroItems}
+              selectedItemIndex={selectedItemIndex}
+              setSelectedItemIndex={setSelectedItemIndex}
+              getBackgroundColorByRarity={getBackgroundColorByRarity}
+              selectedItem={selectedItem}
+              setSelectedItem={setSelectedItem}
+            />
           </Col>
         </Col>
       </Row>

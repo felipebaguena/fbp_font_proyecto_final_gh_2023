@@ -1,5 +1,5 @@
-import React from 'react';
-import { Modal, Button } from 'react-bootstrap';
+import React from "react";
+import { Modal, Button } from "react-bootstrap";
 
 const InventoryModal = ({
   showInventoryModal,
@@ -28,9 +28,7 @@ const InventoryModal = ({
               <Button
                 variant="dark"
                 className={`custom-button ${
-                  selectedItemIndex === index
-                    ? "custom-button-select"
-                    : ""
+                  selectedItemIndex === index ? "custom-button-select" : ""
                 } ${getBackgroundColorByRarity(item.rare)}`}
                 onClick={() =>
                   selectedItemIndex === index

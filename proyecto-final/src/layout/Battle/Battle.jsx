@@ -16,7 +16,7 @@ import {
 import { BattleModal } from "./BattleModal";
 import { BattleTV } from "../../components/BattleTV/BattleTV";
 import { BattleControls } from "../../components/BattleComponents/BattleControls";
-import { InventoryModal } from "../../components/BattleComponents/InventoryModal";
+import InventoryModal from "../../components/BattleComponents/InventoryModal";
 
 export const BattlePage = () => {
   const [battle, setBattle] = useState(null);
@@ -527,7 +527,7 @@ export const BattlePage = () => {
               selectedItemIndex={selectedItemIndex}
               setSelectedItemIndex={setSelectedItemIndex}
               getBackgroundColorByRarity={getBackgroundColorByRarity}
-              selectedItem={selectedItem}
+              translateRarity={translateRarity}
               setSelectedItem={setSelectedItem}
             />
           </Col>

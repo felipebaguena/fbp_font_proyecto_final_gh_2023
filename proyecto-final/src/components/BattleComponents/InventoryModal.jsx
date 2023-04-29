@@ -1,14 +1,14 @@
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 
-export const InventoryModal = ({
+const InventoryModal = ({
   showInventoryModal,
   closeInventoryModal,
   heroItems,
   selectedItemIndex,
   setSelectedItemIndex,
   getBackgroundColorByRarity,
-  selectedItem,
+  translateRarity,
   setSelectedItem,
 }) => {
   return (
@@ -40,6 +40,19 @@ export const InventoryModal = ({
               >
                 {item.name}
               </Button>
+
+              {selectedItemIndex === index && (
+                <div className="mt-3 custom-inventory-text">
+                  <h5>Detalles del ítem:</h5>
+                  <p>
+                    Nombre: {item.name} <br />
+                    Descripción: {item.description} <br />
+                    Modificador de Ataque: +{item.attack_modifier} <br />
+                    Modificador de Defensa: +{item.defense_modifier} <br />
+                    Rareza: {translateRarity(item.rare)} <br />
+                  </p>
+                </div>
+              )}
             </React.Fragment>
           ))}
         </div>
@@ -70,3 +83,4 @@ export const InventoryModal = ({
   );
 };
 
+export default InventoryModal;

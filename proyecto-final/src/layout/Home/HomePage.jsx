@@ -62,7 +62,7 @@ export const HomePage = () => {
           <div className="game" onClick={startStory}>
             <img
               className="game-img"
-              src="../../../public/images/aventuras_cover-2.png"
+              src="../../../public/images/aventuras_cover-3.png"
               width="400"
             />
           </div>
@@ -71,7 +71,7 @@ export const HomePage = () => {
           <div className="game" onClick={viewHeroes}>
             <img
               className="game-img"
-              src="../../../public/images/heroes_cover-2.png"
+              src="../../../public/images/heroes_cover-3.png"
               width="400"
             />
           </div>
@@ -80,7 +80,7 @@ export const HomePage = () => {
           <div className="game" onClick={viewProfile}>
             <img
               className="game-img"
-              src="../../../public/images/perfil_cover-3.png"
+              src="../../../public/images/perfil_cover-4.png"
               width="400"
             />
           </div>
@@ -89,7 +89,7 @@ export const HomePage = () => {
           <div className="game" onClick={startStoryMode}>
             <img
               className="game-img"
-              src="../../../public/images/historia_cover-2.png"
+              src="../../../public/images/historia_cover-3.png"
               width="400"
             />
           </div>

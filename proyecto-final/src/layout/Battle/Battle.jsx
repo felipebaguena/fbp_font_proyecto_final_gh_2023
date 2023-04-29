@@ -31,24 +31,18 @@ export const BattlePage = () => {
   const [randomItemReceived, setRandomItemReceived] = useState(null);
   const [heroImage, setHeroImage] = useState(null);
   const [monsterImage, setMonsterImage] = useState(null);
-
   const [showHeroAttackAnimation, setShowHeroAttackAnimation] = useState(false);
-  const [showMonsterAttackAnimation, setShowMonsterAttackAnimation] =
-    useState(false);
+  const [showMonsterAttackAnimation, setShowMonsterAttackAnimation] = useState(false);
   const [showFlashOverlay, setShowFlashOverlay] = useState(false);
-
   const [showInventoryModal, setShowInventoryModal] = useState(false);
   const [selectedItemIndex, setSelectedItemIndex] = useState(null);
-
   const [heroPotions, setHeroPotions] = useState(4);
   const [currentHeroHealth, setCurrentHeroHealth] = useState(null);
   const [currentMonsterHealth, setCurrentMonsterHealth] = useState(null);
-
   const [monsterIsDead, setMonsterIsDead] = useState(false);
-
   const [heroCurrentDefense, setHeroCurrentDefense] = useState(null);
   const [monsterAttackFailure, setMonsterAttackFailure] = useState(0);
-
+  
   const token = useSelector((state) => state.auth.token);
   const navigate = useNavigate();
 
@@ -439,34 +433,22 @@ export const BattlePage = () => {
   };
 
   const getBackgroundColorByRarity = (rare) => {
-    switch (rare) {
-      case "comun":
-        return "common-item";
-      case "raro":
-        return "rare-item";
-      case "epico":
-        return "epic-item";
-      case "legendario":
-        return "legendary-item";
-      default:
-        return "";
-    }
-  };
+    const backgroundColors = {
+      comun: "common-item",
+      raro: "rare-item",
+      epico: "epic-item",
+      legendario: "legendary-item",
+    };
+    return backgroundColors[rare] || "";
+  };  
 
-  const translateRarity = (rarity) => {
-    switch (rarity) {
-      case "comun":
-        return "Común";
-      case "raro":
-        return "Raro";
-      case "epico":
-        return "Épico";
-      case "legendario":
-        return "Legendario";
-      default:
-        return rarity;
-    }
-  };
+const translateRarity = (rarity) =>
+  ({
+    comun: "Común",
+    raro: "Raro",
+    epico: "Épico",
+    legendario: "Legendario",
+  }[rarity] || rarity);
 
   return (
     <Container fluid>

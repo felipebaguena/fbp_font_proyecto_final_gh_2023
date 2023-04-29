@@ -150,6 +150,7 @@
 
 .cartdrige-img:hover {
   transform: scale(1.2);
+  filter: saturate(110%) brightness(110%);
 }
 
 .cartdrige-img:hover::before {

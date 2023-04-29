@@ -14,25 +14,22 @@ import { clearToken } from "../../authSlice";
 import { validate } from "../../services/validations";
 
 export function NavbarTop() {
-  const dispatch = useDispatch();
-  const token = useSelector((state) => state.auth.token);
-  const expand = "md";
+
   const [showLoginOffcanvas, setShowLoginOffcanvas] = useState(false);
   const [showRegisterOffcanvas, setShowRegisterOffcanvas] = useState(false);
   const [userRole, setUserRole] = useState(null);
   const [errors, setErrors] = useState({});
   const [loginError, setLoginError] = useState(null);
 
+  const token = useSelector((state) => state.auth.token);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const expand = "md";
 
-  const handleLoginOffcanvasClose = () => {
-    setShowLoginOffcanvas(false);
-  };
+  
+  const handleLoginOffcanvasClose = () => { setShowLoginOffcanvas(false)};
   const handleLoginOffcanvasShow = () => setShowLoginOffcanvas(true);
-
-  const handleRegisterOffcanvasClose = () => {
-    setShowRegisterOffcanvas(false);
-  };
+  const handleRegisterOffcanvasClose = () => {setShowRegisterOffcanvas(false)};
   const handleRegisterOffcanvasShow = () => setShowRegisterOffcanvas(true);
 
   const handleInputChange = (e) => {
@@ -49,9 +46,7 @@ export function NavbarTop() {
     const name = event.target.formBasicName.value;
     const email = event.target.formBasicEmail.value;
     const password = event.target.formBasicPassword.value;
-
     const newErrors = {};
-
     const nameValidation = validate("name", name, true);
     const emailValidation = validate("email", email, true);
     const passwordValidation = validate("password", password, true);
@@ -119,58 +114,27 @@ export function NavbarTop() {
   }, [token]);
 
   return (
-    <Navbar
-      bg="black"
-      variant="dark"
-      expand={expand}
-      className="mb-3 sega-navbar"
-    >
+    <Navbar bg="black" variant="dark" expand={expand} className="mb-3 sega-navbar navbar-font">
       <Container fluid>
         <Navbar.Brand as={Link} to="/">
-          <img
-            src="../../../public/images/logo-juego-s.png"
-            alt="Nombre de tu logo"
-            height="40"
-          />
+          <img src="../../../public/images/logo-juego-s.png" alt="Nombre de tu logo" height="40"/>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="navbar-nav" />
         <Navbar.Collapse id="navbar-nav">
           <Nav className="ms-auto">
-            <Nav.Link as={Link} to="/">
-              Home
-            </Nav.Link>
-            {userRole === 2 && (
-              <NavDropdown title="Admin" id="navbar-dropdown" align="end">
-                <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
-                <NavDropdown.Item href="#action4">
-                  Another action
-                </NavDropdown.Item>
-                <NavDropdown.Divider />
-                <NavDropdown.Item as={Link} to="/users">
-                  Ver usuarios
-                </NavDropdown.Item>{" "}
-              </NavDropdown>
-            )}
+            <Nav.Link as={Link} to="/">Home</Nav.Link>
+            {userRole === 2 && (<Nav.Link as={Link} to="/users">Admin</Nav.Link>)}
             {token ? (
               <NavDropdown title="Perfil" id="navbar-dropdown" align="end">
-                <NavDropdown.Item as={Link} to="/profile">
-                  Mi perfil
-                </NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="/myheroes">
-                  Mis héroes
-                </NavDropdown.Item>
-                <NavDropdown.Item href="#">Configuración</NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="/profile" className="navbar-font">Mi perfil</NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="/myheroes" className="navbar-font">Mis héroes</NavDropdown.Item>
                 <NavDropdown.Divider />
-                <NavDropdown.Item onClick={handleLogout}>
-                  Logout
-                </NavDropdown.Item>
+                <NavDropdown.Item onClick={handleLogout} className="navbar-font">Logout</NavDropdown.Item>
               </NavDropdown>
             ) : (
               <>
                 <Nav.Link onClick={handleLoginOffcanvasShow}>Login</Nav.Link>
-                <Nav.Link onClick={handleRegisterOffcanvasShow}>
-                  Register
-                </Nav.Link>
+                <Nav.Link onClick={handleRegisterOffcanvasShow}>Register</Nav.Link>
               </>
             )}
           </Nav>
@@ -179,21 +143,14 @@ export function NavbarTop() {
 
       {/* Login Offcanvas */}
 
-      <Offcanvas
-        show={showLoginOffcanvas}
-        onHide={handleLoginOffcanvasClose}
-        placement="end"
-        className="bg-dark text-white"
-      >
+      <Offcanvas show={showLoginOffcanvas} onHide={handleLoginOffcanvasClose} placement="end" className="bg-dark text-white navbar-font">
         <Offcanvas.Header closeButton className="white-close-button">
           <Offcanvas.Title className="text-dark">Login</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
           <Form onSubmit={handleLoginSubmit}>
             {loginError && (
-              <div className="alert alert-danger" role="alert">
-                {loginError}
-              </div>
+              <div className="alert alert-danger" role="alert">{loginError}</div>
             )}
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label className="text-white">Email address</Form.Label>
@@ -203,21 +160,14 @@ export function NavbarTop() {
               <Form.Label className="text-white">Password</Form.Label>
               <Form.Control type="password" placeholder="Password" />
             </Form.Group>
-            <Button variant="primary" type="submit">
-              Login
-            </Button>
+            <Button variant="primary" type="submit">Login</Button>
           </Form>
         </Offcanvas.Body>
       </Offcanvas>
 
       {/* Register Offcanvas */}
 
-      <Offcanvas
-        show={showRegisterOffcanvas}
-        onHide={handleRegisterOffcanvasClose}
-        placement="end"
-        className="bg-dark text-white"
-      >
+      <Offcanvas show={showRegisterOffcanvas} onHide={handleRegisterOffcanvasClose} placement="end" className="bg-dark text-white navbar-font">
         <Offcanvas.Header closeButton className="white-close-button">
           <Offcanvas.Title className="text-dark">Register</Offcanvas.Title>
         </Offcanvas.Header>
@@ -225,46 +175,20 @@ export function NavbarTop() {
           <Form onSubmit={handleRegisterSubmit}>
             <Form.Group className="mb-3" controlId="formBasicName">
               <Form.Label className="text-white">Name</Form.Label>
-              <Form.Control
-                name="name"
-                type="text"
-                placeholder="Enter name"
-                isInvalid={!!errors.name}
-                onBlur={handleInputChange}
-              />
-              <Form.Control.Feedback type="invalid">
-                {errors.name}
-              </Form.Control.Feedback>
+              <Form.Control name="name" type="text" placeholder="Enter name" isInvalid={!!errors.name} onBlur={handleInputChange}/>
+              <Form.Control.Feedback type="invalid">{errors.name}</Form.Control.Feedback>
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label className="text-white">Email address</Form.Label>
-              <Form.Control
-                name="email"
-                type="email"
-                placeholder="Enter email"
-                isInvalid={!!errors.email}
-                onBlur={handleInputChange}
-              />
-              <Form.Control.Feedback type="invalid">
-                {errors.email}
-              </Form.Control.Feedback>
+              <Form.Control name="email" type="email" placeholder="Enter email" isInvalid={!!errors.email} onBlur={handleInputChange}/>
+              <Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicPassword">
               <Form.Label className="text-white">Password</Form.Label>
-              <Form.Control
-                name="password"
-                type="password"
-                placeholder="Password"
-                isInvalid={!!errors.password}
-                onBlur={handleInputChange}
-              />
-              <Form.Control.Feedback type="invalid">
-                {errors.password}
-              </Form.Control.Feedback>
+              <Form.Control name="password" type="password" placeholder="Password" isInvalid={!!errors.password} onBlur={handleInputChange}/>
+              <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
             </Form.Group>
-            <Button variant="primary" type="submit">
-              Register
-            </Button>
+            <Button variant="primary" type="submit">Register</Button>
           </Form>
         </Offcanvas.Body>
       </Offcanvas>

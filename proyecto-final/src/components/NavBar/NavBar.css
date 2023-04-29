@@ -9,3 +9,7 @@
     background-size: 30px 30px;
   }
   
+.navbar-font {
+    font-family: "VT323", monospace;
+    font-size: x-large;
+}

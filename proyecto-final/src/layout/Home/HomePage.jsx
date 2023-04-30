@@ -20,7 +20,15 @@ export const HomePage = () => {
       navigate("/heroes");
     }
   };
-
+  
+    const startStoryMode = () => {
+      if (!token) {
+        handleShowModal();
+      } else {
+        navigate("/storymode");
+      }
+    };
+  
   const viewHeroes = () => {
     if (!token) {
       handleShowModal();
@@ -34,14 +42,6 @@ export const HomePage = () => {
       handleShowModal();
     } else {
       navigate("/profile");
-    }
-  };
-
-  const startStoryMode = () => {
-    if (!token) {
-      handleShowModal();
-    } else {
-      navigate("/storymode");
     }
   };
 
@@ -68,10 +68,19 @@ export const HomePage = () => {
           </div>
         </Col>
         <Col xs={12} sm={6} md={3} className="game-container">
+          <div className="game" onClick={startStoryMode}>
+            <img
+              className="game-img"
+              src="../../../public/images/historia_cover-4.png"
+              width="400"
+            />
+          </div>
+        </Col>
+        <Col xs={12} sm={6} md={3} className="game-container">
           <div className="game" onClick={viewHeroes}>
             <img
               className="game-img"
-              src="../../../public/images/heroes_cover-3.png"
+              src="../../../public/images/heroes_cover-4.png"
               width="400"
             />
           </div>
@@ -81,15 +90,6 @@ export const HomePage = () => {
             <img
               className="game-img"
               src="../../../public/images/perfil_cover-4.png"
-              width="400"
-            />
-          </div>
-        </Col>
-        <Col xs={12} sm={6} md={3} className="game-container">
-          <div className="game" onClick={startStoryMode}>
-            <img
-              className="game-img"
-              src="../../../public/images/historia_cover-3.png"
               width="400"
             />
           </div>

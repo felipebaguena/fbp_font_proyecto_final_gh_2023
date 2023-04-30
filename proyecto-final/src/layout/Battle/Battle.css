@@ -361,6 +361,10 @@
   background-image: linear-gradient(to top, #4b3800 30%, #906801 60%, #e7cc62);
 }
 
+.custom-button-select-inventory {
+  background-image: linear-gradient(to top, #103800 30%, #0a7000 60%, #71c14f) !important;
+}
+
 .custom-button-close {
   background-image: linear-gradient(to top, #322500 30%, #902501 60%, #e77d62);
 }

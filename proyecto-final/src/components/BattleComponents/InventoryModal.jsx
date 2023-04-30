@@ -51,7 +51,7 @@ const InventoryModal = ({
                   </p>
                   <Button
                     variant="success"
-                    className="mb-2 custom-button custom-button-select"
+                    className="mb-2 custom-button custom-button-select custom-button-select-inventory"
                     onClick={() => {
                       if (selectedItemIndex !== null) {
                         setSelectedItem(heroItems[selectedItemIndex].id);

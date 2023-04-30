@@ -49,7 +49,7 @@ export const BattlePage = () => {
   const [heroAttackFailed, setHeroAttackFailed] = useState(false);
   const [monsterAttackFailed, setMonsterAttackFailed] = useState(false);
   const [isCriticalHit, setIsCriticalHit] = useState(false);
-
+  const [defenseCount, setDefenseCount] = useState(0);
   const [hasCreatedBattle, setHasCreatedBattle] = useState(false);
 
 
@@ -223,7 +223,7 @@ export const BattlePage = () => {
       console.log("vida actual del héroe: ", currentHeroHealth);
       const updatedHeroHealth = Math.min(
         battle.hero.health,
-        currentHeroHealth + 50
+        currentHeroHealth + 70
       );
       setCurrentHeroHealth(updatedHeroHealth);
       setIsPlayerTurn(false);
@@ -256,13 +256,13 @@ export const BattlePage = () => {
 
   const calculateAdjustedMonsterAttack = () => {
     const heroLevel = battle.hero.level;
-    const damageMultiplier = 1 + heroLevel * 0.1;
+    const damageMultiplier = 1 + heroLevel * 0.15;
     return battle.monster.attack * damageMultiplier;
   };
 
   const calculateAdjustedMonsterDefense = () => {
     const heroLevel = battle.hero.level;
-    const defenseMultiplier = 1 + heroLevel * 0.2;
+    const defenseMultiplier = 1 + heroLevel * 0.3;
     return battle.monster.defense * defenseMultiplier;
   };
 
@@ -390,10 +390,16 @@ export const BattlePage = () => {
   // DEFENSA DEL HÉROE //
 
   const handleDefense = () => {
-    setHeroCurrentDefense((prevDefense) => prevDefense * 1.1);
-    setMonsterAttackFailure((prevFailure) => prevFailure + 0.05);
+    if (defenseCount < 4) {
+      setDefenseCount((prevCount) => prevCount + 1);
+      setHeroCurrentDefense((prevDefense) => prevDefense * 1.1);
+      setMonsterAttackFailure((prevFailure) => prevFailure + 0.05);
+    } else {
+      console.log("Has alcanzado el límite de 4 defensas.");
+    }
     setIsPlayerTurn(false);
   };
+  
 
   //ATAQUE DEL MONSTRUO//
 
@@ -467,6 +473,7 @@ export const BattlePage = () => {
     setMonsterIsDead(false);
     setMonsterAttackFailure(0);
     setHasCreatedBattle(false);
+    setDefenseCount(0);
   };
 
   const getBackgroundColorByRarity = (rare) => {
@@ -525,6 +532,7 @@ export const BattlePage = () => {
                 handleUsePotion={handleUsePotion}
                 PotionComponent={Potion}
                 battle={battle}
+                defenseCount={defenseCount}
               />
             )}
             <div className="modal-monster-turn">

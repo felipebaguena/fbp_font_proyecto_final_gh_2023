@@ -17,6 +17,7 @@ export const BattleTV = ({
   monsterDamage,
   heroAttackFailed,
   monsterAttackFailed,
+  isCriticalHit,
 }) => {
   const [bgImage, setBgImage] = useState("");
 
@@ -67,7 +68,11 @@ export const BattleTV = ({
                   <DamageIndicator damage={0} type="hero" />
                 ) : (
                   monsterDamage !== null && (
-                    <DamageIndicator damage={monsterDamage} type="hero" />
+                    <DamageIndicator
+                      damage={monsterDamage}
+                      type="hero"
+                      isCriticalHit={isCriticalHit}
+                    />
                   )
                 )}
 
@@ -92,7 +97,11 @@ export const BattleTV = ({
                   <DamageIndicator damage={0} type="monster" />
                 ) : (
                   heroDamage !== null && (
-                    <DamageIndicator damage={heroDamage} type="monster" />
+                    <DamageIndicator
+                      damage={heroDamage}
+                      type="monster"
+                      isCriticalHit={isCriticalHit}
+                    />
                   )
                 )}
 

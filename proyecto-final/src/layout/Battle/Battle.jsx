@@ -48,6 +48,7 @@ export const BattlePage = () => {
   const [monsterDamage, setMonsterDamage] = useState(null);
   const [heroAttackFailed, setHeroAttackFailed] = useState(false);
   const [monsterAttackFailed, setMonsterAttackFailed] = useState(false);
+  const [isCriticalHit, setIsCriticalHit] = useState(false);
 
   useEffect(() => {
     if (heroDamage !== null || monsterDamage !== null) {
@@ -299,6 +300,7 @@ export const BattlePage = () => {
       const failedAttack = randomChance < 0.05;
       setHeroAttackFailed(failedAttack);
       const criticalHit = Math.random() < 0.1;
+      setIsCriticalHit(criticalHit);
       const damage = failedAttack
         ? 0
         : Math.max(0, heroDamage - monsterDefense) * (criticalHit ? 2 : 1);
@@ -400,6 +402,7 @@ export const BattlePage = () => {
       randomChance < baseFailureChance + monsterAttackFailure;
     setMonsterAttackFailed(failedAttack);
     const criticalHit = Math.random() < 0.1;
+    setIsCriticalHit(criticalHit);
     const heroDamageTaken = failedAttack
       ? 0
       : Math.max(0, monsterDamage - heroDefense) * (criticalHit ? 2 : 1);
@@ -495,6 +498,7 @@ export const BattlePage = () => {
             monsterDamage={monsterDamage}
             heroAttackFailed={heroAttackFailed}
             monsterAttackFailed={monsterAttackFailed}
+            isCriticalHit={isCriticalHit}
           />
         </Col>
       </Row>

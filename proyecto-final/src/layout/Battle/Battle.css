@@ -528,6 +528,11 @@
   animation: damageFadeOut 1s ease-out;
 }
 
+.damage-indicator-critical {
+  font-size: 3rem;
+  color: red;
+}
+
 .damage-indicator-hero {
   position: absolute;
   top: -2rem;

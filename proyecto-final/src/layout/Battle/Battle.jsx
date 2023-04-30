@@ -32,7 +32,8 @@ export const BattlePage = () => {
   const [heroImage, setHeroImage] = useState(null);
   const [monsterImage, setMonsterImage] = useState(null);
   const [showHeroAttackAnimation, setShowHeroAttackAnimation] = useState(false);
-  const [showMonsterAttackAnimation, setShowMonsterAttackAnimation] = useState(false);
+  const [showMonsterAttackAnimation, setShowMonsterAttackAnimation] =
+    useState(false);
   const [showFlashOverlay, setShowFlashOverlay] = useState(false);
   const [showInventoryModal, setShowInventoryModal] = useState(false);
   const [selectedItemIndex, setSelectedItemIndex] = useState(null);
@@ -42,7 +43,25 @@ export const BattlePage = () => {
   const [monsterIsDead, setMonsterIsDead] = useState(false);
   const [heroCurrentDefense, setHeroCurrentDefense] = useState(null);
   const [monsterAttackFailure, setMonsterAttackFailure] = useState(0);
-  
+
+  const [heroDamage, setHeroDamage] = useState(null);
+  const [monsterDamage, setMonsterDamage] = useState(null);
+  const [heroAttackFailed, setHeroAttackFailed] = useState(false);
+  const [monsterAttackFailed, setMonsterAttackFailed] = useState(false);
+
+  useEffect(() => {
+    if (heroDamage !== null || monsterDamage !== null) {
+      const timer = setTimeout(() => {
+        setHeroDamage(null);
+        setMonsterDamage(null);
+        setHeroAttackFailed(false);
+        setMonsterAttackFailed(false);
+      }, 500);
+
+      return () => clearTimeout(timer);
+    }
+  }, [heroDamage, monsterDamage]);
+
   const token = useSelector((state) => state.auth.token);
   const navigate = useNavigate();
 
@@ -278,6 +297,7 @@ export const BattlePage = () => {
       const monsterDefense = calculateAdjustedMonsterDefense();
       const randomChance = Math.random();
       const failedAttack = randomChance < 0.05;
+      setHeroAttackFailed(failedAttack);
       const criticalHit = Math.random() < 0.1;
       const damage = failedAttack
         ? 0
@@ -289,6 +309,8 @@ export const BattlePage = () => {
       );
       console.log("Defensa del monstruo:", monsterDefense);
       console.log("Daño realizado al monstruo:", damage);
+
+      setHeroDamage(damage);
 
       const newMonsterHp = Math.max(0, currentMonsterHealth - damage);
       setCurrentMonsterHealth(newMonsterHp);
@@ -376,6 +398,7 @@ export const BattlePage = () => {
     const baseFailureChance = 0.05;
     const failedAttack =
       randomChance < baseFailureChance + monsterAttackFailure;
+    setMonsterAttackFailed(failedAttack);
     const criticalHit = Math.random() < 0.1;
     const heroDamageTaken = failedAttack
       ? 0
@@ -392,6 +415,9 @@ export const BattlePage = () => {
       heroDefense
     );
     console.log("Daño realizado al héroe:", heroDamageTaken);
+
+    setMonsterDamage(heroDamageTaken);
+
     console.log("vida actual del héroe en monster attack: ", currentHeroHealth);
     const newHeroHp = Math.max(0, currentHeroHealth - heroDamageTaken);
     setCurrentHeroHealth(newHeroHp);
@@ -440,15 +466,15 @@ export const BattlePage = () => {
       legendario: "legendary-item",
     };
     return backgroundColors[rare] || "";
-  };  
+  };
 
-const translateRarity = (rarity) =>
-  ({
-    comun: "Común",
-    raro: "Raro",
-    epico: "Épico",
-    legendario: "Legendario",
-  }[rarity] || rarity);
+  const translateRarity = (rarity) =>
+    ({
+      comun: "Común",
+      raro: "Raro",
+      epico: "Épico",
+      legendario: "Legendario",
+    }[rarity] || rarity);
 
   return (
     <Container fluid>
@@ -465,6 +491,10 @@ const translateRarity = (rarity) =>
             monsterImage={monsterImage}
             getHealthPercentage={getHealthPercentage}
             getHealthBarColorClass={getHealthBarColorClass}
+            heroDamage={heroDamage}
+            monsterDamage={monsterDamage}
+            heroAttackFailed={heroAttackFailed}
+            monsterAttackFailed={monsterAttackFailed}
           />
         </Col>
       </Row>

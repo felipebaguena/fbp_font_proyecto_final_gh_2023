@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Col } from "react-bootstrap";
+import { DamageIndicator } from "../BattleComponents/DamageIndicator";
 
 export const BattleTV = ({
   showFlashOverlay,
@@ -12,6 +13,10 @@ export const BattleTV = ({
   monsterImage,
   getHealthPercentage,
   getHealthBarColorClass,
+  heroDamage,
+  monsterDamage,
+  heroAttackFailed,
+  monsterAttackFailed,
 }) => {
   const [bgImage, setBgImage] = useState("");
 
@@ -58,6 +63,14 @@ export const BattleTV = ({
             </div>
             <div className="tv-box d-flex">
               <div className="tv-box-hero">
+                {monsterAttackFailed ? (
+                  <DamageIndicator damage={0} type="hero" />
+                ) : (
+                  monsterDamage !== null && (
+                    <DamageIndicator damage={monsterDamage} type="hero" />
+                  )
+                )}
+
                 <img
                   className={`tv-box-hero ${
                     showHeroAttackAnimation ? "hero-attack-animation" : ""
@@ -75,6 +88,14 @@ export const BattleTV = ({
               </div>
 
               <div className="tv-box-monster">
+                {heroAttackFailed ? (
+                  <DamageIndicator damage={0} type="monster" />
+                ) : (
+                  heroDamage !== null && (
+                    <DamageIndicator damage={heroDamage} type="monster" />
+                  )
+                )}
+
                 <img
                   className={`${
                     showMonsterAttackAnimation ? "monster-attack-animation" : ""

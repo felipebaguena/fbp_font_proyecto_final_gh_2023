@@ -401,36 +401,76 @@
   background-image: linear-gradient(to top, #222222 30%, #b5b5b5 70%, #4a4a4a);
 }
 
-.legendary-item{
-  background-image: linear-gradient(to top, #bb8c00 30%, #6f5000 60%, #fff5cc) !important;
+.legendary-item {
+  background-image: linear-gradient(
+    to top,
+    #bb8c00 30%,
+    #6f5000 60%,
+    #fff5cc
+  ) !important;
 }
 
-.legendary-item:hover{
-  background-image: linear-gradient(to top, #dfb740 30%, #755401 50%, #fefefe) !important;
+.legendary-item:hover {
+  background-image: linear-gradient(
+    to top,
+    #dfb740 30%,
+    #755401 50%,
+    #fefefe
+  ) !important;
 }
 
-.epic-item{
-  background-image: linear-gradient(to top, #5700b4 30%, #2b005c 60%, #6f62e7) !important;
+.epic-item {
+  background-image: linear-gradient(
+    to top,
+    #5700b4 30%,
+    #2b005c 60%,
+    #6f62e7
+  ) !important;
 }
 
-.epic-item:hover{
-  background-image: linear-gradient(to top, #710edb 30%, #210146 50%, #9f95f8) !important;
+.epic-item:hover {
+  background-image: linear-gradient(
+    to top,
+    #710edb 30%,
+    #210146 50%,
+    #9f95f8
+  ) !important;
 }
 
-.rare-item{
-  background-image: linear-gradient(to top, #304a84 20%, #042ea1 60%, #628ee7) !important;
+.rare-item {
+  background-image: linear-gradient(
+    to top,
+    #304a84 20%,
+    #042ea1 60%,
+    #628ee7
+  ) !important;
 }
 
-.rare-item:hover{
-  background-image: linear-gradient(to top, #4e6fb6 20%, #062477 50%, #8aaef6) !important;
+.rare-item:hover {
+  background-image: linear-gradient(
+    to top,
+    #4e6fb6 20%,
+    #062477 50%,
+    #8aaef6
+  ) !important;
 }
 
-.common-item{
-  background-image: linear-gradient(to top, #595959 30%, #3c3c3c 60%, #d9d9d9) !important;
+.common-item {
+  background-image: linear-gradient(
+    to top,
+    #595959 30%,
+    #3c3c3c 60%,
+    #d9d9d9
+  ) !important;
 }
 
-.common-item:hover{
-  background-image: linear-gradient(to top, #787878 30%, #1f1f1f 50%, #f7f7f7) !important;
+.common-item:hover {
+  background-image: linear-gradient(
+    to top,
+    #787878 30%,
+    #1f1f1f 50%,
+    #f7f7f7
+  ) !important;
 }
 
 .potion-button {
@@ -475,6 +515,40 @@
   text-align: center;
   color: #d7d7d7;
   text-shadow: 0.1rem 0.1rem 0.4rem black;
+}
+
+.damage-indicator {
+  position: absolute;
+  min-width: 100%;
+  font-family: "VT323", monospace;
+  font-size: xx-large;
+  color: #d7d7d7;
+  text-shadow: 2px 0 black, -2px 0 black, 0 2px black, 0 -2px black,
+    1px 1px black, -1px -1px black, 1px -1px black, -1px 1px black;
+  animation: damageFadeOut 1s ease-out;
+}
+
+.damage-indicator-hero {
+  position: absolute;
+  top: -2rem;
+  text-align: center;
+  z-index: 30;
+}
+
+.damage-indicator-monster {
+  position: absolute;
+  top: -2rem;
+  text-align: center;
+  z-index: 30;
+}
+
+@keyframes damageFadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
 }
 
 /* ANIMATIONS */
@@ -645,6 +719,10 @@
     );
   }
 
+  .health-bar-text {
+    font-size: medium;
+  }
+
   .tv-controls {
     background-color: #222;
     border-radius: 4px;
@@ -671,4 +749,3 @@
     display: none;
   }
 }
-

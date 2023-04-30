@@ -49,6 +49,19 @@ const InventoryModal = ({
                     Modificador de Defensa: +{item.defense_modifier} <br />
                     Rareza: {translateRarity(item.rare)} <br />
                   </p>
+                  <Button
+                    variant="success"
+                    className="mb-2 custom-button custom-button-select"
+                    onClick={() => {
+                      if (selectedItemIndex !== null) {
+                        setSelectedItem(heroItems[selectedItemIndex].id);
+                        closeInventoryModal();
+                      }
+                    }}
+                    disabled={selectedItemIndex === null}
+                  >
+                    Seleccionar ítem
+                  </Button>
                 </div>
               )}
             </React.Fragment>
@@ -56,19 +69,6 @@ const InventoryModal = ({
         </div>
       </Modal.Body>
       <Modal.Footer>
-        <Button
-          variant="success"
-          className="mb-2 custom-button custom-button-select"
-          onClick={() => {
-            if (selectedItemIndex !== null) {
-              setSelectedItem(heroItems[selectedItemIndex].id);
-              closeInventoryModal();
-            }
-          }}
-          disabled={selectedItemIndex === null}
-        >
-          Seleccionar ítem
-        </Button>
         <Button
           variant="secondary"
           className="custom-button custom-button-close"

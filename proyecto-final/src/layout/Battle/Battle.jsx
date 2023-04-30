@@ -50,6 +50,9 @@ export const BattlePage = () => {
   const [monsterAttackFailed, setMonsterAttackFailed] = useState(false);
   const [isCriticalHit, setIsCriticalHit] = useState(false);
 
+  const [hasCreatedBattle, setHasCreatedBattle] = useState(false);
+
+
   useEffect(() => {
     if (heroDamage !== null || monsterDamage !== null) {
       const timer = setTimeout(() => {
@@ -85,8 +88,9 @@ export const BattlePage = () => {
   useEffect(() => {
     console.log("Creating a new battle...");
     const fetchData = async () => {
-      if (!battle || createNewBattle) {
+      if ((!battle || createNewBattle) && !hasCreatedBattle) {
         setCreateNewBattle(false);
+        setHasCreatedBattle(true);
         const data = await createBattle(token);
         if (data && data.status === "success") {
           const adjustedMonsterHealth = calculateAdjustedMonsterHealth(
@@ -126,7 +130,10 @@ export const BattlePage = () => {
         }
       }
     };
-    fetchData();
+    
+    if (createNewBattle) {
+      fetchData();
+    }
   }, [token, createNewBattle]);
 
   useEffect(() => {
@@ -459,6 +466,7 @@ export const BattlePage = () => {
     setLevelUpValues(null);
     setMonsterIsDead(false);
     setMonsterAttackFailure(0);
+    setHasCreatedBattle(false);
   };
 
   const getBackgroundColorByRarity = (rare) => {

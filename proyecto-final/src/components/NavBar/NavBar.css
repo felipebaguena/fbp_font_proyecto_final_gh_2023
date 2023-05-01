@@ -7,9 +7,18 @@
     background-image: linear-gradient(0deg, rgba(155, 155, 155, 0.23) 1px, transparent 1px),
                       linear-gradient(90deg, rgba(155, 155, 155, 0.23) 1px, transparent 1px);
     background-size: 30px 30px;
+    margin-bottom: 0.5rem;
   }
   
 .navbar-font {
     font-family: "VT323", monospace;
     font-size: x-large;
+}
+
+@media (max-width: 365px) {
+
+    .sega-navbar {
+        margin-bottom: 0rem;
+    }
+
 }

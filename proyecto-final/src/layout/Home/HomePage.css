@@ -74,6 +74,20 @@
   position: absolute;
 }
 
+.game-img-mobile {
+  max-width: 100%;
+  height: auto;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 20px rgb(0, 0, 0);
+  display: none;
+}
+
+.game-img-mobile:hover {
+  transform: scale(1.2);
+  z-index: 1;
+}
+
 .banner-console-img-container {
   height: fit-content;
   cursor: pointer;
@@ -157,6 +171,29 @@
   opacity: 1;
 }
 
+@media (max-width: 575px) {
+  .game-img {
+    display: none;
+  }
+
+  .game-img-mobile {
+    display: block;
+    width: 100%;
+  }
+
+  .game-container {
+    padding: 0.5rem;
+    position: relative;
+    display: flex;
+    justify-content: center;
+  }
+
+  .sega-navbar{
+    margin-bottom: 0;
+  }
+}
+
+
 @media (max-width: 365px) {
   .banner-top {
     display: none;
@@ -168,5 +205,9 @@
 
   .banner-console-img {
     width: 100%;
+  }
+
+  .banner-top-logo-home{
+    margin-top: 0.5rem;
   }
 }

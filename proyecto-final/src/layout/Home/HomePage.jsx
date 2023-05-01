@@ -20,15 +20,15 @@ export const HomePage = () => {
       navigate("/heroes");
     }
   };
-  
-    const startStoryMode = () => {
-      if (!token) {
-        handleShowModal();
-      } else {
-        navigate("/storymode");
-      }
-    };
-  
+
+  const startStoryMode = () => {
+    if (!token) {
+      handleShowModal();
+    } else {
+      navigate("/storymode");
+    }
+  };
+
   const viewHeroes = () => {
     if (!token) {
       handleShowModal();
@@ -63,6 +63,12 @@ export const HomePage = () => {
             <img
               className="game-img"
               src="../../../public/images/aventuras_cover-3.png"
+              data-src="../../../public/images/aventura-spine-cover.png"
+              width="400"
+            />
+            <img
+              className="game-img-mobile"
+              src="../../../public/images/aventura-spine-cover.png"
               width="400"
             />
           </div>
@@ -74,6 +80,11 @@ export const HomePage = () => {
               src="../../../public/images/historia_cover-4.png"
               width="400"
             />
+            <img
+              className="game-img-mobile"
+              src="../../../public/images/historia-spine-cover.png"
+              width="400"
+            />
           </div>
         </Col>
         <Col xs={12} sm={6} md={3} className="game-container">
@@ -83,6 +94,11 @@ export const HomePage = () => {
               src="../../../public/images/heroes_cover-4.png"
               width="400"
             />
+            <img
+              className="game-img-mobile"
+              src="../../../public/images/mis-heroes-spine-cover-2.png"
+              width="400"
+            />
           </div>
         </Col>
         <Col xs={12} sm={6} md={3} className="game-container">
@@ -90,6 +106,12 @@ export const HomePage = () => {
             <img
               className="game-img"
               src="../../../public/images/perfil_cover-4.png"
+              data-src="../../../public/images/mi-perfil-spine-cover.png"
+              width="400"
+            />
+            <img
+              className="game-img-mobile"
+              src="../../../public/images/mi-perfil-spine-cover.png"
               width="400"
             />
           </div>

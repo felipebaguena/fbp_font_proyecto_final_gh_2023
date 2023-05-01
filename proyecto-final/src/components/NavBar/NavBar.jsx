@@ -114,7 +114,7 @@ export function NavbarTop() {
   }, [token]);
 
   return (
-    <Navbar bg="black" variant="dark" expand={expand} className="mb-3 sega-navbar navbar-font">
+    <Navbar bg="black" variant="dark" expand={expand} className="sega-navbar navbar-font">
       <Container fluid>
         <Navbar.Brand as={Link} to="/">
           <img src="../../../public/images/logo-juego-s.png" alt="Nombre de tu logo" height="40"/>

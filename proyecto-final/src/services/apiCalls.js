@@ -460,3 +460,17 @@ export const removeItemFromHero = async (token, heroId, itemId) => {
     return null;
   }
 };
+
+export const getTopHeroesByKills = async () => {
+  try {
+    const response = await axios.get(`${root}top-heroes`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching top heroes by kills:", error);
+    return null;
+  }
+};

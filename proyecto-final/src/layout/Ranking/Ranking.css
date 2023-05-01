@@ -1,0 +1,65 @@
+.top-heroes {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  
+  .top-hero-card {
+    background-image: linear-gradient(to top, #010345 30%, #161a93 60%, #6274cd);
+    width: 100%;
+    font-family: "VT323", monospace;
+    font-size: x-large;
+    color: whitesmoke;
+    margin-top: 0.5rem;
+  }
+
+  .top-hero-card::after{
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.05) 50%,
+      rgba(255, 255, 255, 0.03) 50%
+    );
+    background-size: 100% 4px;
+    z-index: 10;
+    pointer-events: none;
+  }
+  
+  .hero-image {
+    width: auto;
+    object-fit: cover;
+  }
+
+  .hero-data{
+    margin-right: 1rem;
+    margin-left: 1rem;
+  }
+
+  .first-place {
+    background-image: linear-gradient(to top, #413103 20%, #a48d19 60%, #f2da8c);
+  }
+  
+  .second-place {
+    background-image: linear-gradient(to top, #343434 20%, #8a8a8a 60%, #eaeaea);
+  }
+  
+  .third-place {
+    background-image: linear-gradient(to top, #553103 30%, #835e19 60%, #e2aa6e);
+  }
+
+  
+  @media (max-width: 576px) {
+
+    .rank-card{
+      flex-wrap: wrap;
+    }
+
+  }
+  

@@ -55,25 +55,24 @@ export const HeroPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       const data = await getHeroesAndItems(token);
-      const fetchedImages = {};
-
-      for (const hero of data) {
-        if (hero.hero_image_id) {
-          const imageResponse = await getHeroImage(hero.hero_image_id, token);
-          if (imageResponse.status === "success") {
-            fetchedImages[hero.id] = imageResponse.data.image_url;
-          }
+      const imageResponse = await getAllHeroImages(token);
+  
+      if (imageResponse.status === "success") {
+        const fetchedImages = {};
+  
+        for (const image of imageResponse.data) {
+          fetchedImages[image.id] = image.imageUrl;
         }
+  
+        console.log("fetchedImages:", fetchedImages);
+  
+        setHeroImagesById(fetchedImages);
+        setHeroes(data);
+        setRefreshHeroes(false);
       }
-
-      console.log("fetchedImages:", fetchedImages);
-
-      setHeroImagesById(fetchedImages);
-      setHeroes(data);
-      setRefreshHeroes(false);
     };
     fetchData();
-  }, [token, refreshHeroes]);
+  }, [token, refreshHeroes]);  
 
   useEffect(() => {
     console.log("Current selectedHeroImageId:", selectedHeroImageId);
@@ -321,9 +320,9 @@ export const HeroPage = () => {
             {hero.name}
           </Card.Title>
           <div className="image-card-container d-flex mb-3 align-items-center justify-content-center">
-            {hero.hero_image_id && heroImagesById[hero.id] && (
+          {hero.hero_image_id && heroImagesById[hero.hero_image_id] && (
               <img
-                src={heroImagesById[hero.id]}
+              src={heroImagesById[hero.hero_image_id]}
                 alt={hero.name}
                 style={{ width: "64px" }}
               />

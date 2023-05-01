@@ -123,6 +123,7 @@ export function NavbarTop() {
         <Navbar.Collapse id="navbar-nav">
           <Nav className="ms-auto">
             <Nav.Link as={Link} to="/">Home</Nav.Link>
+            <Nav.Link as={Link} to="/ranking">Ranking</Nav.Link>
             {userRole === 2 && (<Nav.Link as={Link} to="/users">Admin</Nav.Link>)}
             {token ? (
               <NavDropdown title="Perfil" id="navbar-dropdown" align="end">

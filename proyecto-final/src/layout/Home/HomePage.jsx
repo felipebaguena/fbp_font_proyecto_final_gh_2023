@@ -45,6 +45,10 @@ export const HomePage = () => {
     }
   };
 
+  const viewRanking = () => {
+    navigate("/ranking");
+  };
+
   return (
     <Container fluid>
       <Row className="games-banner">
@@ -116,12 +120,9 @@ export const HomePage = () => {
             />
           </div>
         </Col>
-        {/* <div className="banner battle-title">
-          <h1>Texto para el Home</h1>
-        </div> */}
         <Col
           xs={12}
-          className="banner battle-title banner-console-img-container"
+          className="banner battle-title banner-console-img-container banner-console-img-container-margin"
           onClick={startStory}
         >
           <img
@@ -137,6 +138,16 @@ export const HomePage = () => {
           <img
             className="banner-story-img"
             src="../../../public/images/story-home-cover.png"
+          />
+        </Col>
+        <Col
+          xs={12}
+          className="banner-console-img-container banner-story-img-container banner-ranking-img-container"
+          onClick={viewRanking}
+        >
+          <img
+            className="banner-story-img"
+            src="../../../public/images/ranking-home-cover.png"
           />
         </Col>
         <Col className="banner-top-logo-home d-flex justify-content-center">

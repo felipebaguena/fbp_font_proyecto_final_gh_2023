@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Card, Col, Container, Row } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import { getAllHeroImages, getTopHeroesByKills } from "../../services/apiCalls";
 import "./Ranking.css";
 
@@ -7,6 +8,11 @@ export const TopHeroes = () => {
   const [topHeroes, setTopHeroes] = useState([]);
   const [heroImages, setHeroImages] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  const navigate = useNavigate();
+  const handleBackToHome = () => {
+    navigate("/");
+  };
 
   useEffect(() => {
     async function fetchTopHeroesAndImages() {
@@ -62,6 +68,7 @@ export const TopHeroes = () => {
   return (
     <Container fluid>
       <Row className="justify-content-center">
+      <div className="selector-hero-title selector-hero-title-story ranking-tittle">Los héroes más famosos de Ravenhollow</div>
         <Col xs={12} sm={10} lg={8}>
           {isLoading ? (
             <p>Cargando...</p>
@@ -69,6 +76,12 @@ export const TopHeroes = () => {
             topHeroes.map((hero, index) => renderHeroCard(hero, index))
           )}
         </Col>
+        <div
+        className="selector-hero-title back-heroes-view"
+        onClick={handleBackToHome}
+      >
+        Volver al incio
+      </div>
       </Row>
     </Container>
   );

@@ -54,6 +54,9 @@
     background-image: linear-gradient(to top, #553103 30%, #835e19 60%, #e2aa6e);
   }
 
+  .ranking-tittle{
+    margin-bottom: 2% !important;
+  }
   
   @media (max-width: 576px) {
 

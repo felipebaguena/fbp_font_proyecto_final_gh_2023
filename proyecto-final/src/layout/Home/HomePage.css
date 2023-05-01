@@ -133,6 +133,10 @@
   border-bottom: 0.5rem solid #6487b6;
 }
 
+.banner-ranking-img-container{
+  margin-bottom: 0.5rem;
+}
+
 .cartdrige {
   width: 100%;
 }
@@ -188,11 +192,10 @@
     justify-content: center;
   }
 
-  .sega-navbar{
-    margin-bottom: 0;
+  .sega-navbar {
+    margin-bottom: 0.5rem;
   }
 }
-
 
 @media (max-width: 365px) {
   .banner-top {
@@ -207,7 +210,23 @@
     width: 100%;
   }
 
-  .banner-top-logo-home{
+  .banner-top-logo-home {
     margin-top: 0.5rem;
+  }
+
+  .banner-story-img-container {
+    margin-top: 0.5rem;
+  }
+
+  .banner-ranking-img-container {
+    margin-top: 0.5rem;
+  }
+
+  .banner-console-img-container-margin {
+    margin-top: 1rem;
+  }
+
+  .background-sega-md {
+    margin-top: 0.5rem !important;
   }
 }

@@ -6,10 +6,8 @@ import { useNavigate } from "react-router-dom";
 import {
   assignRandomItemToSelectedHero,
   createBattle,
-  getHeroImage,
   getHeroItems,
   getItemById,
-  getMonsterImage,
   levelUpHero,
   updateBattleResult,
 } from "../../services/apiCalls";
@@ -98,43 +96,33 @@ export const BattlePage = () => {
             data.data.hero
           );
           data.data.monster.health = adjustedMonsterHealth;
-
+  
           setBattle(data.data);
           setCurrentHeroHealth(data.data.hero.health);
           setCurrentMonsterHealth(adjustedMonsterHealth);
           setHeroCurrentDefense(data.data.hero.defense);
+  
+          if (data.data.hero && data.data.hero.hero_image) {
+            const heroImage = data.data.hero.hero_image.image_url;
+            setHeroImage(heroImage);
+          }
 
-          if (data.data.hero && data.data.hero.hero_image_id) {
-            const heroImage = await getHeroImage(
-              data.data.hero.hero_image_id,
-              token
-            );
-            if (heroImage && heroImage.status === "success") {
-              setHeroImage(heroImage.data.image_url);
-            } else {
-              console.error("Error fetching hero image:", heroImage);
-            }
+          if (data.data.monster && data.data.monster.monster_image) {
+            const monsterImage = data.data.monster.monster_image.image_url;
+            setMonsterImage(monsterImage);
           }
-          if (data.data.monster && data.data.monster.monster_image_id) {
-            const monsterImage = await getMonsterImage(
-              data.data.monster.monster_image_id
-            );
-            if (monsterImage && monsterImage.status === "success") {
-              setMonsterImage(monsterImage.data.image_url);
-            } else {
-              console.error("Error fetching monster image:", monsterImage);
-            }
-          }
+  
         } else {
           console.error("Error fetching battle data:", data);
         }
       }
     };
-    
+  
     if (createNewBattle) {
       fetchData();
     }
   }, [token, createNewBattle]);
+  
 
   useEffect(() => {
     const fetchItems = async () => {

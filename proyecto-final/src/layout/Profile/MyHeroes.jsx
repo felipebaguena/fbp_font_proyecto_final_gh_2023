@@ -394,11 +394,6 @@ export const HeroesAndItems = () => {
             Nuevo héroe
           </Card.Title>
           <div className="image-card-container d-flex mb-3 align-items-center justify-content-center">
-            {/* <img
-          src={heroImagesById[hero.id]}
-          alt={hero.name}
-          style={{ width: "64px" }}
-        /> */}
             <div className="ml-auto">
               <Card.Subtitle className="text-muted custom-card-subtitle">
                 Level 1
@@ -423,6 +418,7 @@ export const HeroesAndItems = () => {
   };
 
   const renderHeroCard = (hero, index) => {
+    console.log("DATOS DEL HEROE",hero)
     console.log(
       "Rendering hero",
       hero.id,
@@ -436,10 +432,10 @@ export const HeroesAndItems = () => {
             {hero.name}
           </Card.Title>
           <div className="image-card-container d-flex mb-3 align-items-center justify-content-center">
-          {hero.hero_image_id && heroImagesById[hero.hero_image_id] && (
+          {hero.hero_image && (
               <img
-              src={heroImagesById[hero.hero_image_id]}
-                alt={hero.name}
+                src={hero.hero_image.image}
+                alt={hero.hero_name}
                 style={{ width: "64px" }}
               />
             )}

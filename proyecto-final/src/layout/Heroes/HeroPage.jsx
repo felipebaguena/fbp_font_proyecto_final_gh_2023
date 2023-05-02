@@ -8,7 +8,6 @@ import {
   getHeroesAndItems,
   getAllHeroImages,
   selectHero,
-  getHeroImage,
   removeItemFromHero,
 } from "../../services/apiCalls";
 import { Card, Button, Modal } from "react-bootstrap";
@@ -55,24 +54,24 @@ export const HeroPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       const data = await getHeroesAndItems(token);
-      const imageResponse = await getAllHeroImages(token);
   
-      if (imageResponse.status === "success") {
-        const fetchedImages = {};
+      const fetchedImages = {};
   
-        for (const image of imageResponse.data) {
-          fetchedImages[image.id] = image.imageUrl;
+      for (const hero of data) {
+        if (hero.heroImage) {
+          fetchedImages[hero.heroImage.id] = hero.heroImage.image;
         }
-  
-        console.log("fetchedImages:", fetchedImages);
-  
-        setHeroImagesById(fetchedImages);
-        setHeroes(data);
-        setRefreshHeroes(false);
       }
+  
+      console.log("fetchedImages:", fetchedImages);
+  
+      setHeroImagesById(fetchedImages);
+      setHeroes(data);
+      setRefreshHeroes(false);
     };
     fetchData();
-  }, [token, refreshHeroes]);  
+  }, [token, refreshHeroes]);
+
 
   useEffect(() => {
     console.log("Current selectedHeroImageId:", selectedHeroImageId);
@@ -121,7 +120,7 @@ export const HeroPage = () => {
     const response = await createHero(token, {
       name: newHeroName,
       story: newHeroStory,
-      image_id: selectedHeroImageId,
+      hero_image_id: selectedHeroImageId,
     });
     if (response && response.data && response.data.id) {
       await assignRandomItemToHeroById(token, response.data.id);
@@ -310,8 +309,6 @@ export const HeroPage = () => {
     console.log(
       "Rendering hero",
       hero.id,
-      "image URL:",
-      heroImagesById[hero.id]
     );
     return (
       <Card key={index} style={{ width: "18rem" }}>
@@ -320,10 +317,10 @@ export const HeroPage = () => {
             {hero.name}
           </Card.Title>
           <div className="image-card-container d-flex mb-3 align-items-center justify-content-center">
-          {hero.hero_image_id && heroImagesById[hero.hero_image_id] && (
+          {hero.hero_image && (
               <img
-              src={heroImagesById[hero.hero_image_id]}
-                alt={hero.name}
+                src={hero.hero_image.image}
+                alt={hero.hero_name}
                 style={{ width: "64px" }}
               />
             )}

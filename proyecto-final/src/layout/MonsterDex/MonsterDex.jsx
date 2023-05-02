@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { getDefeatedMonsters, getTotalMonsters } from "../../services/apiCalls";
-import Card from "react-bootstrap/Card";
-import Button from "react-bootstrap/Button";
 import { Col, Container, Row } from "react-bootstrap";
 import { MonsterCard } from "../../components/MonsterCard/MonsterCard";
 import { useNavigate } from "react-router-dom";
@@ -18,13 +16,10 @@ export function MonsterDex() {
   useEffect(() => {
     async function fetchDefeatedMonsters() {
       const response = await getDefeatedMonsters(token, heroId);
+      console.log("DATA", response);
       if (response && response.success) {
         const monstersWithImages = response.data.map((monster) => {
-          const imageUrl = monster.monster_image.image
-            ? `http://localhost:8000/${monster.monster_image.image}`
-            : "";
-          console.log(`Image URL for ${monster.name}: ${imageUrl}`);
-          console.log(monster);
+          const imageUrl = monster.imageUrl
           return {
             ...monster,
             imageUrl,

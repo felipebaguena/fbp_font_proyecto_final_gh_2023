@@ -328,7 +328,7 @@ export const HeroesAndItems = () => {
     );
   };
 
-  const renderHeroCard = (hero, index) => {
+  const renderHeroCard = (hero) => {
     console.log("DATOS DEL HEROE", hero);
     console.log(
       "Rendering hero",
@@ -337,7 +337,7 @@ export const HeroesAndItems = () => {
       heroImagesById[hero.id]
     );
     return (
-      <Card key={index} style={{ width: "18rem" }}>
+      <Card key={hero.id} style={{ width: "18rem" }}>
         <Card.Body className="custom-card">
           <Card.Title className="custom-card-title text-center">
             {hero.name}
@@ -392,9 +392,9 @@ export const HeroesAndItems = () => {
     <div>
       <div className="selector-hero-title">Mis héroes</div>
       <div className="d-flex flex-wrap justify-content-center">
-        {heroes.map((hero, index) => (
-          <div key={index} className="m-2">
-            {renderHeroCard(hero, index)}
+        {heroes.map((hero) => (
+          <div key={hero.id} className="m-2">
+            {renderHeroCard(hero)}
           </div>
         ))}
         <div className="m-2">{renderNewHeroCard()}</div>

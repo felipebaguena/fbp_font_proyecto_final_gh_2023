@@ -13,6 +13,7 @@ import {
   removeItemFromHero,
 } from "../../services/apiCalls";
 import { Card, Button, Modal } from "react-bootstrap";
+import InventoryHeroModal from "../../components/HeroComponents/InventoryHeroModal";
 
 export const HeroesAndItems = () => {
   const [heroes, setHeroes] = useState([]);
@@ -81,16 +82,16 @@ export const HeroesAndItems = () => {
     const fetchData = async () => {
       const data = await getHeroesAndItems(token);
       const imageResponse = await getAllHeroImages(token);
-  
+
       if (imageResponse.status === "success") {
         const fetchedImages = {};
-  
+
         for (const image of imageResponse.data) {
           fetchedImages[image.id] = image.imageUrl;
         }
-  
+
         console.log("fetchedImages:", fetchedImages);
-  
+
         setHeroImagesById(fetchedImages);
         setHeroes(data);
         setRefreshHeroes(false);
@@ -98,20 +99,19 @@ export const HeroesAndItems = () => {
     };
     fetchData();
   }, [token, refreshHeroes]);
-  
 
   useEffect(() => {
     console.log("Current selectedHeroImageId:", selectedHeroImageId);
   }, [selectedHeroImageId]);
 
-  const handleSelectHero = async (heroId) => {
-    const result = await selectHero(token, heroId);
-    if (result && result.status === "success") {
-      navigate("/battle");
-    } else {
-      console.error("Error selecting hero:", result);
-    }
-  };
+  // const handleSelectHero = async (heroId) => {
+  //   const result = await selectHero(token, heroId);
+  //   if (result && result.status === "success") {
+  //     navigate("/battle");
+  //   } else {
+  //     console.error("Error selecting hero:", result);
+  //   }
+  // };
 
   useEffect(() => {
     const fetchHeroImages = async () => {
@@ -135,6 +135,7 @@ export const HeroesAndItems = () => {
     setSelectedHero(null);
     setShowInventoryModal(false);
     setSelectedItemIndex(null);
+    setRefreshHeroes(true);
   };
 
   const handleCreateHero = async () => {
@@ -147,7 +148,7 @@ export const HeroesAndItems = () => {
     const response = await createHero(token, {
       name: newHeroName,
       story: newHeroStory,
-      image_id: selectedHeroImageId,
+      hero_image_id: selectedHeroImageId,
     });
     if (response && response.data && response.data.id) {
       await assignRandomItemToHeroById(token, response.data.id);
@@ -306,85 +307,85 @@ export const HeroesAndItems = () => {
     setShowDeleteConfirmModal(true);
   };
 
-  const renderInventoryModal = () => {
-    if (!selectedHero) return null;
-    return (
-      <Modal
-        show={showInventoryModal}
-        onHide={handleCloseInventoryModal}
-        centered
-        className="custom-modal"
-      >
-        <Modal.Header closeButton>
-          <Modal.Title className="modal-title">
-            Inventario de {selectedHero.name}
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <div className="list-group">
-            {selectedHero.items.map((item, index) => (
-              <React.Fragment key={index}>
-                <Button
-                  variant="dark"
-                  className={`custom-button ${
-                    selectedItemIndex === index ? "custom-button-select" : ""
-                  } ${getBackgroundColorByRarity(item.rare)}`}
-                  onClick={() =>
-                    selectedItemIndex === index
-                      ? setSelectedItemIndex(null)
-                      : setSelectedItemIndex(index)
-                  }
-                >
-                  {item.name}
-                </Button>
-                {selectedItemIndex === index && (
-                  <div className="custom-inventory-text">
-                    <p>{selectedHero.items[selectedItemIndex].description}</p>
-                    <p>
-                      Modificador de Ataque:{" "}
-                      {selectedHero.items[selectedItemIndex].attack_modifier}
-                    </p>
-                    <p>
-                      Modificador de Defensa:{" "}
-                      {selectedHero.items[selectedItemIndex].defense_modifier}
-                    </p>
-                    <p>
-                      Rareza:{" "}
-                      {translateRarity(
-                        selectedHero.items[selectedItemIndex].rare
-                      )}
-                    </p>
-                    {selectedItemIndex !== null && (
-                      <Button
-                        variant="danger"
-                        className="custom-button custom-button-remove"
-                        onClick={() =>
-                          handleShowDeleteConfirmModal(
-                            selectedHero.items[selectedItemIndex]
-                          )
-                        }
-                      >
-                        Eliminar ítem
-                      </Button>
-                    )}
-                  </div>
-                )}
-              </React.Fragment>
-            ))}
-          </div>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button
-            variant="secondary"
-            className="custom-button custom-button-close"
-            onClick={handleCloseInventoryModal}
-          >
-            Cerrar
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    );
-  };
+  // const renderInventoryModal = () => {
+  //   if (!selectedHero) return null;
+  //   return (
+  //     <Modal
+  //       show={showInventoryModal}
+  //       onHide={handleCloseInventoryModal}
+  //       centered
+  //       className="custom-modal"
+  //     >
+  //       <Modal.Header closeButton>
+  //         <Modal.Title className="modal-title">
+  //           Inventario de {selectedHero.name}
+  //         </Modal.Title>
+  //       </Modal.Header>
+  //       <Modal.Body>
+  //         <div className="list-group">
+  //           {selectedHero.items.map((item, index) => (
+  //             <React.Fragment key={index}>
+  //               <Button
+  //                 variant="dark"
+  //                 className={`custom-button ${
+  //                   selectedItemIndex === index ? "custom-button-select" : ""
+  //                 } ${getBackgroundColorByRarity(item.rare)}`}
+  //                 onClick={() =>
+  //                   selectedItemIndex === index
+  //                     ? setSelectedItemIndex(null)
+  //                     : setSelectedItemIndex(index)
+  //                 }
+  //               >
+  //                 {item.name}
+  //               </Button>
+  //               {selectedItemIndex === index && (
+  //                 <div className="custom-inventory-text">
+  //                   <p>{selectedHero.items[selectedItemIndex].description}</p>
+  //                   <p>
+  //                     Modificador de Ataque:{" "}
+  //                     {selectedHero.items[selectedItemIndex].attack_modifier}
+  //                   </p>
+  //                   <p>
+  //                     Modificador de Defensa:{" "}
+  //                     {selectedHero.items[selectedItemIndex].defense_modifier}
+  //                   </p>
+  //                   <p>
+  //                     Rareza:{" "}
+  //                     {translateRarity(
+  //                       selectedHero.items[selectedItemIndex].rare
+  //                     )}
+  //                   </p>
+  //                   {selectedItemIndex !== null && (
+  //                     <Button
+  //                       variant="danger"
+  //                       className="custom-button custom-button-remove"
+  //                       onClick={() =>
+  //                         handleShowDeleteConfirmModal(
+  //                           selectedHero.items[selectedItemIndex]
+  //                         )
+  //                       }
+  //                     >
+  //                       Eliminar ítem
+  //                     </Button>
+  //                   )}
+  //                 </div>
+  //               )}
+  //             </React.Fragment>
+  //           ))}
+  //         </div>
+  //       </Modal.Body>
+  //       <Modal.Footer>
+  //         <Button
+  //           variant="secondary"
+  //           className="custom-button custom-button-close"
+  //           onClick={handleCloseInventoryModal}
+  //         >
+  //           Cerrar
+  //         </Button>
+  //       </Modal.Footer>
+  //     </Modal>
+  //   );
+  // };
 
   const renderNewHeroCard = () => {
     return (
@@ -418,7 +419,7 @@ export const HeroesAndItems = () => {
   };
 
   const renderHeroCard = (hero, index) => {
-    console.log("DATOS DEL HEROE",hero)
+    console.log("DATOS DEL HEROE", hero);
     console.log(
       "Rendering hero",
       hero.id,
@@ -432,7 +433,7 @@ export const HeroesAndItems = () => {
             {hero.name}
           </Card.Title>
           <div className="image-card-container d-flex mb-3 align-items-center justify-content-center">
-          {hero.hero_image && (
+            {hero.hero_image && (
               <img
                 src={hero.hero_image.image}
                 alt={hero.hero_name}
@@ -488,7 +489,16 @@ export const HeroesAndItems = () => {
         ))}
         <div className="m-2">{renderNewHeroCard()}</div>
       </div>
-      {renderInventoryModal()}
+      <InventoryHeroModal
+        showInventoryModal={showInventoryModal}
+        handleCloseInventoryModal={handleCloseInventoryModal}
+        selectedHero={selectedHero}
+        selectedItemIndex={selectedItemIndex}
+        setSelectedItemIndex={setSelectedItemIndex}
+        getBackgroundColorByRarity={getBackgroundColorByRarity}
+        handleShowDeleteConfirmModal={handleShowDeleteConfirmModal}
+        translateRarity={translateRarity}
+      />
       {renderImageSelectionModal()}
       {renderDeleteConfirmModal()}
       <Modal

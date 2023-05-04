@@ -154,11 +154,11 @@ export function NavbarTop() {
               <div className="alert alert-danger" role="alert">{loginError}</div>
             )}
             <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label className="text-white">Email address</Form.Label>
+              <Form.Label className="text-white">Email</Form.Label>
               <Form.Control type="email" placeholder="Enter email" />
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicPassword">
-              <Form.Label className="text-white">Password</Form.Label>
+              <Form.Label className="text-white">Contraseña</Form.Label>
               <Form.Control type="password" placeholder="Password" />
             </Form.Group>
             <Button variant="primary" type="submit">Login</Button>
@@ -175,21 +175,21 @@ export function NavbarTop() {
         <Offcanvas.Body>
           <Form onSubmit={handleRegisterSubmit}>
             <Form.Group className="mb-3" controlId="formBasicName">
-              <Form.Label className="text-white">Name</Form.Label>
+              <Form.Label className="text-white">Nombre</Form.Label>
               <Form.Control name="name" type="text" placeholder="Enter name" isInvalid={!!errors.name} onBlur={handleInputChange}/>
               <Form.Control.Feedback type="invalid">{errors.name}</Form.Control.Feedback>
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label className="text-white">Email address</Form.Label>
+              <Form.Label className="text-white">Email</Form.Label>
               <Form.Control name="email" type="email" placeholder="Enter email" isInvalid={!!errors.email} onBlur={handleInputChange}/>
               <Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicPassword">
-              <Form.Label className="text-white">Password</Form.Label>
+              <Form.Label className="text-white">Contraseña</Form.Label>
               <Form.Control name="password" type="password" placeholder="Password" isInvalid={!!errors.password} onBlur={handleInputChange}/>
               <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
             </Form.Group>
-            <Button variant="primary" type="submit">Register</Button>
+            <Button variant="primary" type="submit">Registro</Button>
           </Form>
         </Offcanvas.Body>
       </Offcanvas>

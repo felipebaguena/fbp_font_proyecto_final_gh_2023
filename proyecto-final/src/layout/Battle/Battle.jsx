@@ -445,7 +445,7 @@ export const BattlePage = () => {
   };
 
   if (!battle) {
-    return <div>Loading...</div>;
+    return <p className="battle-title">Cargando...</p>;
   }
 
   const closeModal = () => {

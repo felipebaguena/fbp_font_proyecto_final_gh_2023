@@ -31,6 +31,8 @@ export const HeroPage = () => {
 
   const [showDeleteConfirmModal, setShowDeleteConfirmModal] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
+  const [imageSelected, setImageSelected] = useState(false);
+
 
   const handleShowImageSelectionModal = (imageId) => {
     setSelectedHeroImageId(imageId);
@@ -43,6 +45,7 @@ export const HeroPage = () => {
 
   const handleSelectHeroImage = (imageId) => {
     setSelectedHeroImageId(imageId);
+    setImageSelected(true);
     handleCloseImageSelectionModal();
     console.log("Selected image ID:", imageId);
   };
@@ -127,6 +130,7 @@ export const HeroPage = () => {
       await assignRandomItemToHeroById(token, response.data.id);
       console.log(response.data);
       setCreationMessage(`Héroe ${newHeroName} creado con éxito!`);
+      setImageSelected(false);
       setTimeout(() => {
         handleCloseModal();
         setShowModal(false);
@@ -186,6 +190,7 @@ export const HeroPage = () => {
       <Modal
         show={showImageSelectionModal}
         onHide={handleCloseImageSelectionModal}
+        className="custom-modal modal-title"
       >
         <Modal.Header closeButton>
           <Modal.Title>Selecciona la imagen del héroe</Modal.Title>
@@ -384,77 +389,81 @@ export const HeroPage = () => {
       {renderDeleteConfirmModal()}
 
       <Modal
-        show={showModal}
-        onHide={handleCloseModal}
-        className="custom-modal"
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>Crea un nuevo héroe</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <form>
-            <div className="form-group custom-inventory-text">
-              <label htmlFor="name">Nombre</label>
-              <input
-                type="text"
-                className="form-control"
-                id="name"
-                placeholder="Ingresa el nombre del héroe"
-                value={newHeroName}
-                onChange={(e) => setNewHeroName(e.target.value)}
-              />
-            </div>
-            <div className="form-group custom-inventory-text">
-              <label htmlFor="story">Historia</label>
-              <textarea
-                className="form-control"
-                id="story"
-                rows="3"
-                placeholder="Ingresa la historia del héroe"
-                value={newHeroStory}
-                onChange={(e) => setNewHeroStory(e.target.value)}
-              ></textarea>
-            </div>
-          </form>
-          {creationMessage && (
-            <div className="my-3">
-              <Modal.Title>{creationMessage}</Modal.Title>
-              <h2>{`${newHeroName}`}</h2>
-            </div>
-          )}
-          {creationMessage === null && (
-            <>
-              <Button
-                variant="dark"
-                onClick={handleShowImageSelectionModal}
-                className="m-0 mt-3 mb-1 custom-button custom-inventory-text"
-              >
-                Seleccionar imagen
-              </Button>
-            </>
-          )}
-        </Modal.Body>
-        <Modal.Footer>
-          {creationMessage === null && (
-            <>
-              <Button
-                variant="secondary"
-                onClick={handleCloseModal}
-                className="custom-button-close"
-              >
-                Cerrar
-              </Button>
-              <Button
-                variant="primary"
-                onClick={handleCreateHero}
-                className="custom-button-select"
-              >
-                Crear héroe
-              </Button>
-            </>
-          )}
-        </Modal.Footer>
-      </Modal>
+    show={showModal}
+    onHide={handleCloseModal}
+    className="custom-modal"
+  >
+    <Modal.Header closeButton>
+      <Modal.Title>Crea un nuevo héroe</Modal.Title>
+    </Modal.Header>
+    <Modal.Body>
+      <form>
+        <div className="form-group custom-inventory-text">
+          <label htmlFor="name">Nombre</label>
+          <input
+            type="text"
+            className="form-control"
+            id="name"
+            maxLength="16"
+            placeholder="Ingresa el nombre del héroe"
+            value={newHeroName}
+            onChange={(e) => setNewHeroName(e.target.value)}
+          />
+        </div>
+        <div className="form-group custom-inventory-text">
+          <label htmlFor="story">Historia</label>
+          <textarea
+            className="form-control"
+            id="story"
+            maxLength="70"
+            rows="3"
+            placeholder="Ingresa la historia del héroe"
+            value={newHeroStory}
+            onChange={(e) => setNewHeroStory(e.target.value)}
+          ></textarea>
+        </div>
+      </form>
+      {creationMessage && (
+        <div className="my-3">
+          <Modal.Title>{creationMessage}</Modal.Title>
+          {/* <h2>{`${newHeroName}`}</h2> */}
+        </div>
+      )}
+      {creationMessage === null && (
+        <>
+          <Button
+            variant="dark"
+            onClick={handleShowImageSelectionModal}
+            className="m-0 mt-3 mb-1 custom-button custom-inventory-text"
+          >
+            Seleccionar imagen
+          </Button>
+        </>
+      )}
+    </Modal.Body>
+    <Modal.Footer>
+      {creationMessage === null && (
+        <>
+          <Button
+            variant="secondary"
+            onClick={handleCloseModal}
+            className="custom-button-close"
+          >
+            Cerrar
+          </Button>
+          <Button
+            variant="primary"
+            onClick={handleCreateHero}
+            className="custom-button-select"
+            disabled={!newHeroName || !newHeroStory || !imageSelected}
+          >
+            Crear héroe
+          </Button>
+        </>
+      )}
+    </Modal.Footer>
+  </Modal>
+
       <div
         className="selector-hero-title back-heroes-view"
         onClick={handleBackToHome}

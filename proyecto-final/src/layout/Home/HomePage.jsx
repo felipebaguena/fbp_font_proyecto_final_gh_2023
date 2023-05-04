@@ -179,7 +179,10 @@ export const HomePage = () => {
           <div className="banner-top-left-right banner-bottom-left-right"></div>
         </Col>
       </Row>
-      <Modal show={showModal} onHide={handleCloseModal}>
+      <Modal 
+      show={showModal} 
+      onHide={handleCloseModal}
+      className="custom-modal modal-title">
         <Modal.Header closeButton>
           <Modal.Title>Atención</Modal.Title>
         </Modal.Header>

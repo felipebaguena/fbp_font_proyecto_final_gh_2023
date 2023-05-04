@@ -165,7 +165,11 @@ export const UserList = () => {
         handleRoleChange={handleRoleChange}
         loading={loading}
       />
-      <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
+      <Modal 
+      show={showDeleteModal} 
+      onHide={() => setShowDeleteModal(false)}
+      className="custom-modal modal-title"
+      >
         <Modal.Header closeButton>
           <Modal.Title>Eliminar usuario</Modal.Title>
         </Modal.Header>

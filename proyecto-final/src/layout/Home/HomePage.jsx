@@ -22,11 +22,7 @@ export const HomePage = () => {
   };
 
   const startStoryMode = () => {
-    if (!token) {
-      handleShowModal();
-    } else {
       navigate("/storymode");
-    }
   };
 
   const viewHeroes = () => {

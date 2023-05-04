@@ -11,7 +11,7 @@ export const GameFooter = () => {
           <Col md={4}>
             <img
               className="logo-img-footer"
-              src="../../../public/images/logo-juego-s.png"
+              src="/images/logo-juego-s.png"
               alt="logo-game"
             />
             <p className="text-footer-logo">

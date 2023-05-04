@@ -57,7 +57,7 @@ export const HomePage = () => {
           <div className="banner-top battle-title">
             <img
               className="logo-img"
-              src="../../../public/images/logo-juego-xl.png"
+              src="/images/logo-juego-xl.png"
             />
           </div>
           <div className="banner-top-left-right"></div>
@@ -66,12 +66,12 @@ export const HomePage = () => {
           <div className="game" onClick={startStory}>
             <img
               className="game-img"
-              src="../../../public/images/aventuras-cover-xl.jpg"
+              src="/images/aventuras-cover-xl.jpg"
               width="400"
             />
             <img
               className="game-img-mobile"
-              src="../../../public/images/aventura-spine-cover.jpg"
+              src="/images/aventura-spine-cover.jpg"
               width="400"
             />
           </div>
@@ -80,12 +80,12 @@ export const HomePage = () => {
           <div className="game" onClick={startStoryMode}>
             <img
               className="game-img"
-              src="../../../public/images/historia-cover-xl.jpg"
+              src="/images/historia-cover-xl.jpg"
               width="400"
             />
             <img
               className="game-img-mobile"
-              src="../../../public/images/historia-spine-cover.jpg"
+              src="/images/historia-spine-cover.jpg"
               width="400"
             />
           </div>
@@ -94,12 +94,12 @@ export const HomePage = () => {
           <div className="game" onClick={viewHeroes}>
             <img
               className="game-img"
-              src="../../../public/images/heroes-cover-xl.jpg"
+              src="/images/heroes-cover-xl.jpg"
               width="400"
             />
             <img
               className="game-img-mobile"
-              src="../../../public/images/heroes-spine-cover.jpg"
+              src="/images/heroes-spine-cover.jpg"
               width="400"
             />
           </div>
@@ -108,12 +108,12 @@ export const HomePage = () => {
           <div className="game" onClick={viewProfile}>
             <img
               className="game-img"
-              src="../../../public/images/perfil-cover-xl.jpg"
+              src="/images/perfil-cover-xl.jpg"
               width="400"
             />
             <img
               className="game-img-mobile"
-              src="../../../public/images/perfil-spine-cover.jpg"
+              src="/images/perfil-spine-cover.jpg"
               width="400"
             />
           </div>
@@ -125,7 +125,7 @@ export const HomePage = () => {
         >
           <img
             className="banner-console-img"
-            src="../../../public/images/logo-consola-tv-xl.png"
+            src="/images/logo-consola-tv-xl.png"
           />
         </Col>
         <Col
@@ -135,7 +135,7 @@ export const HomePage = () => {
         >
           <img
             className="banner-story-img"
-            src="../../../public/images/story-home-cover-xl.jpg"
+            src="/images/story-home-cover-xl.jpg"
           />
         </Col>
         <Col
@@ -145,7 +145,7 @@ export const HomePage = () => {
         >
           <img
             className="banner-story-img"
-            src="../../../public/images/ranking-home-cover-xl.jpg"
+            src="/images/ranking-home-cover-xl.jpg"
           />
         </Col>
         <Col className="banner-top-logo-home d-flex justify-content-center">
@@ -159,7 +159,7 @@ export const HomePage = () => {
             >
               <img
                 className="cartdrige"
-                src="../../../public/images/md-cartridge-gh.png"
+                src="/images/md-cartridge-gh.png"
                 alt="GitHub"
               />
             </a>
@@ -171,7 +171,7 @@ export const HomePage = () => {
             >
               <img
                 className="cartdrige"
-                src="../../../public/images/md-cartridge-gh-li.png"
+                src="/images/md-cartridge-gh-li.png"
                 alt="LinkedIn"
               />
             </a>

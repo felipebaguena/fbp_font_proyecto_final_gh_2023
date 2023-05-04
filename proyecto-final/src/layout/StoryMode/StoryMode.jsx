@@ -14,7 +14,6 @@ export const StoryMode = () => {
   const [historyCompleted, setHistoryCompleted] = useState(false);
   const [animationClass, setAnimationClass] = useState("");
 
-
   const navigate = useNavigate();
 
   const getRandomConversation = () => {
@@ -39,7 +38,6 @@ export const StoryMode = () => {
     await new Promise((resolve) => setTimeout(resolve, 100));
     setAnimationClass("fade-in");
   };
-  
 
   const fetchVillagerImage = async () => {
     const imageId = Math.floor(Math.random() * 49) + 1;
@@ -69,7 +67,6 @@ export const StoryMode = () => {
     setCurrentConversation(getRandomConversation());
     fetchVillagerImage();
   };
-  
 
   const handleGoHome = () => {
     navigate("/");
@@ -115,7 +112,9 @@ export const StoryMode = () => {
     <Container fluid>
       {showHistory ? (
         <Row className="d-flex justify-content-center conversation-container ">
-          <div className="selector-hero-title selector-hero-title-story">La historia de Ravenhollow</div>
+          <div className="selector-hero-title selector-hero-title-story">
+            La historia de Ravenhollow
+          </div>
           <Col
             md={10}
             lg={8}
@@ -144,9 +143,10 @@ export const StoryMode = () => {
       ) : (
         currentConversation && (
           <>
-<Row className="d-flex justify-content-center conversation-container">
-
-              <div className="selector-hero-title selector-hero-title-story">En la aldea</div>
+            <Row className="d-flex justify-content-center conversation-container">
+              <div className="selector-hero-title selector-hero-title-story">
+                En la aldea
+              </div>
               <Col
                 md={4}
                 lg={3}

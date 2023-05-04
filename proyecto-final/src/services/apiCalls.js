@@ -1,7 +1,8 @@
 import axios from "axios";
 import { saveToken, saveUser } from "../authSlice";
 
-const root = "http://localhost:8000/api/";
+// const root = "http://localhost:8000/api/";
+const root = "https://fbpbbddproyectofinalgh2023-production.up.railway.app/api/";
 
 export const registerUser = async (body) => {
   return await axios.post(`${root}register`, body);

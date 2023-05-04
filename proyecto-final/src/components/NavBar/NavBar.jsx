@@ -117,7 +117,7 @@ export function NavbarTop() {
     <Navbar bg="black" variant="dark" expand={expand} className="sega-navbar navbar-font">
       <Container fluid>
         <Navbar.Brand as={Link} to="/">
-          <img src="../../../public/images/logo-juego-s.png" alt="Nombre de tu logo" height="40"/>
+          <img src="./../../../public/images/logo-juego-s.png" alt="Nombre de tu logo" height="40"/>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="navbar-nav" />
         <Navbar.Collapse id="navbar-nav">

@@ -135,7 +135,7 @@ export const HomePage = () => {
         >
           <img
             className="banner-story-img"
-            src="/images/story-home-cover-xl.jpg"
+            src="/images/story-home-cover-l.jpg"
           />
         </Col>
         <Col
@@ -145,7 +145,7 @@ export const HomePage = () => {
         >
           <img
             className="banner-story-img"
-            src="/images/ranking-home-cover-xl.jpg"
+            src="/images/ranking-home-cover-l.jpg"
           />
         </Col>
         <Col className="banner-top-logo-home d-flex justify-content-center">

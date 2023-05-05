@@ -14,22 +14,37 @@ import { clearToken } from "../../authSlice";
 import { validate } from "../../services/validations";
 
 export function NavbarTop() {
-
   const [showLoginOffcanvas, setShowLoginOffcanvas] = useState(false);
   const [showRegisterOffcanvas, setShowRegisterOffcanvas] = useState(false);
   const [userRole, setUserRole] = useState(null);
   const [errors, setErrors] = useState({});
   const [loginError, setLoginError] = useState(null);
 
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState(null);
+  const [password, setPassword] = useState("");
+  const [registerSuccessMessage, setRegisterSuccessMessage] = useState(null);
+
+  const displayRegisterSuccess = (name) => {
+    setRegisterSuccessMessage(`${name} registrado con éxito`);
+    setTimeout(() => {
+      setRegisterSuccessMessage(null);
+      handleRegisterOffcanvasClose();
+    }, 2000);
+  };
+
   const token = useSelector((state) => state.auth.token);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const expand = "md";
 
-  
-  const handleLoginOffcanvasClose = () => { setShowLoginOffcanvas(false)};
+  const handleLoginOffcanvasClose = () => {
+    setShowLoginOffcanvas(false);
+  };
   const handleLoginOffcanvasShow = () => setShowLoginOffcanvas(true);
-  const handleRegisterOffcanvasClose = () => {setShowRegisterOffcanvas(false)};
+  const handleRegisterOffcanvasClose = () => {
+    setShowRegisterOffcanvas(false);
+  };
   const handleRegisterOffcanvasShow = () => setShowRegisterOffcanvas(true);
 
   const handleInputChange = (e) => {
@@ -46,6 +61,7 @@ export function NavbarTop() {
     const name = event.target.formBasicName.value;
     const email = event.target.formBasicEmail.value;
     const password = event.target.formBasicPassword.value;
+    const confirmPassword = event.target.formBasicConfirmPassword.value;
     const newErrors = {};
     const nameValidation = validate("name", name, true);
     const emailValidation = validate("email", email, true);
@@ -56,6 +72,13 @@ export function NavbarTop() {
     if (!passwordValidation.validated)
       newErrors.password = passwordValidation.message;
 
+    if (password !== confirmPassword) {
+      setConfirmPasswordError("Las contraseñas no coinciden");
+      return;
+    } else {
+      setConfirmPasswordError(null);
+    }
+
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
@@ -65,9 +88,18 @@ export function NavbarTop() {
       const response = await registerUser({ name, email, password });
       console.log(response.data);
 
-      handleRegisterOffcanvasClose();
+      await logMe({ email, password }, dispatch);
+      displayRegisterSuccess(name);
     } catch (error) {
       console.error(error);
+    }
+  };
+
+  const handleConfirmPasswordBlur = () => {
+    if (confirmPassword !== "" && confirmPassword === password) {
+      setConfirmPasswordError(null);
+    } else {
+      setConfirmPasswordError("Las contraseñas no coinciden");
     }
   };
 
@@ -77,6 +109,12 @@ export function NavbarTop() {
 
     const email = event.target.formBasicEmail.value;
     const password = event.target.formBasicPassword.value;
+
+    const emailValidation = validate("email", email, true);
+    if (!emailValidation.validated) {
+      setErrors({ email: emailValidation.message });
+      return;
+    }
 
     try {
       const response = await logMe({ email, password }, dispatch);
@@ -114,28 +152,64 @@ export function NavbarTop() {
   }, [token]);
 
   return (
-    <Navbar bg="black" variant="dark" expand={expand} className="sega-navbar navbar-font">
+    <Navbar
+      bg="black"
+      variant="dark"
+      expand={expand}
+      className="sega-navbar navbar-font"
+    >
       <Container fluid>
         <Navbar.Brand as={Link} to="/">
-          <img src="/images/logo-juego-s.png"  alt="Nombre de tu logo" height="40"/>
+          <img
+            src="/images/logo-juego-s.png"
+            alt="Nombre de tu logo"
+            height="40"
+          />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="navbar-nav" />
         <Navbar.Collapse id="navbar-nav">
           <Nav className="ms-auto">
-            <Nav.Link as={Link} to="/">Home</Nav.Link>
-            <Nav.Link as={Link} to="/ranking">Ranking</Nav.Link>
-            {userRole === 2 && (<Nav.Link as={Link} to="/users">Admin</Nav.Link>)}
+            <Nav.Link as={Link} to="/">
+              Home
+            </Nav.Link>
+            <Nav.Link as={Link} to="/ranking">
+              Ranking
+            </Nav.Link>
+            {userRole === 2 && (
+              <Nav.Link as={Link} to="/users">
+                Admin
+              </Nav.Link>
+            )}
             {token ? (
               <NavDropdown title="Perfil" id="navbar-dropdown" align="end">
-                <NavDropdown.Item as={Link} to="/profile" className="navbar-font">Mi perfil</NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="/myheroes" className="navbar-font">Mis héroes</NavDropdown.Item>
+                <NavDropdown.Item
+                  as={Link}
+                  to="/profile"
+                  className="navbar-font"
+                >
+                  Mi perfil
+                </NavDropdown.Item>
+                <NavDropdown.Item
+                  as={Link}
+                  to="/myheroes"
+                  className="navbar-font"
+                >
+                  Mis héroes
+                </NavDropdown.Item>
                 <NavDropdown.Divider />
-                <NavDropdown.Item onClick={handleLogout} className="navbar-font">Logout</NavDropdown.Item>
+                <NavDropdown.Item
+                  onClick={handleLogout}
+                  className="navbar-font"
+                >
+                  Logout
+                </NavDropdown.Item>
               </NavDropdown>
             ) : (
               <>
                 <Nav.Link onClick={handleLoginOffcanvasShow}>Login</Nav.Link>
-                <Nav.Link onClick={handleRegisterOffcanvasShow}>Register</Nav.Link>
+                <Nav.Link onClick={handleRegisterOffcanvasShow}>
+                  Register
+                </Nav.Link>
               </>
             )}
           </Nav>
@@ -144,52 +218,126 @@ export function NavbarTop() {
 
       {/* Login Offcanvas */}
 
-      <Offcanvas show={showLoginOffcanvas} onHide={handleLoginOffcanvasClose} placement="end" className="bg-dark text-white navbar-font">
+      <Offcanvas
+        show={showLoginOffcanvas}
+        onHide={handleLoginOffcanvasClose}
+        placement="end"
+        className="bg-dark text-white navbar-font"
+      >
         <Offcanvas.Header closeButton className="white-close-button">
           <Offcanvas.Title className="text-dark">Login</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
           <Form onSubmit={handleLoginSubmit}>
             {loginError && (
-              <div className="alert alert-danger" role="alert">{loginError}</div>
+              <div className="alert alert-danger" role="alert">
+                {loginError}
+              </div>
             )}
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label className="text-white">Email</Form.Label>
-              <Form.Control type="email" placeholder="Enter email" />
+              <Form.Control
+                name="email"
+                type="email"
+                placeholder="Enter email"
+                isInvalid={!!errors.email}
+                onBlur={handleInputChange}
+              />
+              <Form.Control.Feedback type="invalid">
+                {errors.email}
+              </Form.Control.Feedback>
             </Form.Group>
+
             <Form.Group className="mb-3" controlId="formBasicPassword">
               <Form.Label className="text-white">Contraseña</Form.Label>
               <Form.Control type="password" placeholder="Password" />
             </Form.Group>
-            <Button variant="primary" type="submit">Login</Button>
+            <Button variant="primary" type="submit">
+              Login
+            </Button>
           </Form>
         </Offcanvas.Body>
       </Offcanvas>
 
       {/* Register Offcanvas */}
 
-      <Offcanvas show={showRegisterOffcanvas} onHide={handleRegisterOffcanvasClose} placement="end" className="bg-dark text-white navbar-font">
+      <Offcanvas
+        show={showRegisterOffcanvas}
+        onHide={handleRegisterOffcanvasClose}
+        placement="end"
+        className="bg-dark text-white navbar-font"
+      >
         <Offcanvas.Header closeButton className="white-close-button">
           <Offcanvas.Title className="text-dark">Register</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
+          {registerSuccessMessage && (
+            <div className="alert alert-success" role="alert">
+              {registerSuccessMessage}
+            </div>
+          )}
           <Form onSubmit={handleRegisterSubmit}>
             <Form.Group className="mb-3" controlId="formBasicName">
               <Form.Label className="text-white">Nombre</Form.Label>
-              <Form.Control name="name" type="text" placeholder="Enter name" isInvalid={!!errors.name} onBlur={handleInputChange}/>
-              <Form.Control.Feedback type="invalid">{errors.name}</Form.Control.Feedback>
+              <Form.Control
+                name="name"
+                type="text"
+                placeholder="Enter name"
+                isInvalid={!!errors.name}
+                onBlur={handleInputChange}
+              />
+              <Form.Control.Feedback type="invalid">
+                {errors.name}
+              </Form.Control.Feedback>
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label className="text-white">Email</Form.Label>
-              <Form.Control name="email" type="email" placeholder="Enter email" isInvalid={!!errors.email} onBlur={handleInputChange}/>
-              <Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
+              <Form.Control
+                name="email"
+                type="email"
+                placeholder="Enter email"
+                isInvalid={!!errors.email}
+                onBlur={handleInputChange}
+              />
+              <Form.Control.Feedback type="invalid">
+                {errors.email}
+              </Form.Control.Feedback>
             </Form.Group>
             <Form.Group className="mb-3" controlId="formBasicPassword">
               <Form.Label className="text-white">Contraseña</Form.Label>
-              <Form.Control name="password" type="password" placeholder="Password" isInvalid={!!errors.password} onBlur={handleInputChange}/>
-              <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
+              <Form.Control
+                name="password"
+                type="password"
+                placeholder="Password"
+                isInvalid={!!errors.password}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                onBlur={handleInputChange}
+              />
+              <Form.Control.Feedback type="invalid">
+                {errors.password}
+              </Form.Control.Feedback>
             </Form.Group>
-            <Button variant="primary" type="submit">Registro</Button>
+
+            <Form.Group className="mb-3" controlId="formBasicConfirmPassword">
+              <Form.Label className="text-white">Repetir contraseña</Form.Label>
+              <Form.Control
+                name="confirmPassword"
+                type="password"
+                placeholder="Repetir contraseña"
+                isInvalid={!!confirmPasswordError}
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                onBlur={handleConfirmPasswordBlur}
+              />
+              <Form.Control.Feedback type="invalid">
+                {confirmPasswordError}
+              </Form.Control.Feedback>
+            </Form.Group>
+
+            <Button variant="primary" type="submit">
+              Registro
+            </Button>
           </Form>
         </Offcanvas.Body>
       </Offcanvas>

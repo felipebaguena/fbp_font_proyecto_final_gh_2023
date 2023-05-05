@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row, Col, Button, Form, Modal } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import "./Battle.css";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -50,6 +50,10 @@ export const BattlePage = () => {
   const [defenseCount, setDefenseCount] = useState(0);
   const [hasCreatedBattle, setHasCreatedBattle] = useState(false);
 
+  const token = useSelector((state) => state.auth.token);
+  const navigate = useNavigate();
+
+  // Timer para el daño mostrado en BattleTV
 
   useEffect(() => {
     if (heroDamage !== null || monsterDamage !== null) {
@@ -64,16 +68,19 @@ export const BattlePage = () => {
     }
   }, [heroDamage, monsterDamage]);
 
-  const token = useSelector((state) => state.auth.token);
-  const navigate = useNavigate();
+  // Cálculo de porcentaje para barras de vida
 
   const getHealthPercentage = (currentHealth, initialHealth) => {
     return (currentHealth / initialHealth) * 100;
   };
 
+  // Creación de batalla cuando se monta el componente
+
   useEffect(() => {
     setCreateNewBattle(true);
   }, []);
+
+  // Rotación de turnos
 
   useEffect(() => {
     if (!isPlayerTurn & !monsterIsDead) {
@@ -83,8 +90,9 @@ export const BattlePage = () => {
     }
   }, [isPlayerTurn, monsterIsDead]);
 
+  // Creación de nuevas batallas
+
   useEffect(() => {
-    console.log("Creating a new battle...");
     const fetchData = async () => {
       if ((!battle || createNewBattle) && !hasCreatedBattle) {
         setCreateNewBattle(false);
@@ -96,12 +104,12 @@ export const BattlePage = () => {
             data.data.hero
           );
           data.data.monster.health = adjustedMonsterHealth;
-  
+
           setBattle(data.data);
           setCurrentHeroHealth(data.data.hero.health);
           setCurrentMonsterHealth(adjustedMonsterHealth);
           setHeroCurrentDefense(data.data.hero.defense);
-  
+
           if (data.data.hero && data.data.hero.hero_image) {
             const heroImage = data.data.hero.hero_image.image_url;
             setHeroImage(heroImage);
@@ -111,22 +119,21 @@ export const BattlePage = () => {
             const monsterImage = data.data.monster.monster_image.image_url;
             setMonsterImage(monsterImage);
           }
-  
         } else {
           console.error("Error fetching battle data:", data);
         }
       }
     };
-  
+
     if (createNewBattle) {
       fetchData();
     }
   }, [token, createNewBattle]);
-  
+
+  // LLamada a la API para traer los ítems del héroe
 
   useEffect(() => {
     const fetchItems = async () => {
-      console.log(battle);
       if (battle && battle.hero) {
         const items = await getHeroItems(token, battle.hero.id);
         if (items && items.status === "success") {
@@ -139,6 +146,8 @@ export const BattlePage = () => {
     fetchItems();
   }, [battle, token]);
 
+  // Subida de nivel del héroe (la subida se ejecuta sumando el nivel actual del héroe más dos)
+
   useEffect(() => {
     if (battle && battle.hero) {
       const winsNeeded = 2 + battle.hero.level;
@@ -146,7 +155,6 @@ export const BattlePage = () => {
         levelUpHero(token, battle.hero.id)
           .then((response) => {
             if (response.status === "success") {
-              console.log("Hero leveled up!");
               setLevelUpValues(response.addedValues);
               setShowModal(true);
             } else {
@@ -162,6 +170,8 @@ export const BattlePage = () => {
     }
   }, [consecutiveWins, token, battle]);
 
+  // Modificador para el ataque del héroe con respecto al nivel del héroe
+
   const getSelectedItemAttackModifier = () => {
     const selectedItemInt = parseInt(selectedItem);
     const selectedItemObj = heroItems.find(
@@ -176,6 +186,8 @@ export const BattlePage = () => {
     return 0;
   };
 
+  // Modales de apertura y cierre de inventario
+
   const openInventoryModal = () => {
     setShowInventoryModal(true);
   };
@@ -187,6 +199,8 @@ export const BattlePage = () => {
   const findItemById = (id) => {
     return heroItems.find((item) => item.id === id);
   };
+
+  // Uso de pociones
 
   const Potion = ({ index, handleUsePotion, isActive, isClickable }) => {
     const handleClick = () => {
@@ -208,7 +222,6 @@ export const BattlePage = () => {
   const handleUsePotion = () => {
     if (isPlayerTurn && heroPotions > 0) {
       setHeroPotions((prevPotions) => prevPotions - 1);
-      console.log("vida actual del héroe: ", currentHeroHealth);
       const updatedHeroHealth = Math.min(
         battle.hero.health,
         currentHeroHealth + 70
@@ -217,6 +230,8 @@ export const BattlePage = () => {
       setIsPlayerTurn(false);
     }
   };
+
+  // Modificador para la defensa del héroe en base al ítem seleccionado
 
   const getSelectedItemDefenseModifier = () => {
     const selectedItemInt = parseInt(selectedItem);
@@ -230,6 +245,8 @@ export const BattlePage = () => {
     navigate("/");
   };
 
+  // Clases para los colores de la barra de vida
+
   const getHealthBarColorClass = (percentage) => {
     if (percentage >= 70) {
       return "health-bar-fill-green";
@@ -240,7 +257,11 @@ export const BattlePage = () => {
     }
   };
 
+  // Multiplicador para resultado aleatorio en combate
+
   const randomMultiplier = () => Math.random() * (2.2 - 1.8) + 1.8;
+
+  // Ajustes de ataque, vida y defensa para el monstruo con respecto al nivel del héroe
 
   const calculateAdjustedMonsterAttack = () => {
     const heroLevel = battle.hero.level;
@@ -259,9 +280,10 @@ export const BattlePage = () => {
     const baseMonsterHealth = monster.health;
 
     const adjustedHealth = baseMonsterHealth * (1 + (heroLevel - 1) * 0.1);
-
     return adjustedHealth;
   }
+
+  // ATTAQUE Y DEFENSA EN BATALLA
 
   const handleAttack = async () => {
     if (
@@ -282,9 +304,9 @@ export const BattlePage = () => {
       }, 1000);
 
       const heroLevel = battle.hero.level;
-      console.log("datos del héroe ==>", heroLevel);
 
-      //ATAQUE DEL HÉROE//
+      //ATAQUE DEL HÉROE
+
       const heroDamage =
         (battle.hero.attack +
           getSelectedItemAttackModifier() +
@@ -299,13 +321,6 @@ export const BattlePage = () => {
       const damage = failedAttack
         ? 0
         : Math.max(0, heroDamage - monsterDefense) * (criticalHit ? 2 : 1);
-
-      console.log(
-        "Ataque del héroe (incluye modificador de escenario):",
-        heroDamage
-      );
-      console.log("Defensa del monstruo:", monsterDefense);
-      console.log("Daño realizado al monstruo:", damage);
 
       setHeroDamage(damage);
 
@@ -375,7 +390,7 @@ export const BattlePage = () => {
     }
   };
 
-  // DEFENSA DEL HÉROE //
+  // DEFENSA DEL HÉROE
 
   const handleDefense = () => {
     if (defenseCount < 4) {
@@ -387,9 +402,8 @@ export const BattlePage = () => {
     }
     setIsPlayerTurn(false);
   };
-  
 
-  //ATAQUE DEL MONSTRUO//
+  // ATAQUE DEL MONSTRUO
 
   const monsterAttack = () => {
     const monsterDamage = calculateAdjustedMonsterAttack() * randomMultiplier();
@@ -408,21 +422,8 @@ export const BattlePage = () => {
       ? 0
       : Math.max(0, monsterDamage - heroDefense) * (criticalHit ? 2 : 1);
 
-    console.log(
-      "Probabilidad de fallo del monstruo:",
-      (baseFailureChance + monsterAttackFailure) * 100 + "%"
-    );
-
-    console.log("Ataque del monstruo:", monsterDamage);
-    console.log(
-      "Defensa del héroe (incluye modificador de escenario):",
-      heroDefense
-    );
-    console.log("Daño realizado al héroe:", heroDamageTaken);
-
     setMonsterDamage(heroDamageTaken);
 
-    console.log("vida actual del héroe en monster attack: ", currentHeroHealth);
     const newHeroHp = Math.max(0, currentHeroHealth - heroDamageTaken);
     setCurrentHeroHealth(newHeroHp);
 
@@ -435,7 +436,7 @@ export const BattlePage = () => {
     setTimeout(() => {
       setShowFlashOverlay(false);
     }, 1000);
-    console.log("vida actual del héroe en 322: ", currentHeroHealth);
+
     if (newHeroHp <= 0) {
       setShowModal(true);
       setModalMessage("El monstruo ha derrotado a tu héroe.");
@@ -452,6 +453,8 @@ export const BattlePage = () => {
     setShowModal(false);
   };
 
+  // Gestión de siguiente batalla
+
   const onNextBattle = async () => {
     closeModal();
     setIsPlayerTurn(true);
@@ -463,6 +466,8 @@ export const BattlePage = () => {
     setHasCreatedBattle(false);
     setDefenseCount(0);
   };
+
+  // Colores por rareza en el inventario
 
   const getBackgroundColorByRarity = (rare) => {
     const backgroundColors = {

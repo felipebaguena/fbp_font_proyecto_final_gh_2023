@@ -21,6 +21,8 @@ export const BattleTV = ({
 }) => {
   const [bgImage, setBgImage] = useState("");
 
+  // Imágenes aleatorias para mostrar en el monitor crt
+
   useEffect(() => {
     const images = [
       "/images/textures/BIGLEAVES.png",

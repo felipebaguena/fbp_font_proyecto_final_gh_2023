@@ -86,7 +86,6 @@ export function NavbarTop() {
 
     try {
       const response = await registerUser({ name, email, password });
-      console.log(response.data);
 
       await logMe({ email, password }, dispatch);
       displayRegisterSuccess(name);
@@ -104,6 +103,7 @@ export function NavbarTop() {
   };
 
   // Manejador para el inicio de sesión
+
   const handleLoginSubmit = async (event) => {
     event.preventDefault();
 
@@ -118,7 +118,6 @@ export function NavbarTop() {
 
     try {
       const response = await logMe({ email, password }, dispatch);
-      console.log(response.data);
 
       handleLoginOffcanvasClose();
       setLoginError(null);
@@ -129,6 +128,7 @@ export function NavbarTop() {
   };
 
   // Manejador para el cierre de sesión
+
   const handleLogout = () => {
     dispatch(clearToken());
     navigate("/");

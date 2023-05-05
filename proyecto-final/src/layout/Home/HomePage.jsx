@@ -48,6 +48,16 @@ export const HomePage = () => {
   return (
     <Container fluid>
       <Row className="games-banner">
+      <Col
+          xs={12}
+          className="banner-console-img-container banner-story-img-container banner-ranking-img-container ranking-s"
+          onClick={viewRanking}
+        >
+          <img
+            className="banner-story-img"
+            src="/images/ranking-home-cover-l.jpg"
+          />
+        </Col>
         <div className="banner-top-logo-home d-flex">
           <div className="banner-top-left-right"></div>
           <div className="banner-top battle-title">
@@ -136,7 +146,7 @@ export const HomePage = () => {
         </Col>
         <Col
           xs={12}
-          className="banner-console-img-container banner-story-img-container banner-ranking-img-container"
+          className="banner-console-img-container banner-story-img-container banner-ranking-img-container ranking-xl"
           onClick={viewRanking}
         >
           <img

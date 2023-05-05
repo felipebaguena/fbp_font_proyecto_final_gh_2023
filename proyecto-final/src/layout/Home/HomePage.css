@@ -175,6 +175,14 @@
   opacity: 1;
 }
 
+.ranking-xl{
+  display: block;
+}
+
+.ranking-s {
+  display: none;
+}
+
 @media (max-width: 575px) {
   .game-img {
     display: none;
@@ -229,4 +237,13 @@
   .background-sega-md {
     margin-top: 0.5rem !important;
   }
+
+  .ranking-xl{
+    display: none;
+  }
+  
+  .ranking-s {
+    display: block;
+  }
+
 }

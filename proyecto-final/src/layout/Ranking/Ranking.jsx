@@ -66,7 +66,7 @@ export const TopHeroes = () => {
         </div>
         <Col xs={12} sm={10} lg={8}>
           {isLoading ? (
-            <p>Cargando...</p>
+            <p className="battle-title">Cargando...</p>
           ) : (
             topHeroes.map((hero, index) => renderHeroCard(hero, index))
           )}

@@ -31,6 +31,7 @@ export const HeroesAndItems = () => {
   const [showDeleteConfirmModal, setShowDeleteConfirmModal] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
   const [imageSelected, setImageSelected] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const token = useSelector((state) => state.auth.token);
   const navigate = useNavigate();
@@ -96,6 +97,7 @@ export const HeroesAndItems = () => {
         setHeroImagesById(fetchedImages);
         setHeroes(data);
         setRefreshHeroes(false);
+        setIsLoading(false);
       }
     };
     fetchData();
@@ -390,6 +392,10 @@ export const HeroesAndItems = () => {
   return (
     <div>
       <div className="selector-hero-title">Mis héroes</div>
+      {isLoading ? (
+            <p className="battle-title">Cargando héroes...</p>
+          ) : (
+            <>        
       <div className="d-flex flex-wrap justify-content-center">
         {heroes.map((hero) => (
           <div key={hero.id} className="m-2">
@@ -512,6 +518,8 @@ export const HeroesAndItems = () => {
       >
         Volver al incio
       </div>
+      </>
+      )}
     </div>
   );
 };

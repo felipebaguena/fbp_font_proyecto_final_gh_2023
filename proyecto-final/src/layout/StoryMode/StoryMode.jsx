@@ -16,6 +16,8 @@ export const StoryMode = () => {
 
   const navigate = useNavigate();
 
+  // Función para empezar conversaciones aleatorias
+
   const getRandomConversation = () => {
     const randomStarter =
       conversationStarters[
@@ -33,11 +35,15 @@ export const StoryMode = () => {
     setShowHistory(false);
   };
 
+  // Animación entre conversaciones
+
   const handleAnimation = async () => {
     setAnimationClass("");
     await new Promise((resolve) => setTimeout(resolve, 100));
     setAnimationClass("fade-in");
   };
+
+  // Función para recibir imágenes aleatorias de aldeanos
 
   const fetchVillagerImage = async () => {
     const imageId = Math.floor(Math.random() * 49) + 1;
@@ -50,6 +56,8 @@ export const StoryMode = () => {
   useEffect(() => {
     fetchVillagerImage();
   }, []);
+
+  // Manejador para continuar con las conversaciones con respecto a la siguiente id enlazada en conversation.js
 
   const handleClick = (siguienteId) => {
     if (siguienteId) {
@@ -71,6 +79,8 @@ export const StoryMode = () => {
   const handleGoHome = () => {
     navigate("/");
   };
+
+  // Métodos para despliegue de texto de la historia
 
   const displayText = (text) => {
     if (historyCompleted) {

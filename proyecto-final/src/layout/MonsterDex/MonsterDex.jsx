@@ -12,6 +12,7 @@ export function MonsterDex() {
   const [monsters, setMonsters] = useState([]);
   const [totalMonsters, setTotalMonsters] = useState(0);
   const [expandedMonsterId, setExpandedMonsterId] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   // Recopilación de monstruos diferentes eliminados por el héroe seleccionado
 
@@ -27,6 +28,7 @@ export function MonsterDex() {
           };
         });
         setMonsters(monstersWithImages);
+        setIsLoading(false);
       } else {
         console.error("Failed to fetch defeated monsters:", response);
       }
@@ -67,27 +69,33 @@ export function MonsterDex() {
     <Container fluid>
       <Row>
         <div className="selector-hero-title">Monstruos eliminados</div>
-        <div className="selector-hero-title defeated-monster-subtitle">
-          Has acabado con {monsters.length} de {totalMonsters} tipos de
-          monstruos
-        </div>
-        <div className="d-flex flex-wrap justify-content-center">
-          {monsters.map((monster) => (
-            <div key={monster.id} className="m-2">
-              <MonsterCard
-                monster={monster}
-                expandedMonsterId={expandedMonsterId}
-                toggleDescription={toggleDescription}
-              />
+        {isLoading ? (
+          <p className="battle-title">Cargando monstruos...</p>
+        ) : (
+          <>
+            <div className="selector-hero-title defeated-monster-subtitle">
+              Has acabado con {monsters.length} de {totalMonsters} tipos de
+              monstruos
             </div>
-          ))}
-        </div>
-        <div
-          className="selector-hero-title back-heroes-view"
-          onClick={handleBackToHeroes}
-        >
-          Volver a Mis héroes
-        </div>
+            <div className="d-flex flex-wrap justify-content-center">
+              {monsters.map((monster) => (
+                <div key={monster.id} className="m-2">
+                  <MonsterCard
+                    monster={monster}
+                    expandedMonsterId={expandedMonsterId}
+                    toggleDescription={toggleDescription}
+                  />
+                </div>
+              ))}
+            </div>
+            <div
+              className="selector-hero-title back-heroes-view"
+              onClick={handleBackToHeroes}
+            >
+              Volver a Mis héroes
+            </div>
+          </>
+        )}
       </Row>
     </Container>
   );

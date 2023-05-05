@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "./Battle";
 
 export const BattleModal = ({
@@ -10,13 +10,27 @@ export const BattleModal = ({
   levelUpValues,
   randomItemReceived,
 }) => {
+  const [showNextBattleButton, setShowNextBattleButton] = useState(false);
+  const [showPreparingMessage, setShowPreparingMessage] = useState(false);
+
+  useEffect(() => {
+    if (showModal) {
+      setShowPreparingMessage(true);
+      setTimeout(() => {
+        setShowNextBattleButton(true);
+        setShowPreparingMessage(false);
+      }, 3000);
+    } else {
+      setShowNextBattleButton(false);
+      setShowPreparingMessage(false);
+    }
+  }, [showModal]);
 
   useEffect(() => {
     if (showModal && randomItemReceived) {
       console.log("randomItemReceived actualizado:", randomItemReceived);
     }
   }, [showModal, randomItemReceived]);
-  
 
   return (
     <div style={{ display: showModal ? "block" : "none" }}>
@@ -35,15 +49,25 @@ export const BattleModal = ({
         )}
         {randomItemReceived && (
           <p className="battle-title">
-            ¡Tu héroe ha recibido un objeto aleatorio! Objeto: {randomItemReceived.data.name}
+            ¡Tu héroe ha recibido un objeto aleatorio! Objeto:{" "}
+            {randomItemReceived.data.name}
           </p>
         )}
-        {showNextBattle && (
-
-          <button className="next-battle-button" onClick={onNextBattle}>Siguiente Batalla</button>
-
+        {showPreparingMessage && (
+          <p className="battle-title">Preparando la siguiente batalla...</p>
         )}
-        <button className="go-home-button" onClick={goToHome}>Salir al Home</button>
+        {showNextBattle && (
+          <>
+            {showNextBattleButton && (
+              <button className="next-battle-button" onClick={onNextBattle}>
+                Siguiente Batalla
+              </button>
+            )}
+          </>
+        )}
+        <button className="go-home-button" onClick={goToHome}>
+          Salir al Home
+        </button>
       </div>
     </div>
   );

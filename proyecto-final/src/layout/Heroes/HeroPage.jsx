@@ -23,16 +23,18 @@ export const HeroPage = () => {
   const [showModal, setShowModal] = useState(false);
   const [creationMessage, setCreationMessage] = useState(null);
   const [refreshHeroes, setRefreshHeroes] = useState(false);
-
   const [selectedHeroImageId, setSelectedHeroImageId] = useState(null);
   const [showImageSelectionModal, setShowImageSelectionModal] = useState(false);
   const [heroImages, setHeroImages] = useState([]);
   const [heroImagesById, setHeroImagesById] = useState({});
-
   const [showDeleteConfirmModal, setShowDeleteConfirmModal] = useState(false);
   const [itemToDelete, setItemToDelete] = useState(null);
   const [imageSelected, setImageSelected] = useState(false);
 
+  const token = useSelector((state) => state.auth.token);
+  const navigate = useNavigate();
+
+  // Modal de selección de imagen en la creación de héroe
 
   const handleShowImageSelectionModal = (imageId) => {
     setSelectedHeroImageId(imageId);
@@ -47,13 +49,11 @@ export const HeroPage = () => {
     setSelectedHeroImageId(imageId);
     setImageSelected(true);
     handleCloseImageSelectionModal();
-    console.log("Selected image ID:", imageId);
   };
 
   const handleShowModal = () => setShowModal(true);
 
-  const token = useSelector((state) => state.auth.token);
-  const navigate = useNavigate();
+  // Recopilación de héroes en la vista de selección
 
   useEffect(() => {
     const fetchData = async () => {
@@ -67,8 +67,6 @@ export const HeroPage = () => {
         }
       }
 
-      console.log("fetchedImages:", fetchedImages);
-
       setHeroImagesById(fetchedImages);
       setHeroes(data);
       setRefreshHeroes(false);
@@ -76,9 +74,7 @@ export const HeroPage = () => {
     fetchData();
   }, [token, refreshHeroes]);
 
-  useEffect(() => {
-    console.log("Current selectedHeroImageId:", selectedHeroImageId);
-  }, [selectedHeroImageId]);
+  // Manejador para la selección de héroe
 
   const handleSelectHero = async (heroId) => {
     const result = await selectHero(token, heroId);
@@ -89,10 +85,11 @@ export const HeroPage = () => {
     }
   };
 
+  // Función para traer las imágenes de los héroes
+
   useEffect(() => {
     const fetchHeroImages = async () => {
       const response = await getAllHeroImages(token);
-      console.log("Respuesta de getAllHeroImages:", response);
       if (Array.isArray(response.data)) {
         setHeroImages(response.data);
       } else {
@@ -101,6 +98,8 @@ export const HeroPage = () => {
     };
     fetchHeroImages();
   }, [token]);
+
+  // Manejador para mostrar y cerrar el inventario
 
   const handleShowInventoryModal = (hero) => {
     setSelectedHero(hero);
@@ -114,13 +113,9 @@ export const HeroPage = () => {
     setRefreshHeroes(true);
   };
 
+  // Manejador para la creación de héroe
+
   const handleCreateHero = async () => {
-    console.log("selectedHeroImageId:", selectedHeroImageId);
-    console.log("Body enviado:", {
-      name: newHeroName,
-      story: newHeroStory,
-      hero_image_id: selectedHeroImageId,
-    });
     const response = await createHero(token, {
       name: newHeroName,
       story: newHeroStory,
@@ -128,7 +123,6 @@ export const HeroPage = () => {
     });
     if (response && response.data && response.data.id) {
       await assignRandomItemToHeroById(token, response.data.id);
-      console.log(response.data);
       setCreationMessage(`Héroe ${newHeroName} creado con éxito!`);
       setImageSelected(false);
       setTimeout(() => {
@@ -152,6 +146,8 @@ export const HeroPage = () => {
   const handleBackToHome = () => {
     navigate("/");
   };
+
+  // Card placeholder para la creación de personaje
 
   const renderNewHeroCard = () => {
     return (
@@ -184,8 +180,9 @@ export const HeroPage = () => {
     );
   };
 
+  // Modal de selección de imagen de héroe
+
   const renderImageSelectionModal = () => {
-    console.log("heroImages:", heroImages);
     return (
       <Modal
         show={showImageSelectionModal}
@@ -226,8 +223,9 @@ export const HeroPage = () => {
     );
   };
 
+  // Card de héroe
+
   const renderHeroCard = (hero) => {
-    console.log("Rendering hero", hero.id);
     return (
       <Card key={hero.id} style={{ width: "18rem" }}>
         <Card.Body className="custom-card">
@@ -272,13 +270,13 @@ export const HeroPage = () => {
     );
   };
 
+  // Manejador para la eliminación de ítems desde el inventario
+
   const handleRemoveItem = async () => {
     if (selectedHero && itemToDelete) {
       const itemId = itemToDelete.id;
       const result = await removeItemFromHero(token, selectedHero.id, itemId);
       if (result && result.status === "success") {
-        console.log("Item removed successfully");
-
         setSelectedHero((prevHero) => {
           const updatedItems = prevHero.items.filter(
             (item) => item.id !== itemId
@@ -293,6 +291,8 @@ export const HeroPage = () => {
       }
     }
   };
+
+  // Modal para la confirmación de borrado de ítem
 
   const renderDeleteConfirmModal = () => {
     return (
@@ -331,6 +331,8 @@ export const HeroPage = () => {
     setItemToDelete(item);
     setShowDeleteConfirmModal(true);
   };
+
+  // Clases para diferentes colores en base a la rareza del ítem
 
   const getBackgroundColorByRarity = (rare) => {
     switch (rare) {
@@ -389,81 +391,79 @@ export const HeroPage = () => {
       {renderDeleteConfirmModal()}
 
       <Modal
-    show={showModal}
-    onHide={handleCloseModal}
-    className="custom-modal"
-  >
-    <Modal.Header closeButton>
-      <Modal.Title>Crea un nuevo héroe</Modal.Title>
-    </Modal.Header>
-    <Modal.Body>
-      <form>
-        <div className="form-group custom-inventory-text">
-          <label htmlFor="name">Nombre</label>
-          <input
-            type="text"
-            className="form-control"
-            id="name"
-            maxLength="16"
-            placeholder="Ingresa el nombre del héroe"
-            value={newHeroName}
-            onChange={(e) => setNewHeroName(e.target.value)}
-          />
-        </div>
-        <div className="form-group custom-inventory-text">
-          <label htmlFor="story">Historia</label>
-          <textarea
-            className="form-control"
-            id="story"
-            maxLength="70"
-            rows="3"
-            placeholder="Ingresa la historia del héroe"
-            value={newHeroStory}
-            onChange={(e) => setNewHeroStory(e.target.value)}
-          ></textarea>
-        </div>
-      </form>
-      {creationMessage && (
-        <div className="my-3">
-          <Modal.Title>{creationMessage}</Modal.Title>
-          {/* <h2>{`${newHeroName}`}</h2> */}
-        </div>
-      )}
-      {creationMessage === null && (
-        <>
-          <Button
-            variant="dark"
-            onClick={handleShowImageSelectionModal}
-            className="m-0 mt-3 mb-1 custom-button custom-inventory-text"
-          >
-            Seleccionar imagen
-          </Button>
-        </>
-      )}
-    </Modal.Body>
-    <Modal.Footer>
-      {creationMessage === null && (
-        <>
-          <Button
-            variant="secondary"
-            onClick={handleCloseModal}
-            className="custom-button-close"
-          >
-            Cerrar
-          </Button>
-          <Button
-            variant="primary"
-            onClick={handleCreateHero}
-            className="custom-button-select"
-            disabled={!newHeroName || !newHeroStory || !imageSelected}
-          >
-            Crear héroe
-          </Button>
-        </>
-      )}
-    </Modal.Footer>
-  </Modal>
-
+        show={showModal}
+        onHide={handleCloseModal}
+        className="custom-modal"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Crea un nuevo héroe</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <form>
+            <div className="form-group custom-inventory-text">
+              <label htmlFor="name">Nombre</label>
+              <input
+                type="text"
+                className="form-control"
+                id="name"
+                maxLength="16"
+                placeholder="Ingresa el nombre del héroe"
+                value={newHeroName}
+                onChange={(e) => setNewHeroName(e.target.value)}
+              />
+            </div>
+            <div className="form-group custom-inventory-text">
+              <label htmlFor="story">Historia</label>
+              <textarea
+                className="form-control"
+                id="story"
+                maxLength="70"
+                rows="3"
+                placeholder="Ingresa la historia del héroe"
+                value={newHeroStory}
+                onChange={(e) => setNewHeroStory(e.target.value)}
+              ></textarea>
+            </div>
+          </form>
+          {creationMessage && (
+            <div className="my-3">
+              <Modal.Title>{creationMessage}</Modal.Title>
+            </div>
+          )}
+          {creationMessage === null && (
+            <>
+              <Button
+                variant="dark"
+                onClick={handleShowImageSelectionModal}
+                className="m-0 mt-3 mb-1 custom-button custom-inventory-text"
+              >
+                Seleccionar imagen
+              </Button>
+            </>
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          {creationMessage === null && (
+            <>
+              <Button
+                variant="secondary"
+                onClick={handleCloseModal}
+                className="custom-button-close"
+              >
+                Cerrar
+              </Button>
+              <Button
+                variant="primary"
+                onClick={handleCreateHero}
+                className="custom-button-select"
+                disabled={!newHeroName || !newHeroStory || !imageSelected}
+              >
+                Crear héroe
+              </Button>
+            </>
+          )}
+        </Modal.Footer>
+      </Modal>
       <div
         className="selector-hero-title back-heroes-view"
         onClick={handleBackToHome}

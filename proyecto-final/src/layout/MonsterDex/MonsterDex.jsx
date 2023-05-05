@@ -13,13 +13,14 @@ export function MonsterDex() {
   const [totalMonsters, setTotalMonsters] = useState(0);
   const [expandedMonsterId, setExpandedMonsterId] = useState(null);
 
+  // Recopilación de monstruos diferentes eliminados por el héroe seleccionado
+
   useEffect(() => {
     async function fetchDefeatedMonsters() {
       const response = await getDefeatedMonsters(token, heroId);
-      console.log("DATA", response);
       if (response && response.success) {
         const monstersWithImages = response.data.map((monster) => {
-          const imageUrl = monster.imageUrl
+          const imageUrl = monster.imageUrl;
           return {
             ...monster,
             imageUrl,
@@ -33,6 +34,8 @@ export function MonsterDex() {
     fetchDefeatedMonsters();
   }, [token, heroId]);
 
+  // Recopilación de todos los monstruos disponibles en la aplicación
+
   useEffect(() => {
     async function fetchTotalMonsters() {
       const total = await getTotalMonsters(token);
@@ -45,6 +48,8 @@ export function MonsterDex() {
 
     fetchTotalMonsters();
   }, [token]);
+
+  // Despliegue en la descrpición del monstruo
 
   const toggleDescription = (monsterId) => {
     if (expandedMonsterId === monsterId) {
@@ -62,12 +67,10 @@ export function MonsterDex() {
     <Container fluid>
       <Row>
         <div className="selector-hero-title">Monstruos eliminados</div>
-
         <div className="selector-hero-title defeated-monster-subtitle">
           Has acabado con {monsters.length} de {totalMonsters} tipos de
           monstruos
         </div>
-
         <div className="d-flex flex-wrap justify-content-center">
           {monsters.map((monster) => (
             <div key={monster.id} className="m-2">

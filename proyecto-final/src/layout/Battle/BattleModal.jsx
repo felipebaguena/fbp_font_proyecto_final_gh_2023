@@ -26,12 +26,6 @@ export const BattleModal = ({
     }
   }, [showModal]);
 
-  useEffect(() => {
-    if (showModal && randomItemReceived) {
-      console.log("randomItemReceived actualizado:", randomItemReceived);
-    }
-  }, [showModal, randomItemReceived]);
-
   return (
     <div style={{ display: showModal ? "block" : "none" }}>
       <div className="battle-title d-flex flex-column align-items-center">
@@ -53,9 +47,7 @@ export const BattleModal = ({
             {randomItemReceived.data.name}
           </p>
         )}
-        {showPreparingMessage && (
-          <p className="battle-title">Preparando la siguiente batalla...</p>
-        )}
+        {showPreparingMessage && <p className="battle-title">Cargando...</p>}
         {showNextBattle && (
           <>
             {showNextBattleButton && (

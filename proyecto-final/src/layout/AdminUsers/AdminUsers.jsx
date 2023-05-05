@@ -22,6 +22,8 @@ export const UserList = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [userToDelete, setUserToDelete] = useState(null);
 
+  // Manejadores de borrado de usuarios
+
   const handleDeleteClick = (user) => {
     setUserToDelete(user);
     setShowDeleteModal(true);
@@ -43,6 +45,8 @@ export const UserList = () => {
     setShowDeleteModal(false);
   };
 
+  // Manejador para mostrar y cerrar el modal de vista detalle del usuario
+
   const handleShowModal = async (user) => {
     setLoading(true);
     try {
@@ -60,6 +64,8 @@ export const UserList = () => {
     setSelectedUser(null);
     setShowModal(false);
   };
+
+  // Manejador para el cambio de rol del usuario
 
   const handleRoleChange = async (roleId) => {
     if (selectedUser && selectedUser.id) {
@@ -79,6 +85,8 @@ export const UserList = () => {
       console.error("Error: selected user is null or does not have an id.");
     }
   };
+
+  // Recopilación de usuarios de la aplicación
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -101,11 +109,12 @@ export const UserList = () => {
       }
     };
 
+    // Recopilación de roles disponibles
+
     const fetchRoles = async () => {
       try {
         const response = await bringRoles(token);
         setRoles(response.data);
-        console.log(response.data);
       } catch (error) {
         console.error("Error fetching roles:", error);
       }
@@ -165,10 +174,10 @@ export const UserList = () => {
         handleRoleChange={handleRoleChange}
         loading={loading}
       />
-      <Modal 
-      show={showDeleteModal} 
-      onHide={() => setShowDeleteModal(false)}
-      className="custom-modal modal-title"
+      <Modal
+        show={showDeleteModal}
+        onHide={() => setShowDeleteModal(false)}
+        className="custom-modal modal-title"
       >
         <Modal.Header closeButton>
           <Modal.Title>Eliminar usuario</Modal.Title>

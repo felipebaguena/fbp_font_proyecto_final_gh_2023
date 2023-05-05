@@ -19,7 +19,7 @@ export const BattleModal = ({
       setTimeout(() => {
         setShowNextBattleButton(true);
         setShowPreparingMessage(false);
-      }, 2200);
+      }, 2500);
     } else {
       setShowNextBattleButton(false);
       setShowPreparingMessage(false);

@@ -90,9 +90,13 @@ export const StoryMode = () => {
     }
   };
 
+  // Interrupción para el despliegue letra a letra del texto de la historia
+
   const handleHistoryClick = () => {
     setHistoryCompleted(true);
   };
+
+  // Método para lograr el salto de línea mientras despliega el texto con set time out
 
   const displayTextWithBreaks = (text) => {
     const lines = text.split("\n");
@@ -103,6 +107,8 @@ export const StoryMode = () => {
       </React.Fragment>
     ));
   };
+
+  // Método para desplegar el téxto letra a letra
 
   useEffect(() => {
     if (

@@ -9,22 +9,17 @@ export const BattleModal = ({
   goToHome,
   levelUpValues,
   randomItemReceived,
+  isLoadingNextBattle,
 }) => {
   const [showNextBattleButton, setShowNextBattleButton] = useState(false);
-  const [showPreparingMessage, setShowPreparingMessage] = useState(false);
 
   useEffect(() => {
-    if (showModal) {
-      setShowPreparingMessage(true);
-      setTimeout(() => {
+    if (showModal && !isLoadingNextBattle) {
         setShowNextBattleButton(true);
-        setShowPreparingMessage(false);
-      }, 2500);
     } else {
       setShowNextBattleButton(false);
-      setShowPreparingMessage(false);
     }
-  }, [showModal]);
+  }, [showModal, isLoadingNextBattle]);
 
   return (
     <div style={{ display: showModal ? "block" : "none" }}>
@@ -47,13 +42,16 @@ export const BattleModal = ({
             {randomItemReceived.data.name}
           </p>
         )}
-        {showPreparingMessage && <p className="battle-title">Cargando...</p>}
         {showNextBattle && (
           <>
-            {showNextBattleButton && (
-              <button className="next-battle-button" onClick={onNextBattle}>
-                Siguiente Batalla
-              </button>
+            {isLoadingNextBattle ? (
+              <p className="battle-title">Comprobando recompensas</p>
+            ) : (
+              showNextBattleButton && (
+                <button className="next-battle-button" onClick={onNextBattle}>
+                  Siguiente Batalla
+                </button>
+              )
             )}
           </>
         )}

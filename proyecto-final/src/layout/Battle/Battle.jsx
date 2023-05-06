@@ -50,6 +50,9 @@ export const BattlePage = () => {
   const [defenseCount, setDefenseCount] = useState(0);
   const [hasCreatedBattle, setHasCreatedBattle] = useState(false);
 
+  const [isLoadingNextBattle, setIsLoadingNextBattle] = useState(false)
+  const [isLoadingButtons, setIsLoadingButtons] = useState(true)
+
   const token = useSelector((state) => state.auth.token);
   const navigate = useNavigate();
 
@@ -119,6 +122,9 @@ export const BattlePage = () => {
             const monsterImage = data.data.monster.monster_image.image_url;
             setMonsterImage(monsterImage);
           }
+
+          setIsLoadingButtons(false);
+
         } else {
           console.error("Error fetching battle data:", data);
         }
@@ -152,11 +158,13 @@ export const BattlePage = () => {
     if (battle && battle.hero) {
       const winsNeeded = 2 + battle.hero.level;
       if (consecutiveWins === winsNeeded) {
+        setIsLoadingNextBattle(true);
         levelUpHero(token, battle.hero.id)
           .then((response) => {
             if (response.status === "success") {
               setLevelUpValues(response.addedValues);
               setShowModal(true);
+              setIsLoadingNextBattle(false);
             } else {
               console.error("Error leveling up hero:", response.message);
             }
@@ -353,6 +361,7 @@ export const BattlePage = () => {
           });
 
         if (Math.random() > 0.5) {
+          setIsLoadingNextBattle(true);
           assignRandomItemToSelectedHero(token, battle.hero.id)
             .then(async (response) => {
               if (response.status === "success") {
@@ -363,6 +372,7 @@ export const BattlePage = () => {
                 if (itemData) {
                   setRandomItemReceived(itemData);
                   setShowModal(true);
+                  setIsLoadingNextBattle(false);
                 } else {
                   console.error("Error obteniendo información del objeto");
                 }
@@ -465,6 +475,7 @@ export const BattlePage = () => {
     setMonsterAttackFailure(0);
     setHasCreatedBattle(false);
     setDefenseCount(0);
+    setIsLoadingButtons(true);
   };
 
   // Colores por rareza en el inventario
@@ -526,6 +537,7 @@ export const BattlePage = () => {
                 PotionComponent={Potion}
                 battle={battle}
                 defenseCount={defenseCount}
+                isLoadingButtons={isLoadingButtons}
               />
             )}
             <div className="modal-monster-turn">
@@ -542,6 +554,7 @@ export const BattlePage = () => {
                   goToHome={goToHome}
                   levelUpValues={levelUpValues}
                   randomItemReceived={randomItemReceived}
+                  isLoadingNextBattle={isLoadingNextBattle}
                 />
               )}
             </div>

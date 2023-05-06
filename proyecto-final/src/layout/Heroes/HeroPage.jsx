@@ -79,6 +79,7 @@ export const HeroPage = () => {
   // Manejador para la selección de héroe
 
   const handleSelectHero = async (heroId) => {
+    setIsLoading(true);
     const result = await selectHero(token, heroId);
     if (result && result.status === "success") {
       navigate("/battle");

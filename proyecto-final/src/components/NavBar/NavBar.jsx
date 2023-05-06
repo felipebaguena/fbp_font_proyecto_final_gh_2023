@@ -90,7 +90,9 @@ export function NavbarTop() {
       await logMe({ email, password }, dispatch);
       displayRegisterSuccess(name);
     } catch (error) {
-      console.error(error);
+      if (error.response && error.response.status === 422) {
+        setErrors({ ...errors, email: "El correo electrónico no es válido, por favor, introduce otro." });
+      }
     }
   };
 

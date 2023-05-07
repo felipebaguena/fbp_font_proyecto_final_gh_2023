@@ -133,7 +133,7 @@
   border-bottom: 0.5rem solid #6487b6;
 }
 
-.banner-ranking-img-container{
+.banner-ranking-img-container {
   margin-bottom: 0.5rem;
 }
 
@@ -175,12 +175,42 @@
   opacity: 1;
 }
 
-.ranking-xl{
+.ranking-xl {
   display: block;
 }
 
 .ranking-s {
   display: none;
+}
+
+.banner-about {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: fit-content;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.video-container {
+  width: 80%;
+}
+
+.video-container-iframe {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+}
+
+.about-text-container{
+  margin: 1.5rem;
+}
+
+.about-tittle{
+  margin-bottom: 0.5rem !important;
 }
 
 @media (max-width: 575px) {
@@ -202,6 +232,10 @@
 
   .sega-navbar {
     margin-bottom: 0.5rem;
+  }
+
+  .video-container {
+    width: 100%;
   }
 }
 
@@ -238,13 +272,12 @@
     margin-top: 0.5rem !important;
   }
 
-  .ranking-xl{
+  .ranking-xl {
     display: none;
   }
-  
+
   .ranking-s {
     display: block;
     margin-bottom: 0.1rem;
   }
-
 }

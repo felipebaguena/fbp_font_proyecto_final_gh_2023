@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Routes, Route, Navigate } from "react-router-dom";
+import { AboutUsPage } from '../AboutUs/AboutUs';
 import { UserList } from '../AdminUsers/AdminUsers';
 import { BattlePage } from '../Battle/Battle';
 import { HeroPage } from '../Heroes/HeroPage';
@@ -26,6 +27,7 @@ export const Body = () => {
           <Route path="/monsterdex/:heroId" element={<MonsterDex />} />
           <Route path="/storymode" element={<StoryMode />} />
           <Route path="/ranking" element={<TopHeroes />} />
+          <Route path="/aboutus" element={<AboutUsPage />} />
           </Routes>
       </div>
     </>

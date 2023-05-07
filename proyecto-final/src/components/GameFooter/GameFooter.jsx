@@ -59,17 +59,8 @@ export const GameFooter = () => {
                 action
                 as="div"
               >
-                <Link className="links-footer links-footer-2" to="/">
-                  Políticas de privacidad
-                </Link>
-              </ListGroupItem>
-              <ListGroupItem
-                className="background-footer-none footer-text"
-                action
-                as="div"
-              >
-                <Link className="links-footer links-footer-2" to="/">
-                  Términos y condiciones
+                <Link className="links-footer links-footer-2" to="/aboutus">
+                  Sobre Grim Reckoning
                 </Link>
               </ListGroupItem>
             </ListGroup>

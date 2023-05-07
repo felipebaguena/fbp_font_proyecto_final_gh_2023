@@ -174,6 +174,9 @@ export function NavbarTop() {
             <Nav.Link as={Link} to="/">
               Home
             </Nav.Link>
+            <Nav.Link as={Link} to="/aboutus">
+              Sobre el juego
+            </Nav.Link>
             <Nav.Link as={Link} to="/ranking">
               Ranking
             </Nav.Link>

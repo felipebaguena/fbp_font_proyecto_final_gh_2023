@@ -170,6 +170,7 @@ export const HeroesAndItems = () => {
       <Modal
         show={showImageSelectionModal}
         onHide={handleCloseImageSelectionModal}
+        className="custom-modal modal-title"
       >
         <Modal.Header closeButton>
           <Modal.Title>Selecciona la imagen del héroe</Modal.Title>

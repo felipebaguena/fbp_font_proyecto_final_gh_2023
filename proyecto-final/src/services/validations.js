@@ -27,20 +27,20 @@ export const validate = (name, data, required) => {
 
       return { message: "", validated: true };
 
-    case "password":
-      if (data === "" && required === true) {
-        return { message: "Por favor, rellena este campo", validated: false };
-      } else if (
-        !/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+|~\-=?\[\]{};:<>,./]).{8,}$/g.test(
-          data
-        )
-      ) {
-        return {
-          message:
-            "La contraseña debe contener mayúsuclas, minúsculas, números y carácteres especiales",
-          validated: false,
-        };
-      }
-      return { message: "", validated: true };
+      case "password":
+        if (data === "" && required === true) {
+          return { message: "Por favor, rellena este campo", validated: false };
+        } else if (
+          !/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+|~\-=?\[\]{};:<>,./]).{8,64}$/g.test(
+            data
+          )
+        ) {
+          return {
+            message:
+              "La contraseña debe contener mayúsuclas, minúsculas, números y carácteres especiales",
+            validated: false,
+          };
+        }
+        return { message: "", validated: true };
   }
 };

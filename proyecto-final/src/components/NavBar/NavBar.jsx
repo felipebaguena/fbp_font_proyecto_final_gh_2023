@@ -290,6 +290,7 @@ export function NavbarTop() {
                 placeholder="Enter name"
                 isInvalid={!!errors.name}
                 onBlur={handleInputChange}
+                maxLength={64}
               />
               <Form.Control.Feedback type="invalid">
                 {errors.name}
@@ -303,6 +304,7 @@ export function NavbarTop() {
                 placeholder="Enter email"
                 isInvalid={!!errors.email}
                 onBlur={handleInputChange}
+                maxLength={64}
               />
               <Form.Control.Feedback type="invalid">
                 {errors.email}
@@ -318,6 +320,7 @@ export function NavbarTop() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 onBlur={handleInputChange}
+                maxLength={64}
               />
               <Form.Control.Feedback type="invalid">
                 {errors.password}
@@ -334,6 +337,7 @@ export function NavbarTop() {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 onBlur={handleConfirmPasswordBlur}
+                maxLength={64}
               />
               <Form.Control.Feedback type="invalid">
                 {confirmPasswordError}
